@@ -1,0 +1,73 @@
+name: SongFinisher
+options:
+  bundleIdPrefix: com.markwamigoni
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+configs:
+  Debug: debug
+  Release: release
+settings:
+  base:
+    SWIFT_VERSION: 5.0
+    MARKETING_VERSION: 1.0.0
+    CURRENT_PROJECT_VERSION: 1
+    DEVELOPMENT_TEAM: "VW94GQ95Y5"
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_PREVIEWS: YES
+targets:
+  SongFinisher:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: SongFinisher
+    info:
+      path: SongFinisher/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: Song Finisher
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UIBackgroundModes:
+          - audio
+        NSMicrophoneUsageDescription: "Song Finisher needs microphone access to record your performance."
+        NSAppleMusicUsageDescription: "Song Finisher can import audio from your music library."
+        NSSpeechRecognitionUsageDescription: "Song Finisher uses on-device speech recognition to line up your lyrics with your recording's timing."
+        ITSAppUsesNonExemptEncryption: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.markwamigoni.songfinisher
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SWIFT_EMIT_LOC_STRINGS: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    capabilities:
+      BackgroundModes: {}
+  SongFinisherTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: SongFinisherTests
+    dependencies:
+      - target: SongFinisher
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.markwamigoni.songfinisher.tests
+schemes:
+  SongFinisher:
+    build:
+      targets:
+        SongFinisher: all
+        SongFinisherTests: [test]
+    test:
+      targets:
+        - SongFinisherTests
+    run:
+      config: Debug
