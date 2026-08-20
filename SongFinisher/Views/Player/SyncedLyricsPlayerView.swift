@@ -12,14 +12,25 @@ struct SyncedLyricsPlayerView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var playback = AudioPlaybackService()
     @State private var loadError: String?
+    @State private var lyricPace: Double = 1.0
+    @State private var showDiagnostic = false
+
+    private static let paceSteps: [Double] = [0.50, 0.60, 0.75, 1.00, 1.25, 1.50]
 
     private var aligned: AlignedLyrics? { project.alignedLyrics }
+
+    /// Real audio time scaled by lyricPace so the lyric renderer can run
+    /// slower or faster than the underlying audio without touching BPM,
+    /// syllable analysis, or alignment timestamps.
+    private var effectiveDisplayTime: TimeInterval {
+        playback.currentTime * lyricPace
+    }
 
     private var currentLineIndex: Int? {
         guard let aligned else { return nil }
         var result: Int?
         for (index, line) in aligned.lines.enumerated() {
-            if line.start <= playback.currentTime {
+            if line.start <= effectiveDisplayTime {
                 result = index
             } else {
                 break
@@ -43,6 +54,7 @@ struct SyncedLyricsPlayerView: View {
                         .padding(.horizontal, AppTheme.Spacing.lg)
                     Spacer()
                 } else if let aligned {
+                    if showDiagnostic { diagnosticBar }
                     lyricsScrollView(aligned: aligned)
                 } else {
                     Spacer()
@@ -51,6 +63,7 @@ struct SyncedLyricsPlayerView: View {
                     Spacer()
                 }
 
+                paceControl
                 AudioPreviewPlayer(playback: playback)
                     .padding(AppTheme.Spacing.lg)
             }
@@ -81,10 +94,77 @@ struct SyncedLyricsPlayerView: View {
 
             Spacer()
 
-            Color.clear.frame(width: 36, height: 36)
+            Button {
+                showDiagnostic.toggle()
+            } label: {
+                Image(systemName: "waveform.badge.magnifyingglass")
+                    .font(.subheadline)
+                    .foregroundStyle(showDiagnostic ? AppTheme.accent : AppTheme.textTertiary)
+                    .frame(width: 36, height: 36)
+            }
+            .buttonStyle(.plain)
         }
         .padding(.horizontal, AppTheme.Spacing.lg)
         .padding(.top, AppTheme.Spacing.md)
+    }
+
+    private var paceControl: some View {
+        VStack(spacing: 4) {
+            Text("LYRIC PACE")
+                .font(.caption2.weight(.bold))
+                .foregroundStyle(AppTheme.textTertiary)
+
+            HStack(spacing: 6) {
+                ForEach(Self.paceSteps, id: \.self) { step in
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.15)) { lyricPace = step }
+                    } label: {
+                        Text(Self.paceLabel(step))
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(lyricPace == step ? .black : AppTheme.textSecondary)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(
+                                RoundedRectangle(cornerRadius: AppTheme.Radius.pill, style: .continuous)
+                                    .fill(lyricPace == step ? AppTheme.accent : AppTheme.surface)
+                            )
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+        .padding(.horizontal, AppTheme.Spacing.lg)
+        .padding(.bottom, AppTheme.Spacing.sm)
+    }
+
+    private var diagnosticBar: some View {
+        HStack(spacing: 16) {
+            label("Audio", value: String(format: "%.2fs", playback.currentTime))
+            label("Effective", value: String(format: "%.2fs", effectiveDisplayTime))
+            label("Pace", value: Self.paceLabel(lyricPace))
+            if let idx = currentLineIndex {
+                label("Line", value: "\(idx + 1)")
+            }
+        }
+        .font(.caption2.monospaced())
+        .foregroundStyle(AppTheme.textSecondary)
+        .padding(.horizontal, AppTheme.Spacing.lg)
+        .padding(.vertical, 6)
+        .frame(maxWidth: .infinity)
+        .background(AppTheme.surface)
+    }
+
+    private func label(_ title: String, value: String) -> some View {
+        VStack(spacing: 1) {
+            Text(title.uppercased())
+                .foregroundStyle(AppTheme.textTertiary)
+            Text(value)
+                .foregroundStyle(AppTheme.textPrimary)
+        }
+    }
+
+    private static func paceLabel(_ pace: Double) -> String {
+        pace == 1.0 ? "1×" : String(format: "%.2g×", pace)
     }
 
     private func lyricsScrollView(aligned: AlignedLyrics) -> some View {
@@ -104,7 +184,7 @@ struct SyncedLyricsPlayerView: View {
                             LyricLineView(
                                 line: aligned.lines[index],
                                 isCurrent: index == currentLineIndex,
-                                currentTime: playback.currentTime
+                                currentTime: effectiveDisplayTime
                             )
                         }
                         .id(index)
