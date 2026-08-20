@@ -17,6 +17,12 @@ struct ProjectPlaybackSheet: View {
     @State private var isSyncedPlayerPresented = false
     @State private var isCraftSettingsPresented = false
     @State private var craftSettings: LyricSettings = .default
+    @State private var isSectionTimingPresented = false
+
+    /// Section titles in document order, used by SectionTimingView.
+    private var documentSections: [String] {
+        LyricsTextParser.parse(project.lyricsText).lines.compactMap(\.sectionTitle)
+    }
 
     var body: some View {
         NavigationStack {
@@ -88,9 +94,20 @@ struct ProjectPlaybackSheet: View {
                     },
                     onRealign: {
                         isCraftSettingsPresented = false
-                        Task { await runAlignment() }
+                        isSectionTimingPresented = true
                     }
                 )
+            }
+            .sheet(isPresented: $isSectionTimingPresented) {
+                let audioURL = FileStorage.audioURL(projectID: project.id, fileName: project.audioFileName)
+                let sections = documentSections
+                SectionTimingView(
+                    sectionTitles: sections.isEmpty ? ["Song"] : sections,
+                    audioURL: audioURL,
+                    duration: project.duration
+                ) { sectionStarts in
+                    Task { await runAlignment(sectionStarts: sectionStarts) }
+                }
             }
             .fullScreenCover(isPresented: $isSyncedPlayerPresented) {
                 SyncedLyricsPlayerView(project: project)
@@ -173,7 +190,7 @@ struct ProjectPlaybackSheet: View {
                 .clipShape(RoundedRectangle(cornerRadius: AppTheme.Radius.pill, style: .continuous))
             } else {
                 Button {
-                    Task { await runAlignment() }
+                    isSectionTimingPresented = true
                 } label: {
                     HStack(spacing: AppTheme.Spacing.sm) {
                         if isAligning {
@@ -206,13 +223,18 @@ struct ProjectPlaybackSheet: View {
         }
     }
 
-    private func runAlignment() async {
+    private func runAlignment(sectionStarts: [TimeInterval] = []) async {
         isAligning = true
         defer { isAligning = false }
         do {
             let audioURL = FileStorage.audioURL(projectID: project.id, fileName: project.audioFileName)
             let service = LocalAlignmentService()
-            let aligned = try await service.align(lyricsText: project.lyricsText, audioURL: audioURL, duration: project.duration)
+            let aligned = try await service.align(
+                lyricsText: project.lyricsText,
+                audioURL: audioURL,
+                duration: project.duration,
+                sectionStarts: sectionStarts
+            )
             try ProjectStore.saveAlignment(aligned, to: project, context: modelContext)
         } catch {
             alignmentErrorMessage = error.localizedDescription
