@@ -15,7 +15,7 @@ struct SyncedLyricsPlayerView: View {
     @State private var lyricPace: Double = 1.0
     @State private var showDiagnostic = false
 
-    private static let paceSteps: [Double] = [0.50, 0.60, 0.75, 1.00, 1.25, 1.50]
+    private static let paceSteps: [Double] = [0.15, 0.25, 0.40, 0.60, 0.80, 1.00]
 
     private var aligned: AlignedLyrics? { project.alignedLyrics }
 
@@ -109,24 +109,33 @@ struct SyncedLyricsPlayerView: View {
     }
 
     private var paceControl: some View {
-        VStack(spacing: 4) {
-            Text("LYRIC PACE")
-                .font(.caption2.weight(.bold))
-                .foregroundStyle(AppTheme.textTertiary)
+        VStack(spacing: 6) {
+            HStack {
+                Text("LYRIC PACE")
+                    .font(.caption2.weight(.bold))
+                    .foregroundStyle(AppTheme.textTertiary)
+                Spacer()
+                Text(Self.paceLabel(lyricPace))
+                    .font(.caption.weight(.bold).monospacedDigit())
+                    .foregroundStyle(AppTheme.accent)
+            }
 
-            HStack(spacing: 6) {
+            Slider(value: $lyricPace, in: 0.10...1.50, step: 0.01)
+                .tint(AppTheme.accent)
+
+            HStack(spacing: 4) {
                 ForEach(Self.paceSteps, id: \.self) { step in
                     Button {
                         withAnimation(.easeInOut(duration: 0.15)) { lyricPace = step }
                     } label: {
                         Text(Self.paceLabel(step))
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(lyricPace == step ? .black : AppTheme.textSecondary)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
+                            .font(.caption2.weight(.semibold))
+                            .foregroundStyle(abs(lyricPace - step) < 0.005 ? .black : AppTheme.textSecondary)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
                             .background(
                                 RoundedRectangle(cornerRadius: AppTheme.Radius.pill, style: .continuous)
-                                    .fill(lyricPace == step ? AppTheme.accent : AppTheme.surface)
+                                    .fill(abs(lyricPace - step) < 0.005 ? AppTheme.accent : AppTheme.surface)
                             )
                     }
                     .buttonStyle(.plain)
