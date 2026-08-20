@@ -15,7 +15,7 @@ struct SyncedLyricsPlayerView: View {
     @State private var lyricPace: Double = 1.0
     @State private var showDiagnostic = false
 
-    private static let paceSteps: [Double] = [0.15, 0.25, 0.40, 0.60, 0.80, 1.00]
+    private static let paceSteps: [Double] = [0.50, 0.65, 0.80, 1.00, 1.25, 1.50]
 
     private var aligned: AlignedLyrics? { project.alignedLyrics }
 

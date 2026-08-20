@@ -31,8 +31,23 @@ enum SpeechAligner {
             throw AlignmentError.recognitionFailed("No speech was recognized in this recording.")
         }
 
+        // SFSpeechRecognizer can misreport timestamps for stereo files (e.g.
+        // 44100 Hz stereo recorded by this app): it converts to mono internally
+        // but may count interleaved stereo samples as if they were mono, halving
+        // all reported timestamps relative to actual audio time. We detect this
+        // by comparing the last segment's end to the known audio duration and
+        // applying a correction when the ratio falls in the plausible range for
+        // a channel/sample-rate mismatch (1.3×–3.0×).
+        let asrEnd = segments.reduce(0.0) { max($0, $1.timestamp + $1.duration) }
+        let rawRatio = asrEnd > 0.5 ? duration / asrEnd : 1.0
+        let timeScale = (rawRatio >= 1.3 && rawRatio <= 3.0) ? rawRatio : 1.0
+
         let referenceWords = document.flatWords
-        let hypothesisWords = segments.map { (text: $0.substring, start: $0.timestamp, end: $0.timestamp + $0.duration) }
+        let hypothesisWords = segments.map {
+            (text: $0.substring,
+             start: $0.timestamp * timeScale,
+             end: ($0.timestamp + $0.duration) * timeScale)
+        }
         let aligned = LyricWordAligner.align(reference: referenceWords, hypothesis: hypothesisWords)
 
         let matchedCount = aligned.filter(\.matched).count
