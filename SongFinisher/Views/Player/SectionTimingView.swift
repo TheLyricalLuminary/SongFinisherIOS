@@ -142,7 +142,7 @@ struct SectionTimingView: View {
     }
 
     private var markButton: some View {
-        Group {
+        VStack(spacing: AppTheme.Spacing.sm) {
             if isDone {
                 Button {
                     playback.stop()
@@ -174,6 +174,21 @@ struct SectionTimingView: View {
                 .buttonStyle(.plain)
                 .background(Color.white)
                 .clipShape(RoundedRectangle(cornerRadius: AppTheme.Radius.pill, style: .continuous))
+
+                // Let the user stop early — useful when testing a short clip
+                // where only the first few sections fit the audio.
+                if !markedTimes.isEmpty {
+                    Button {
+                        playback.stop()
+                        onComplete(markedTimes)
+                        dismiss()
+                    } label: {
+                        Text("Use These \(markedTimes.count) Section\(markedTimes.count == 1 ? "" : "s")")
+                            .font(.subheadline.weight(.medium))
+                            .foregroundStyle(AppTheme.textSecondary)
+                    }
+                    .buttonStyle(.plain)
+                }
             }
         }
     }
