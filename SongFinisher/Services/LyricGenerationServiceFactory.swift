@@ -5,13 +5,13 @@ import Foundation
 /// the one place that decides — callers just ask for "the default" service.
 enum LyricGenerationServiceFactory {
     static func makeDefault() -> LyricGenerationService {
-        if let key = KeychainService.loadAPIKey(), !key.isEmpty {
+        if let key = KeychainService.loadAPIKey(for: .claudeAPIKey), !key.isEmpty {
             return ClaudeLyricGenerationService(apiKey: key)
         }
         return LocalLyricGenerationService()
     }
 
     static var isRemoteConfigured: Bool {
-        KeychainService.loadAPIKey()?.isEmpty == false
+        KeychainService.loadAPIKey(for: .claudeAPIKey)?.isEmpty == false
     }
 }

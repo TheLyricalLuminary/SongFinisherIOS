@@ -1,19 +1,23 @@
 import Foundation
 import Security
 
-/// Minimal Keychain wrapper for the optional Claude API key used by
-/// `ClaudeLyricGenerationService`. Kept out of UserDefaults/SwiftData since it's a
-/// secret, not app data.
+/// Minimal Keychain wrapper for the app's optional API keys (Claude,
+/// Freesound). Kept out of UserDefaults/SwiftData since they're secrets, not
+/// app data.
 enum KeychainService {
-    private static let service = "com.markwamigoni.songfinisher"
-    private static let account = "claudeAPIKey"
+    enum Key: String {
+        case claudeAPIKey
+        case freesoundAPIKey
+    }
 
-    static func saveAPIKey(_ key: String) {
+    private static let service = "com.markwamigoni.songfinisher"
+
+    static func saveAPIKey(_ key: String, for keyType: Key) {
         let trimmed = key.trimmingCharacters(in: .whitespacesAndNewlines)
         let baseQuery: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
-            kSecAttrAccount as String: account
+            kSecAttrAccount as String: keyType.rawValue
         ]
         SecItemDelete(baseQuery as CFDictionary)
 
@@ -25,11 +29,11 @@ enum KeychainService {
         SecItemAdd(addQuery as CFDictionary, nil)
     }
 
-    static func loadAPIKey() -> String? {
+    static func loadAPIKey(for keyType: Key) -> String? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
-            kSecAttrAccount as String: account,
+            kSecAttrAccount as String: keyType.rawValue,
             kSecReturnData as String: true,
             kSecMatchLimit as String: kSecMatchLimitOne
         ]

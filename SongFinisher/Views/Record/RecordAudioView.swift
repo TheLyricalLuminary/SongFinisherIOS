@@ -13,6 +13,7 @@ struct RecordAudioView: View {
     enum Mode: String, CaseIterable {
         case record = "Record"
         case importFile = "Import"
+        case browseSounds = "Browse"
     }
 
     @State private var mode: Mode = .record
@@ -22,6 +23,12 @@ struct RecordAudioView: View {
     @State private var errorMessage: String?
     @State private var isImporterPresented = false
     @State private var isSaving = false
+
+    @State private var searchQuery = ""
+    @State private var searchResults: [FreesoundSound] = []
+    @State private var isSearching = false
+    @State private var isDownloadingSoundID: Int?
+    @State private var isFreesoundSettingsPresented = false
 
     private var hasCapture: Bool { capturedURL != nil }
 
@@ -35,13 +42,18 @@ struct RecordAudioView: View {
                         reviewSection
                     } else {
                         modePicker
-                        Spacer()
-                        if mode == .record {
+                        switch mode {
+                        case .record:
+                            Spacer()
                             recordSection
-                        } else {
+                            Spacer()
+                        case .importFile:
+                            Spacer()
                             importSection
+                            Spacer()
+                        case .browseSounds:
+                            browseSoundsSection
                         }
-                        Spacer()
                     }
                 }
                 .padding(AppTheme.Spacing.lg)
@@ -58,6 +70,9 @@ struct RecordAudioView: View {
                 allowedContentTypes: AudioImportService.supportedTypes
             ) { result in
                 handleImportResult(result)
+            }
+            .sheet(isPresented: $isFreesoundSettingsPresented) {
+                FreesoundSettingsView()
             }
             .alert(
                 "Something went wrong",
@@ -144,6 +159,131 @@ struct RecordAudioView: View {
             }
             .buttonStyle(.plain)
         }
+    }
+
+    private var browseSoundsSection: some View {
+        Group {
+            if !FreesoundService.isConfigured {
+                missingFreesoundKeyState
+            } else {
+                VStack(spacing: AppTheme.Spacing.md) {
+                    searchField
+                    if isSearching {
+                        Spacer()
+                        ProgressView().tint(AppTheme.textSecondary)
+                        Spacer()
+                    } else if searchResults.isEmpty {
+                        browseSoundsEmptyState
+                    } else {
+                        soundResultsList
+                    }
+                }
+            }
+        }
+    }
+
+    private var missingFreesoundKeyState: some View {
+        VStack(spacing: AppTheme.Spacing.md) {
+            Spacer()
+            Image(systemName: "key.slash")
+                .font(.system(size: 36))
+                .foregroundStyle(AppTheme.textTertiary)
+            Text("Add a free Freesound API key to browse and use royalty-free samples.")
+                .font(.subheadline)
+                .foregroundStyle(AppTheme.textSecondary)
+                .multilineTextAlignment(.center)
+            Button {
+                isFreesoundSettingsPresented = true
+            } label: {
+                Text("Add API Key")
+                    .font(.headline)
+                    .foregroundStyle(.black)
+                    .padding(.horizontal, AppTheme.Spacing.lg)
+                    .padding(.vertical, 12)
+                    .background(Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: AppTheme.Radius.pill, style: .continuous))
+            }
+            .buttonStyle(.plain)
+            Spacer()
+        }
+        .padding(.horizontal, AppTheme.Spacing.lg)
+    }
+
+    private var searchField: some View {
+        HStack(spacing: AppTheme.Spacing.sm) {
+            Image(systemName: "magnifyingglass")
+                .foregroundStyle(AppTheme.textTertiary)
+            TextField("Search sounds (e.g. \"guitar loop\")", text: $searchQuery)
+                .textFieldStyle(.plain)
+                .foregroundStyle(AppTheme.textPrimary)
+                .submitLabel(.search)
+                .onSubmit { Task { await runSearch() } }
+        }
+        .padding(AppTheme.Spacing.md)
+        .background(AppTheme.surface)
+        .clipShape(RoundedRectangle(cornerRadius: AppTheme.Radius.sm, style: .continuous))
+    }
+
+    private var browseSoundsEmptyState: some View {
+        VStack(spacing: AppTheme.Spacing.sm) {
+            Spacer()
+            Image(systemName: "waveform.badge.magnifyingglass")
+                .font(.system(size: 36))
+                .foregroundStyle(AppTheme.textTertiary)
+            Text("Search Freesound for loops, textures, and one-shots to use as backing audio.")
+                .font(.subheadline)
+                .foregroundStyle(AppTheme.textSecondary)
+                .multilineTextAlignment(.center)
+            Spacer()
+        }
+        .padding(AppTheme.Spacing.lg)
+    }
+
+    private var soundResultsList: some View {
+        ScrollView {
+            LazyVStack(spacing: AppTheme.Spacing.sm) {
+                ForEach(searchResults) { sound in
+                    soundRow(sound)
+                }
+            }
+        }
+    }
+
+    private func soundRow(_ sound: FreesoundSound) -> some View {
+        HStack(spacing: AppTheme.Spacing.md) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(sound.name)
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(AppTheme.textPrimary)
+                    .lineLimit(1)
+                Text("\(sound.username) · \(Int(sound.duration))s · \(sound.licenseLabel)")
+                    .font(.caption2)
+                    .foregroundStyle(AppTheme.textTertiary)
+                    .lineLimit(1)
+            }
+            Spacer()
+            Button {
+                Task { await useSample(sound) }
+            } label: {
+                if isDownloadingSoundID == sound.id {
+                    ProgressView().tint(.black)
+                        .frame(width: 40)
+                } else {
+                    Text("Use")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.black)
+                        .padding(.horizontal, AppTheme.Spacing.md)
+                        .padding(.vertical, 6)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: AppTheme.Radius.pill, style: .continuous))
+                }
+            }
+            .buttonStyle(.plain)
+            .disabled(isDownloadingSoundID != nil)
+        }
+        .padding(AppTheme.Spacing.md)
+        .background(AppTheme.surface)
+        .clipShape(RoundedRectangle(cornerRadius: AppTheme.Radius.sm, style: .continuous))
     }
 
     private var reviewSection: some View {
@@ -235,6 +375,28 @@ struct RecordAudioView: View {
                 errorMessage = error.localizedDescription
             }
         case .failure(let error):
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    private func runSearch() async {
+        isSearching = true
+        defer { isSearching = false }
+        do {
+            searchResults = try await FreesoundService.search(query: searchQuery)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    private func useSample(_ sound: FreesoundSound) async {
+        isDownloadingSoundID = sound.id
+        defer { isDownloadingSoundID = nil }
+        do {
+            let localURL = try await FreesoundService.downloadPreview(sound)
+            titleText = sound.name
+            finishCapture(url: localURL)
+        } catch {
             errorMessage = error.localizedDescription
         }
     }
