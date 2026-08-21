@@ -29,6 +29,12 @@ struct RecordAudioView: View {
     @State private var isSearching = false
     @State private var isDownloadingSoundID: Int?
     @State private var isFreesoundSettingsPresented = false
+    @State private var previewingSoundID: Int?
+    @State private var isLoadingPreviewSoundID: Int?
+    /// Preview files already pulled down this session, keyed by sound id — so
+    /// auditioning a sample and then tapping "Use" on it doesn't download the
+    /// same small file twice.
+    @State private var downloadedPreviewURLs: [Int: URL] = [:]
 
     private var hasCapture: Bool { capturedURL != nil }
 
@@ -73,6 +79,12 @@ struct RecordAudioView: View {
             }
             .sheet(isPresented: $isFreesoundSettingsPresented) {
                 FreesoundSettingsView()
+            }
+            .onChange(of: mode) { _, newMode in
+                if newMode != .browseSounds {
+                    playback.stop()
+                    previewingSoundID = nil
+                }
             }
             .alert(
                 "Something went wrong",
@@ -251,6 +263,22 @@ struct RecordAudioView: View {
 
     private func soundRow(_ sound: FreesoundSound) -> some View {
         HStack(spacing: AppTheme.Spacing.md) {
+            Button {
+                Task { await togglePreview(sound) }
+            } label: {
+                Group {
+                    if isLoadingPreviewSoundID == sound.id {
+                        ProgressView().tint(AppTheme.textPrimary)
+                    } else {
+                        Image(systemName: previewingSoundID == sound.id && playback.isPlaying ? "pause.circle.fill" : "play.circle.fill")
+                            .font(.system(size: 28))
+                            .foregroundStyle(AppTheme.accent)
+                    }
+                }
+                .frame(width: 32, height: 32)
+            }
+            .buttonStyle(.plain)
+
             VStack(alignment: .leading, spacing: 2) {
                 Text(sound.name)
                     .font(.subheadline.weight(.medium))
@@ -393,12 +421,37 @@ struct RecordAudioView: View {
         isDownloadingSoundID = sound.id
         defer { isDownloadingSoundID = nil }
         do {
-            let localURL = try await FreesoundService.downloadPreview(sound)
+            previewingSoundID = nil
+            let localURL = try await cachedPreviewURL(for: sound)
             titleText = sound.name
             finishCapture(url: localURL)
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+
+    private func togglePreview(_ sound: FreesoundSound) async {
+        if previewingSoundID == sound.id {
+            playback.togglePlayPause()
+            return
+        }
+        isLoadingPreviewSoundID = sound.id
+        defer { isLoadingPreviewSoundID = nil }
+        do {
+            let url = try await cachedPreviewURL(for: sound)
+            try playback.load(url: url)
+            previewingSoundID = sound.id
+            playback.play()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    private func cachedPreviewURL(for sound: FreesoundSound) async throws -> URL {
+        if let cached = downloadedPreviewURLs[sound.id] { return cached }
+        let url = try await FreesoundService.downloadPreview(sound)
+        downloadedPreviewURLs[sound.id] = url
+        return url
     }
 
     private func finishCapture(url: URL) {
