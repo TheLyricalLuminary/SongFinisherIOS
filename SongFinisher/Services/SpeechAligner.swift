@@ -59,6 +59,20 @@ enum SpeechAligner {
         return LyricWordAligner.interpolate(aligned, duration: duration)
     }
 
+    /// Attempts on-device speech recognition on a clip, returning nil instead
+    /// of throwing when recognition is unavailable/denied or nothing
+    /// intelligible was found — the recognizer's own success or failure here
+    /// doubles as a vocal-vs-instrumental signal (see `VocalContentDetector`),
+    /// since it already fails gracefully on pure instrumental material rather
+    /// than hallucinating words.
+    static func transcribeIfPossible(audioURL: URL) async -> [SFTranscriptionSegment]? {
+        guard await requestAuthorizationIfNeeded(),
+              let recognizer = SFSpeechRecognizer(), recognizer.isAvailable else {
+            return nil
+        }
+        return try? await transcribe(url: audioURL, recognizer: recognizer)
+    }
+
     private static func requestAuthorizationIfNeeded() async -> Bool {
         switch SFSpeechRecognizer.authorizationStatus() {
         case .authorized:

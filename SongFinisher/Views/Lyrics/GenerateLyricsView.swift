@@ -23,6 +23,7 @@ struct GenerateLyricsView: View {
     @State private var isServiceSettingsPresented = false
     @State private var isCraftSettingsPresented = false
     @State private var isDetectingTempo = false
+    @State private var vocalDetectionResult: VocalContentResult?
 
     init(project: Project) {
         self.project = project
@@ -188,23 +189,42 @@ struct GenerateLyricsView: View {
     /// theme/style (via the existing Claude integration, from that same
     /// transcript) are later phases, not audio properties this button covers.
     private var autoDetectTempoButton: some View {
-        Button {
-            Task { await detectTempo() }
-        } label: {
-            HStack(spacing: AppTheme.Spacing.sm) {
-                if isDetectingTempo {
-                    ProgressView().tint(AppTheme.accent)
-                    Text("Listening…")
-                } else {
-                    Image(systemName: "waveform.badge.magnifyingglass")
-                    Text("Auto-Detect Tempo")
+        VStack(alignment: .leading, spacing: 4) {
+            Button {
+                Task { await detectTempo() }
+            } label: {
+                HStack(spacing: AppTheme.Spacing.sm) {
+                    if isDetectingTempo {
+                        ProgressView().tint(AppTheme.accent)
+                        Text("Listening…")
+                    } else {
+                        Image(systemName: "waveform.badge.magnifyingglass")
+                        Text("Auto-Detect Tempo")
+                    }
                 }
+                .font(.caption.weight(.medium))
+                .foregroundStyle(AppTheme.accent)
             }
-            .font(.caption.weight(.medium))
-            .foregroundStyle(AppTheme.accent)
+            .buttonStyle(.plain)
+            .disabled(isDetectingTempo)
+
+            if let vocalDetectionResult {
+                vocalDetectionLabel(vocalDetectionResult)
+            }
         }
-        .buttonStyle(.plain)
-        .disabled(isDetectingTempo)
+    }
+
+    private func vocalDetectionLabel(_ result: VocalContentResult) -> some View {
+        Group {
+            switch result {
+            case .instrumental:
+                Text("Instrumental — no vocals detected in this take")
+            case .vocals(let wordCount, _):
+                Text("Vocals detected — \(wordCount) word\(wordCount == 1 ? "" : "s") recognized")
+            }
+        }
+        .font(.caption2)
+        .foregroundStyle(AppTheme.textTertiary)
     }
 
     private var lyricsSection: some View {
@@ -279,16 +299,23 @@ struct GenerateLyricsView: View {
         defer { isDetectingTempo = false }
 
         let url = FileStorage.audioURL(projectID: project.id, fileName: project.audioFileName)
-        let bpm = await Task.detached(priority: .userInitiated) {
+
+        // Tempo (pure local DSP) and vocal detection (speech recognition) are
+        // independent, so they run concurrently rather than one after the other.
+        async let tempoResult: Int? = Task.detached(priority: .userInitiated) {
             AudioEnergyAnalyzer.estimateTempo(url: url)
         }.value
+        async let vocalResult = VocalContentDetector.detect(audioURL: url)
 
-        guard let bpm else {
+        let (bpm, vocals) = await (tempoResult, vocalResult)
+
+        vocalDetectionResult = vocals
+        if let bpm {
+            settings.bpm = bpm
+            persistSettings()
+        } else {
             errorMessage = "Couldn't confidently detect a tempo from this recording — try setting it manually in Craft & Music."
-            return
         }
-        settings.bpm = bpm
-        persistSettings()
     }
 
     /// Settings are saved as soon as the craft sheet closes, so tweaking them is
