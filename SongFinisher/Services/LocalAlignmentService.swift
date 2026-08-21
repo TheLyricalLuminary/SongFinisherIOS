@@ -86,7 +86,9 @@ struct LocalAlignmentService: AlignmentService {
             let start = sectionStarts[index]
             let end: TimeInterval = index + 1 < sectionStarts.count ? sectionStarts[index + 1] : duration
             let window = max(0.01, end - start)
-            let weights = lines.flatMap(\.words).map { max(1, $0.count) }
+            // Syllable count, not letter count — it's the far better proxy for
+            // sung duration (see HeuristicAligner).
+            let weights = lines.flatMap(\.words).map(ProsodyAnalyzer.syllableCount(inWord:))
             let totalWeight = max(1, weights.reduce(0, +))
             var cursor = start
             for weight in weights {

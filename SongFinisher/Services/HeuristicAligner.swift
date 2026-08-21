@@ -3,7 +3,7 @@ import Foundation
 /// The always-available, offline fallback aligner. It has no idea what's
 /// actually being said or sung — it finds gaps of silence to skip (so an
 /// instrumental intro or a pause between phrases doesn't eat into lyric timing)
-/// and then spreads the lyric words proportionally (by word length) across
+/// and then spreads the lyric words proportionally (by syllable count) across
 /// whatever's left. When the audio is too quiet or short to segment
 /// meaningfully, it degrades further to a plain linear spread across the full
 /// duration — which always produces a usable (if approximate) result.
@@ -13,7 +13,9 @@ enum HeuristicAligner {
         guard !words.isEmpty, duration > 0 else { return [] }
 
         let ranges = activeRanges(energy: energy, duration: duration)
-        let weights = words.map { max(1, $0.count) }
+        // Syllable count tracks sung duration far better than letter count
+        // ("through" is 7 letters/1 syllable; "banana" is 6 letters/3 syllables).
+        let weights = words.map(ProsodyAnalyzer.syllableCount(inWord:))
         return distribute(weights: weights, across: ranges)
     }
 
