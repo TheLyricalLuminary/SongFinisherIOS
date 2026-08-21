@@ -58,14 +58,20 @@ enum FreesoundError: LocalizedError {
 enum FreesoundService {
     private static let searchEndpoint = URL(string: "https://freesound.org/apiv2/search/text/")!
 
+    /// DevSecrets.plist wins over the Keychain, so dropping a key in the file
+    /// works without touching the in-app settings screen.
+    static var apiKey: String? {
+        DevSecrets.freesoundAPIKey ?? KeychainService.loadAPIKey(for: .freesoundAPIKey)
+    }
+
     static var isConfigured: Bool {
-        KeychainService.loadAPIKey(for: .freesoundAPIKey)?.isEmpty == false
+        apiKey?.isEmpty == false
     }
 
     static func search(query: String) async throws -> [FreesoundSound] {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return [] }
-        guard let apiKey = KeychainService.loadAPIKey(for: .freesoundAPIKey), !apiKey.isEmpty else {
+        guard let apiKey, !apiKey.isEmpty else {
             throw FreesoundError.missingAPIKey
         }
 

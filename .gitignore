@@ -29,5 +29,8 @@ fastlane/test_output
 # CocoaPods (if ever added)
 Pods/
 
+# Local dev secrets (see DevSecrets.example.plist for the template)
+SongFinisher/Resources/DevSecrets.plist
+
 # Generated
 SongFinisher.xcodeproj/
