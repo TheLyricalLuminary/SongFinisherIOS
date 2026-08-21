@@ -97,7 +97,8 @@ enum FreesoundService {
             throw FreesoundError.requestFailed("No response from Freesound.")
         }
         guard (200..<300).contains(httpResponse.statusCode) else {
-            throw FreesoundError.requestFailed("Freesound error (\(httpResponse.statusCode)). Check that your API key is correct.")
+            let detail = Self.errorDetail(from: data) ?? "Check that your API key is correct."
+            throw FreesoundError.requestFailed("Freesound error (\(httpResponse.statusCode)): \(detail)")
         }
 
         struct SearchResponse: Decodable { let results: [FreesoundSound] }
@@ -106,6 +107,17 @@ enum FreesoundService {
         } catch {
             throw FreesoundError.requestFailed("Couldn't read Freesound's response.")
         }
+    }
+
+    /// Freesound's error responses are typically `{"detail": "..."}`. Falls
+    /// back to the raw body text if it isn't JSON shaped that way, so an
+    /// unexpected error format still surfaces something useful.
+    private static func errorDetail(from data: Data) -> String? {
+        struct ErrorBody: Decodable { let detail: String }
+        if let body = try? JSONDecoder().decode(ErrorBody.self, from: data) {
+            return body.detail
+        }
+        return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     /// Downloads a sound's preview audio to a local temp file so it can be
