@@ -24,6 +24,7 @@ struct GenerateLyricsView: View {
     @State private var isCraftSettingsPresented = false
     @State private var isDetectingTempo = false
     @State private var vocalDetectionResult: VocalContentResult?
+    @State private var isSuggestingVibe = false
 
     init(project: Project) {
         self.project = project
@@ -124,6 +125,7 @@ struct GenerateLyricsView: View {
 
             craftSummaryButton
             autoDetectTempoButton
+            autoGenerateVibeButton
 
             Button {
                 Task { await generate() }
@@ -212,6 +214,30 @@ struct GenerateLyricsView: View {
                 vocalDetectionLabel(vocalDetectionResult)
             }
         }
+    }
+
+    /// STYLE is a fair guess from tempo/time-signature alone, so it's always
+    /// offered; THEME only comes back populated when there's a real transcript
+    /// (run via Auto-Detect Tempo, or here if that hasn't happened yet) — a
+    /// wordless take gets no theme suggestion rather than an invented one.
+    private var autoGenerateVibeButton: some View {
+        Button {
+            Task { await suggestVibe() }
+        } label: {
+            HStack(spacing: AppTheme.Spacing.sm) {
+                if isSuggestingVibe {
+                    ProgressView().tint(AppTheme.accent)
+                    Text("Thinking…")
+                } else {
+                    Image(systemName: "sparkles")
+                    Text("Auto-Generate Theme & Style")
+                }
+            }
+            .font(.caption.weight(.medium))
+            .foregroundStyle(AppTheme.accent)
+        }
+        .buttonStyle(.plain)
+        .disabled(isSuggestingVibe || !LyricGenerationServiceFactory.isRemoteConfigured)
     }
 
     private func vocalDetectionLabel(_ result: VocalContentResult) -> some View {
@@ -315,6 +341,34 @@ struct GenerateLyricsView: View {
             persistSettings()
         } else {
             errorMessage = "Couldn't confidently detect a tempo from this recording — try setting it manually in Craft & Music."
+        }
+    }
+
+    private func suggestVibe() async {
+        errorMessage = nil
+        isSuggestingVibe = true
+        defer { isSuggestingVibe = false }
+
+        if vocalDetectionResult == nil {
+            let url = FileStorage.audioURL(projectID: project.id, fileName: project.audioFileName)
+            vocalDetectionResult = await VocalContentDetector.detect(audioURL: url)
+        }
+        let transcript: String? = {
+            if case .vocals(_, let transcript) = vocalDetectionResult { return transcript }
+            return nil
+        }()
+
+        do {
+            let suggestion = try await ClaudeVibeSuggestionService.suggestVibe(
+                transcript: transcript,
+                bpm: settings.bpm > 0 ? settings.bpm : nil,
+                timeSignature: settings.timeSignature
+            )
+            if let theme = suggestion.theme { promptText = theme }
+            settings.style = suggestion.style
+            persistSettings()
+        } catch {
+            errorMessage = error.localizedDescription
         }
     }
 
