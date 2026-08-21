@@ -220,6 +220,8 @@ struct GenerateLyricsView: View {
     /// offered; THEME only comes back populated when there's a real transcript
     /// (run via Auto-Detect Tempo, or here if that hasn't happened yet) — a
     /// wordless take gets no theme suggestion rather than an invented one.
+    /// Works with or without a Claude key: falls back to a local, cruder
+    /// suggestion (see LocalVibeSuggestionService) when none is configured.
     private var autoGenerateVibeButton: some View {
         Button {
             Task { await suggestVibe() }
@@ -237,7 +239,7 @@ struct GenerateLyricsView: View {
             .foregroundStyle(AppTheme.accent)
         }
         .buttonStyle(.plain)
-        .disabled(isSuggestingVibe || !LyricGenerationServiceFactory.isRemoteConfigured)
+        .disabled(isSuggestingVibe)
     }
 
     private func vocalDetectionLabel(_ result: VocalContentResult) -> some View {
@@ -359,7 +361,7 @@ struct GenerateLyricsView: View {
         }()
 
         do {
-            let suggestion = try await ClaudeVibeSuggestionService.suggestVibe(
+            let suggestion = try await VibeSuggestionServiceFactory.suggestVibe(
                 transcript: transcript,
                 bpm: settings.bpm > 0 ? settings.bpm : nil,
                 timeSignature: settings.timeSignature
