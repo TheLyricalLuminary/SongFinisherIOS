@@ -22,6 +22,7 @@ struct GenerateLyricsView: View {
     @State private var errorMessage: String?
     @State private var isServiceSettingsPresented = false
     @State private var isCraftSettingsPresented = false
+    @State private var isDetectingTempo = false
 
     init(project: Project) {
         self.project = project
@@ -121,6 +122,7 @@ struct GenerateLyricsView: View {
                 .foregroundStyle(AppTheme.textTertiary)
 
             craftSummaryButton
+            autoDetectTempoButton
 
             Button {
                 Task { await generate() }
@@ -178,6 +180,31 @@ struct GenerateLyricsView: View {
             .clipShape(RoundedRectangle(cornerRadius: AppTheme.Radius.sm, style: .continuous))
         }
         .buttonStyle(.plain)
+    }
+
+    /// On-device tempo estimate from the project's own recording — no network
+    /// call, no third-party audio-analysis account. Phase 1 of auto-detect;
+    /// syllables/rhyme (from a transcript, when the take has words) and
+    /// theme/style (via the existing Claude integration, from that same
+    /// transcript) are later phases, not audio properties this button covers.
+    private var autoDetectTempoButton: some View {
+        Button {
+            Task { await detectTempo() }
+        } label: {
+            HStack(spacing: AppTheme.Spacing.sm) {
+                if isDetectingTempo {
+                    ProgressView().tint(AppTheme.accent)
+                    Text("Listening…")
+                } else {
+                    Image(systemName: "waveform.badge.magnifyingglass")
+                    Text("Auto-Detect Tempo")
+                }
+            }
+            .font(.caption.weight(.medium))
+            .foregroundStyle(AppTheme.accent)
+        }
+        .buttonStyle(.plain)
+        .disabled(isDetectingTempo)
     }
 
     private var lyricsSection: some View {
@@ -244,6 +271,24 @@ struct GenerateLyricsView: View {
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+
+    private func detectTempo() async {
+        errorMessage = nil
+        isDetectingTempo = true
+        defer { isDetectingTempo = false }
+
+        let url = FileStorage.audioURL(projectID: project.id, fileName: project.audioFileName)
+        let bpm = await Task.detached(priority: .userInitiated) {
+            AudioEnergyAnalyzer.estimateTempo(url: url)
+        }.value
+
+        guard let bpm else {
+            errorMessage = "Couldn't confidently detect a tempo from this recording — try setting it manually in Craft & Music."
+            return
+        }
+        settings.bpm = bpm
+        persistSettings()
     }
 
     /// Settings are saved as soon as the craft sheet closes, so tweaking them is
