@@ -1,10 +1,12 @@
 import Foundation
 
 /// A suggested THEME and STYLE for a project, generated from whatever signal
-/// is genuinely available. THEME is only ever populated when a transcript
-/// exists to ground a subject in — a song's subject isn't something tempo or
-/// time signature can honestly reveal, so a wordless take gets no theme
-/// suggestion rather than an invented one dressed up as "detected."
+/// is genuinely available. When a transcript exists, THEME is grounded in
+/// what was actually sung. When there's no transcript (a wordless
+/// instrumental someone plans to practice singing over), THEME instead
+/// becomes a tempo-informed creative starting idea — explicitly a suggestion
+/// for inspiration, never framed as something detected in audio that has no
+/// words in it yet.
 struct VibeSuggestion: Equatable {
     var theme: String?
     var style: String
@@ -39,9 +41,15 @@ enum ClaudeVibeSuggestionService {
     actually known about it. Be specific, not generic.
 
     If a transcript of sung or spoken words is provided, ground the theme in what those \
-    words are actually about — never invent an unrelated subject. If no transcript is \
-    given, there is nothing to ground a theme in: return an empty string for "theme" and \
-    suggest only a style, informed by tempo and time signature.
+    words are actually about — never invent an unrelated subject.
+
+    If no transcript is given, this is a wordless instrumental take the songwriter plans \
+    to practice singing over — there are no words yet to ground a theme in. In that case, \
+    suggest a THEME as a creative starting idea for what they could sing about, informed \
+    by the mood tempo and time signature suggest. This must read as a suggestion for \
+    inspiration, in the same short-phrase format as a real theme (e.g. "leaving a small \
+    town at night") — never phrase it as something you detected or heard in the audio, \
+    since there are no words there to detect.
 
     Respond with ONLY a JSON object of the exact shape {"theme": "...", "style": "..."} — \
     no commentary, no markdown code fences, nothing else.
@@ -61,7 +69,7 @@ enum ClaudeVibeSuggestionService {
         if !trimmedTranscript.isEmpty {
             lines.append("TRANSCRIPT OF WHAT WAS SUNG: \"\(trimmedTranscript)\"")
         } else {
-            lines.append("No words were recognized in this take — it's a wordless melody or instrumental. Do not invent a theme.")
+            lines.append("No words were recognized in this take — it's a wordless instrumental the songwriter is about to practice singing over. Suggest a creative theme starting idea, not a detected one.")
         }
         lines.append("TIME SIGNATURE: \(timeSignature.rawValue) — \(timeSignature.feelDescription)")
         if let bpm, bpm > 0 { lines.append("TEMPO: \(bpm) BPM") }
