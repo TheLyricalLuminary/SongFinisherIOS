@@ -17741,5 +17741,40 @@
     }
   },
   "step": 2,
-  "title": "HEAR on F1"
+  "title": "HEAR on F1",
+  "w_match_sweep": {
+    "gate_holds_at_every_sweep_point": true,
+    "inertness_caveat": "If every row is identical, W_match changed nothing on this fixture family, and the sweep has NOT shown the gate to be robust to it. F1 click tracks are quantised: an onset is either well inside 50 ms of a slot position or well outside 90 ms, so no supporting set changes. Real accompaniment carries human microtiming that puts onsets at intermediate distances, which is where W_match bites. Read an identical sweep as 'untested here', never as 'insensitive'.",
+    "note": "Section 18: reported, never used to select a favourable configuration. W_match decides which onsets support an anchor (Section 6), so this answers whether the step-2 gate is robust across the sweep or holds only at the base value.",
+    "rows": [
+      {
+        "W_match": 0.05,
+        "config_hash": "12fcefd76472b632c3dba7761d1202caad3960c72c275d87ee36145aea300420",
+        "gate_passes": true,
+        "grid_only_slots": 78,
+        "n_evaluations": 80,
+        "n_failing_gate": 0,
+        "worst_anchor_error_s": 0.0014840234023407737
+      },
+      {
+        "W_match": 0.07,
+        "config_hash": "2b4c5f2a91c8b904bfc2231790dfef6a62dc0f4ba8c545961cbc6d79e54ae6fb",
+        "gate_passes": true,
+        "grid_only_slots": 78,
+        "n_evaluations": 80,
+        "n_failing_gate": 0,
+        "worst_anchor_error_s": 0.0014840234023407737
+      },
+      {
+        "W_match": 0.09,
+        "config_hash": "8cf1939161c34957a54aedfcd02b3908eba8a43e5c4b9c641a1113e990b47cd8",
+        "gate_passes": true,
+        "grid_only_slots": 78,
+        "n_evaluations": 80,
+        "n_failing_gate": 0,
+        "worst_anchor_error_s": 0.0014840234023407737
+      }
+    ],
+    "sweep_is_informative": false
+  }
 }

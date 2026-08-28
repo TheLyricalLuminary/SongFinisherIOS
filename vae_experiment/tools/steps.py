@@ -35,6 +35,7 @@ from vae.constants import HOP_SECONDS  # noqa: E402
 from vae.contracts import to_jsonable  # noqa: E402
 from vae.determinism import compare  # noqa: E402
 from vae.errors import ClipRejected, FixtureUnpopulatedError  # noqa: E402
+from vae.hear import hear_with_log  # noqa: E402
 from vae.oracle import anchor_deltas, load_oracle, summarize_anchor_deltas  # noqa: E402
 from vae.config import load_sweep_points  # noqa: E402
 from vae.pipeline import (  # noqa: E402
@@ -55,6 +56,14 @@ REPORTS = ROOT / "reports"
 # One hop is 5.805 ms, so the spec's literal 5.8 ms is the stricter of the two and
 # is what is enforced.  Both are reported.
 GATE_ANCHOR_ERROR_S = 0.0058
+
+
+def oracle_clip_specs(f2_dir: Path, with_label: bool = False):
+    """Every synthetic clip that has a ground-truth oracle annotation."""
+    sources = [(F1_DIR, "F1 click tracks"), (f2_dir, f2_dir.name)]
+    for source, label in sources:
+        for clip in json.loads((source / "manifest.json").read_text())["clips"]:
+            yield (source, label, clip) if with_label else (source, clip)
 
 
 def golden_payload(engine, path: Path) -> dict:
@@ -209,9 +218,69 @@ def step2() -> dict:
             logs[f"{clip['clip_id']}.{mask.mask_id}"] = hear_log_record(log)
 
     failures = [r for r in rows if not r["passes_gate"]]
+
+    # Section 18 / Section 26: the sweep is REPORTED, never used to select a
+    # favourable configuration.  W_match decides which onsets support an anchor,
+    # so the step-2 gate could in principle hold only at the base value.  Whether
+    # it does is a fact about parameter sensitivity and belongs in the record.
+    sweep_rows = []
+    for w_match in load_sweep_points()["W_match"]:
+        swept = engine.config.with_overrides(W_match=w_match)
+        worst_swept, n_eval, n_fail, grid_only = 0.0, 0, 0, 0
+        for clip in manifest["clips"]:
+            audio = engine.ingest(F1_DIR / clip["file"])
+            eighth = (60.0 / clip["tempo_bpm"]) / 2.0
+            for mask in engine.masks.masks:
+                if clip["phase_s"] + mask.positions[-1] * eighth > clip["duration_s"] - 0.05:
+                    continue
+                try:
+                    evidence, log = hear_with_log(audio, mask, swept)
+                except ClipRejected:
+                    n_fail += 1
+                    continue
+                errors = [
+                    abs(a.time_s - (clip["phase_s"] + p * eighth))
+                    for a, p in zip(evidence.anchors, mask.positions)
+                ]
+                worst_swept = max(worst_swept, max(errors))
+                n_eval += 1
+                n_fail += max(errors) >= GATE_ANCHOR_ERROR_S
+                grid_only += log.grid_only_slot_count
+        sweep_rows.append({
+            "W_match": w_match,
+            "config_hash": swept.config_hash,
+            "n_evaluations": n_eval,
+            "n_failing_gate": n_fail,
+            "worst_anchor_error_s": worst_swept,
+            "grid_only_slots": grid_only,
+            "gate_passes": n_fail == 0,
+        })
+
     return {
         "step": 2,
         "title": "HEAR on F1",
+        "w_match_sweep": {
+            "note": (
+                "Section 18: reported, never used to select a favourable configuration. "
+                "W_match decides which onsets support an anchor (Section 6), so this "
+                "answers whether the step-2 gate is robust across the sweep or holds "
+                "only at the base value."
+            ),
+            "gate_holds_at_every_sweep_point": all(r["gate_passes"] for r in sweep_rows),
+            "sweep_is_informative": len({
+                (r["worst_anchor_error_s"], r["grid_only_slots"]) for r in sweep_rows
+            }) > 1,
+            "inertness_caveat": (
+                "If every row is identical, W_match changed nothing on this fixture "
+                "family, and the sweep has NOT shown the gate to be robust to it. F1 "
+                "click tracks are quantised: an onset is either well inside 50 ms of a "
+                "slot position or well outside 90 ms, so no supporting set changes. Real "
+                "accompaniment carries human microtiming that puts onsets at intermediate "
+                "distances, which is where W_match bites. Read an identical sweep as "
+                "'untested here', never as 'insensitive'."
+            ),
+            "rows": sweep_rows,
+        },
         "gate": {
             "criterion_s": GATE_ANCHOR_ERROR_S,
             "criterion_text": "anchor error < 5.8 ms on all F1 (Section 23 step 2)",
@@ -346,14 +415,38 @@ def step4_5() -> dict:
             "n_slots_at_I_MIN": floored,
         })
 
+    w_match_rows = []
+    for w_match in load_sweep_points()["W_match"]:
+        swept = engine.config.with_overrides(W_match=w_match)
+        deltas, grid_only = [], 0
+        for source, clip in oracle_clip_specs(f2_dir):
+            audio = engine.ingest(source / clip["file"])
+            eighth = (60.0 / clip["tempo_bpm"]) / 2.0
+            for mask in engine.masks.masks:
+                if clip["phase_s"] + mask.positions[-1] * eighth > clip["duration_s"] - 0.05:
+                    continue
+                try:
+                    hear_ev, log = hear_with_log(audio, mask, swept)
+                except ClipRejected:
+                    continue
+                try:
+                    oracle_ev = load_oracle(audio.audio_id, mask, engine.version)
+                except FixtureUnpopulatedError:
+                    continue
+                deltas.extend(abs(d.delta_s) for d in anchor_deltas(hear_ev, oracle_ev))
+                grid_only += log.grid_only_slot_count
+        w_match_rows.append({
+            "W_match": w_match,
+            "config_hash": swept.config_hash,
+            "n_slots": len(deltas),
+            "mean_abs_delta_s": sum(deltas) / len(deltas) if deltas else None,
+            "max_abs_delta_s": max(deltas) if deltas else None,
+            "n_slots_over_one_hop": sum(1 for d in deltas if d > HOP_SECONDS),
+            "grid_only_slots": grid_only,
+        })
+
     oracle_rows, oracle_missing = [], []
-    oracle_sources = [(F1_DIR, "F1 click tracks"), (f2_dir, f2_dir.name)]
-    oracle_clips = [
-        (source, label, clip)
-        for source, label in oracle_sources
-        for clip in json.loads((source / "manifest.json").read_text())["clips"]
-    ]
-    for source, label, clip in oracle_clips:
+    for source, label, clip in oracle_clip_specs(f2_dir, with_label=True):
         audio = engine.ingest(source / clip["file"])
         eighth = (60.0 / clip["tempo_bpm"]) / 2.0
         for mask in engine.masks.masks:
@@ -409,6 +502,18 @@ def step4_5() -> dict:
             "rows": shape_rows,
         },
         "shape_logs": shape_logs,
+        "w_match_sweep": {
+            "note": (
+                "Section 18: reported, never used to select a favourable configuration. "
+                "Identical rows mean W_match changed no supporting set on these fixtures "
+                "— 'untested here', not 'insensitive'. Both fixture families are "
+                "quantised; human microtiming is what makes W_match bite."
+            ),
+            "sweep_is_informative": len({
+                (r["mean_abs_delta_s"], r["grid_only_slots"]) for r in w_match_rows
+            }) > 1,
+            "rows": w_match_rows,
+        },
         "sigma_coef_sweep": {
             "note": (
                 "Section 18: the sweep is reported, never used to select a favourable "

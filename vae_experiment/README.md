@@ -106,6 +106,31 @@ passes `allow_synthetic=True`, and anything computed from them is stamped.
 | §16 logging complete | `vae/pipeline.py` |
 | Nothing on the §19 DO NOT BUILD list exists | `test_offline_and_purity.py` |
 
+## Parameter sweeps (§18, §26)
+
+The sweep is **reported, never used to select a favourable configuration**. Two
+are exercised in steps 1–8; the rest (`F_MIN_BASE`, `gamma`, `I_reference`) feed
+SOUND, which is blocked on F4/F5.
+
+| Sweep | Where | Result |
+|---|---|---|
+| `SIGMA_COEF` ∈ {0, 1, 2} | `reports/step4_5.json` | Mean `I_effective` shrinkage 0.00 / 18.33 / 36.65 ms. `SIGMA_COEF = 0` reduces `I_effective` to the identity, so the sweep answers whether uncertainty modelling matters rather than assuming it does. |
+| `W_match` ∈ {50, 70, 90} ms | `reports/step2.json`, `reports/step4_5.json` | **Completely inert on both fixture families.** Identical anchor error, identical `GRID_ONLY` counts, identical gate outcome at every point. |
+
+**The inert `W_match` sweep is a limitation of the fixtures, not a property of
+the parameter, and both reports say so.** F1 and the F2 stand-in are quantised:
+every onset is either well inside 50 ms of a slot position or well outside
+90 ms, so no supporting set ever changes. Real accompaniment carries human
+microtiming that puts onsets at intermediate distances, which is exactly where
+`W_match` bites. Read three identical rows as *"untested here"*, never as
+*"insensitive"* — the reports carry `sweep_is_informative: false` and an
+`inertness_caveat` so the distinction survives into the record.
+
+This matters because it is the same shape as v1.0 defect 3 — a swept parameter
+that answers nothing. Here the parameter *is* consumed; the fixtures just cannot
+exercise it. Re-running this sweep is the first thing worth doing once real F2
+clips exist.
+
 ## Implementation decisions
 
 Places where the spec is terse and a choice had to be made. Each is

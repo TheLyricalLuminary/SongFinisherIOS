@@ -10279,5 +10279,38 @@
   "step": "4+5",
   "synthetic_note": "SHAPE was run on the F2 pipeline-exercise stand-in, not on F2. F2 requires real recorded accompaniment and is blocked.",
   "title": "SHAPE + I_effective; oracle annotation and HEAR-vs-oracle anchor error",
-  "uses_synthetic_fixtures": true
+  "uses_synthetic_fixtures": true,
+  "w_match_sweep": {
+    "note": "Section 18: reported, never used to select a favourable configuration. Identical rows mean W_match changed no supporting set on these fixtures \u2014 'untested here', not 'insensitive'. Both fixture families are quantised; human microtiming is what makes W_match bite.",
+    "rows": [
+      {
+        "W_match": 0.05,
+        "config_hash": "12fcefd76472b632c3dba7761d1202caad3960c72c275d87ee36145aea300420",
+        "grid_only_slots": 218,
+        "max_abs_delta_s": 0.014716553287981604,
+        "mean_abs_delta_s": 0.0013233104422145725,
+        "n_slots": 1200,
+        "n_slots_over_one_hop": 84
+      },
+      {
+        "W_match": 0.07,
+        "config_hash": "2b4c5f2a91c8b904bfc2231790dfef6a62dc0f4ba8c545961cbc6d79e54ae6fb",
+        "grid_only_slots": 218,
+        "max_abs_delta_s": 0.014716553287981604,
+        "mean_abs_delta_s": 0.0013233104422145725,
+        "n_slots": 1200,
+        "n_slots_over_one_hop": 84
+      },
+      {
+        "W_match": 0.09,
+        "config_hash": "8cf1939161c34957a54aedfcd02b3908eba8a43e5c4b9c641a1113e990b47cd8",
+        "grid_only_slots": 218,
+        "max_abs_delta_s": 0.014716553287981604,
+        "mean_abs_delta_s": 0.0013233104422145725,
+        "n_slots": 1200,
+        "n_slots_over_one_hop": 84
+      }
+    ],
+    "sweep_is_informative": false
+  }
 }
