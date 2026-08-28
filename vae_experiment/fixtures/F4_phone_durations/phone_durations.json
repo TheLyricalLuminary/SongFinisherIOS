@@ -1,0 +1,20 @@
+{
+  "fixture_id": "F4",
+  "title": "Per-phoneme d_nominal / d_floor, ARPAbet",
+  "spec_reference": "Section 7 (d(c) = max(d_floor(c), d_nominal(c) * rho^gamma)); Section 17 F4; Section 22 failure #10",
+  "status": "UNPOPULATED",
+  "provenance": null,
+  "required_source_material": [
+    "Klatt, D. H. (1976). Linguistic uses of segmental duration in English: Acoustic and perceptual evidence. Journal of the Acoustical Society of America 59(5), 1208-1221. Inherent/intrinsic segment durations for English consonants, in ms.",
+    "Crystal, T. H. & House, A. S. (1988). Segmental durations in connected-speech signals: Current results. Journal of the Acoustical Society of America 83(4), 1553-1573. Connected-speech consonant durations by manner and class, in ms.",
+    "For any ARPAbet consonant not covered by the two references above: measurements from a forced-aligned singing corpus, as Section 17 F4 specifies ('Gaps: measure from a forced-aligned singing corpus. Data extraction, not research.')"
+  ],
+  "population_instructions": [
+    "Every ARPAbet consonant symbol in fixtures/lexicon/cmudict.symbols must have an entry. There are 39 ARPAbet phones; the 24 consonants are the ones required here.",
+    "d_nominal_s: the tempo-independent nominal duration, in seconds. Section 11 check 4 matches load on d_nominal, NEVER on the tempo-scaled d(c).",
+    "d_floor_s: the incompressible floor, in seconds. d(c) never falls below it however short the interval.",
+    "Each entry must carry a 'source' field naming which reference the number came from, and a 'page_or_table' field. An entry without a source is not populated data.",
+    "Do NOT interpolate, estimate by manner class, or carry a default. A phone absent from this table is a HARD ERROR at lookup (Section 22 failure #10), never a silent default."
+  ],
+  "phones": {}
+}

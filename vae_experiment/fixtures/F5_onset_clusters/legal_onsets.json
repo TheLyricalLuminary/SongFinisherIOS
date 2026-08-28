@@ -1,0 +1,19 @@
+{
+  "fixture_id": "F5",
+  "title": "Legal English onset-cluster table",
+  "spec_reference": "Section 9 (Deterministic Maximum Onset Principle against fixed legal-onset table); Section 17 F5",
+  "status": "UNPOPULATED",
+  "provenance": null,
+  "required_source_material": [
+    "A standard English phonotactics reference giving the exhaustive inventory of legal word-initial (syllable-onset) consonant clusters, transcribed so that it can be mapped one-to-one onto the ARPAbet consonant symbols in fixtures/lexicon/cmudict.symbols.",
+    "Section 17 F5 names the requirement as 'a standard phonotactics reference' without naming a specific work; the reference to be used must be chosen and recorded before this fixture is populated, because the onset inventory chosen determines every syllable boundary the experiment produces."
+  ],
+  "population_instructions": [
+    "onsets: a list of ARPAbet consonant sequences that may open a syllable, including all singleton onsets that occur, all two-consonant clusters, and all three-consonant clusters.",
+    "Each entry must carry a 'source' field naming the reference and its table or page.",
+    "The table is consumed by Maximum Onset Principle syllabification: of the consonants between two vowels, the LONGEST suffix that appears in this table becomes the following syllable's onset and the remainder becomes the preceding syllable's coda.",
+    "Do NOT derive this table from CMUdict word-initial frequency counts as a substitute. A frequency-derived inventory is a different object from a phonotactic inventory: it admits accidental gaps as illegal and rare loans as legal, and the resulting syllable boundaries would silently differ from the specified ones.",
+    "A cluster absent from this table is a HARD ERROR at syllabification, never a silent default."
+  ],
+  "onsets": []
+}

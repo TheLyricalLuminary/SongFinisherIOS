@@ -1,0 +1,254 @@
+{
+  "F4": {
+    "blocked": true,
+    "n_phones": 0,
+    "required_source_material": [
+      "Klatt, D. H. (1976). Linguistic uses of segmental duration in English: Acoustic and perceptual evidence. Journal of the Acoustical Society of America 59(5), 1208-1221. Inherent/intrinsic segment durations for English consonants, in ms.",
+      "Crystal, T. H. & House, A. S. (1988). Segmental durations in connected-speech signals: Current results. Journal of the Acoustical Society of America 83(4), 1553-1573. Connected-speech consonant durations by manner and class, in ms.",
+      "For any ARPAbet consonant not covered by the two references above: measurements from a forced-aligned singing corpus, as Section 17 F4 specifies ('Gaps: measure from a forced-aligned singing corpus. Data extraction, not research.')"
+    ],
+    "sha256": "3acd843398c2740559fd6c88d7d270ac2950f6eadc988a4d2e0d89d6cad3616f",
+    "status": "UNPOPULATED"
+  },
+  "F5": {
+    "blocked": true,
+    "max_onset_length": 0,
+    "n_onsets": 0,
+    "required_source_material": [
+      "A standard English phonotactics reference giving the exhaustive inventory of legal word-initial (syllable-onset) consonant clusters, transcribed so that it can be mapped one-to-one onto the ARPAbet consonant symbols in fixtures/lexicon/cmudict.symbols.",
+      "Section 17 F5 names the requirement as 'a standard phonotactics reference' without naming a specific work; the reference to be used must be chosen and recorded before this fixture is populated, because the onset inventory chosen determines every syllable boundary the experiment produces."
+    ],
+    "sha256": "1ff7320213d7bd7c2f81ff8fc6fef89e4e7c1abbd5a62c17ed7af74e4192ed47",
+    "status": "UNPOPULATED"
+  },
+  "F6": {
+    "asymmetry_min": 1.5,
+    "masks": [
+      {
+        "asymmetry_direction": "SYMMETRIC",
+        "is_asymmetric": false,
+        "mask_id": "M1_quarters_4",
+        "metrical_strength": [
+          "STRONG",
+          "MEDIUM",
+          "MEDIUM",
+          "MEDIUM"
+        ],
+        "nominal_asymmetry": 1.0,
+        "nominal_gaps_eighths": [
+          2,
+          2,
+          2
+        ],
+        "positions": [
+          0,
+          2,
+          4,
+          6
+        ],
+        "slot_count": 4
+      },
+      {
+        "asymmetry_direction": "SYMMETRIC",
+        "is_asymmetric": false,
+        "mask_id": "M2_quarters_8",
+        "metrical_strength": [
+          "STRONG",
+          "MEDIUM",
+          "MEDIUM",
+          "MEDIUM",
+          "STRONG",
+          "MEDIUM",
+          "MEDIUM",
+          "MEDIUM"
+        ],
+        "nominal_asymmetry": 1.0,
+        "nominal_gaps_eighths": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "positions": [
+          0,
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          14
+        ],
+        "slot_count": 8
+      },
+      {
+        "asymmetry_direction": "SYMMETRIC",
+        "is_asymmetric": false,
+        "mask_id": "M3_eighths_4",
+        "metrical_strength": [
+          "STRONG",
+          "WEAK",
+          "MEDIUM",
+          "WEAK"
+        ],
+        "nominal_asymmetry": 1.0,
+        "nominal_gaps_eighths": [
+          1,
+          1,
+          1
+        ],
+        "positions": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "slot_count": 4
+      },
+      {
+        "asymmetry_direction": "SYMMETRIC",
+        "is_asymmetric": false,
+        "mask_id": "M4_dotted_4",
+        "metrical_strength": [
+          "STRONG",
+          "WEAK",
+          "MEDIUM",
+          "WEAK"
+        ],
+        "nominal_asymmetry": 1.0,
+        "nominal_gaps_eighths": [
+          3,
+          3,
+          3
+        ],
+        "positions": [
+          0,
+          3,
+          6,
+          9
+        ],
+        "slot_count": 4
+      },
+      {
+        "asymmetry_direction": "SHORT_FIRST",
+        "is_asymmetric": true,
+        "mask_id": "M5_short_first_4",
+        "metrical_strength": [
+          "STRONG",
+          "WEAK",
+          "MEDIUM",
+          "WEAK"
+        ],
+        "nominal_asymmetry": 3.0,
+        "nominal_gaps_eighths": [
+          1,
+          3,
+          1
+        ],
+        "positions": [
+          0,
+          1,
+          4,
+          5
+        ],
+        "slot_count": 4
+      },
+      {
+        "asymmetry_direction": "LONG_FIRST",
+        "is_asymmetric": true,
+        "mask_id": "M6_long_first_4",
+        "metrical_strength": [
+          "STRONG",
+          "WEAK",
+          "MEDIUM",
+          "WEAK"
+        ],
+        "nominal_asymmetry": 3.0,
+        "nominal_gaps_eighths": [
+          3,
+          1,
+          3
+        ],
+        "positions": [
+          0,
+          3,
+          4,
+          7
+        ],
+        "slot_count": 4
+      },
+      {
+        "asymmetry_direction": "SHORT_FIRST",
+        "is_asymmetric": true,
+        "mask_id": "M7_short_first_6",
+        "metrical_strength": [
+          "STRONG",
+          "WEAK",
+          "MEDIUM",
+          "WEAK",
+          "STRONG",
+          "WEAK"
+        ],
+        "nominal_asymmetry": 3.0,
+        "nominal_gaps_eighths": [
+          1,
+          3,
+          1,
+          3,
+          1
+        ],
+        "positions": [
+          0,
+          1,
+          4,
+          5,
+          8,
+          9
+        ],
+        "slot_count": 6
+      },
+      {
+        "asymmetry_direction": "LONG_FIRST",
+        "is_asymmetric": true,
+        "mask_id": "M8_long_first_6",
+        "metrical_strength": [
+          "STRONG",
+          "WEAK",
+          "MEDIUM",
+          "WEAK",
+          "STRONG",
+          "WEAK"
+        ],
+        "nominal_asymmetry": 3.0,
+        "nominal_gaps_eighths": [
+          3,
+          1,
+          3,
+          1,
+          3
+        ],
+        "positions": [
+          0,
+          3,
+          4,
+          7,
+          8,
+          11
+        ],
+        "slot_count": 6
+      }
+    ],
+    "n_asymmetric": 4,
+    "n_masks": 8,
+    "requirement": "8 patterns, >=4 asymmetric, with authored metrical strength",
+    "requirement_met": true,
+    "sha256": "17ea845e24cf974892a1d12f94ab92ecdee966c00d2048a55762d3a8356dc430",
+    "status": "AUTHORED"
+  },
+  "blocked": true,
+  "step": 3,
+  "title": "Author F6 slot mask inventory; populate F4, F5"
+}

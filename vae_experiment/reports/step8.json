@@ -1,0 +1,21 @@
+{
+  "F4_status": "UNPOPULATED",
+  "F5_status": "UNPOPULATED",
+  "F7_status": "UNPOPULATED",
+  "blocked": true,
+  "blocker": "F7 cannot be authored: it depends on F4 and F5, both UNPOPULATED",
+  "checks_implemented": [
+    "C1_B_TIED_BOTH_CONTEXTS",
+    "C2_SCORE_C_REVERSAL",
+    "C3_REVERSAL_MARGIN",
+    "C4_NOMINAL_LOAD_MATCHED",
+    "C5_C_FLAT_NO_REVERSAL"
+  ],
+  "gate_implementation_status": "IMPLEMENTED AND TESTED (vae.pairs.check_pair, run_gate)",
+  "n_pairs_admitted": 0,
+  "n_pairs_authored": 0,
+  "step": 8,
+  "target_pairs": 60,
+  "title": "Author F7 pairs; run all five Section 11 checks",
+  "why": "Section 11 check 4 matches pair members on sum d_nominal(c) within LOAD_TOL, and d_nominal comes from F4. Syllable onset/coda boundaries \u2014 which decide where the heavy cluster sits, the independent variable itself \u2014 come from Maximum Onset Principle syllabification against F5. Without both, checks 2, 3, 4 and 5 cannot be evaluated and lines would be authored against an unknown syllabifier."
+}

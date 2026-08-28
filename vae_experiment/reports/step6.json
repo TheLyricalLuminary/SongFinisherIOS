@@ -1,0 +1,18 @@
+{
+  "F4_required_source_material": [
+    "Klatt, D. H. (1976). Linguistic uses of segmental duration in English: Acoustic and perceptual evidence. Journal of the Acoustical Society of America 59(5), 1208-1221. Inherent/intrinsic segment durations for English consonants, in ms.",
+    "Crystal, T. H. & House, A. S. (1988). Segmental durations in connected-speech signals: Current results. Journal of the Acoustical Society of America 83(4), 1553-1573. Connected-speech consonant durations by manner and class, in ms.",
+    "For any ARPAbet consonant not covered by the two references above: measurements from a forced-aligned singing corpus, as Section 17 F4 specifies ('Gaps: measure from a forced-aligned singing corpus. Data extraction, not research.')"
+  ],
+  "F4_status": "UNPOPULATED",
+  "F5_required_source_material": [
+    "A standard English phonotactics reference giving the exhaustive inventory of legal word-initial (syllable-onset) consonant clusters, transcribed so that it can be mapped one-to-one onto the ARPAbet consonant symbols in fixtures/lexicon/cmudict.symbols.",
+    "Section 17 F5 names the requirement as 'a standard phonotactics reference' without naming a specific work; the reference to be used must be chosen and recorded before this fixture is populated, because the onset inventory chosen determines every syllable boundary the experiment produces."
+  ],
+  "F5_status": "UNPOPULATED",
+  "blocked": true,
+  "blocker": "F4 and F5 are UNPOPULATED",
+  "step": 6,
+  "title": "SOUND",
+  "why": "SOUND cannot run without d_nominal/d_floor (Section 7 partition) or the legal-onset table (Section 9 syllabification). Section 22 failure #10 makes a duration-table gap a hard error, never a silent default, so no substitute is available."
+}

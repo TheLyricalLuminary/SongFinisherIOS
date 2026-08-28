@@ -1,0 +1,473 @@
+{
+  "fixture_id": "F5",
+  "status": "SYNTHETIC_TEST_ONLY",
+  "WARNING": "ARBITRARY PLACEHOLDER INVENTORY. NOT taken from any phonotactics reference. It covers only the clusters the unit tests need and is deliberately incomplete. It must never be used to produce a reported number, and it must never be treated as the F5 inventory: the onset inventory decides every syllable boundary the experiment produces. See fixtures/F5_onset_clusters/legal_onsets.json.",
+  "provenance": "SYNTHETIC_TEST_ONLY",
+  "required_source_material": [
+    "see fixtures/F5_onset_clusters/legal_onsets.json"
+  ],
+  "onsets": [
+    {
+      "phones": [
+        "B"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "CH"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "D"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "DH"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "F"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "G"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "HH"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "JH"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "K"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "L"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "M"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "N"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "P"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "R"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "SH"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "T"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "TH"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "V"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "W"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "Y"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "Z"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "ZH"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "T"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "P"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "K"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "L"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "M"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "N"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "W"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "P",
+        "R"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "B",
+        "R"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "T",
+        "R"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "D",
+        "R"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "K",
+        "R"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "G",
+        "R"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "F",
+        "R"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "TH",
+        "R"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "SH",
+        "R"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "P",
+        "L"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "B",
+        "L"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "K",
+        "L"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "G",
+        "L"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "F",
+        "L"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "T"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "K",
+        "W"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "T",
+        "W"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "D",
+        "W"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "G",
+        "W"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "HH",
+        "W"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "F"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "P",
+        "Y"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "B",
+        "Y"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "K",
+        "Y"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "G",
+        "Y"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "F",
+        "Y"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "V",
+        "Y"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "M",
+        "Y"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "HH",
+        "Y"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "T",
+        "R"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "P",
+        "R"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "K",
+        "R"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "P",
+        "L"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "K",
+        "L"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "K",
+        "W"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "T",
+        "Y"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "P",
+        "Y"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "phones": [
+        "S",
+        "K",
+        "Y"
+      ],
+      "source": "SYNTHETIC_TEST_ONLY"
+    }
+  ]
+}

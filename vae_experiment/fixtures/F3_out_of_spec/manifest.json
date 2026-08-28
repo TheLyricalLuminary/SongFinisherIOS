@@ -1,0 +1,38 @@
+{
+  "fixture_id": "F3",
+  "title": "5 out-of-spec clips \u2014 rejection test",
+  "spec_reference": "Section 2 (rejection is mandatory, no graceful degradation); Section 17 F3",
+  "provenance": "SYNTHETIC_BY_CONSTRUCTION",
+  "clips": [
+    {
+      "clip_id": "F3_01_rubato",
+      "file": "F3_01_rubato.wav",
+      "defect": "rubato: 88 -> 126 BPM accelerando",
+      "expected_rejection_code": "TEMPO_DRIFT"
+    },
+    {
+      "clip_id": "F3_02_ambient",
+      "file": "F3_02_ambient.wav",
+      "defect": "ambient pad, no pulse",
+      "expected_rejection_code": "NO_AUDIBLE_PULSE"
+    },
+    {
+      "clip_id": "F3_03_drift",
+      "file": "F3_03_drift.wav",
+      "defect": "drift: 100 -> 106 BPM (~6 %)",
+      "expected_rejection_code": "TEMPO_DRIFT"
+    },
+    {
+      "clip_id": "F3_04_short",
+      "file": "F3_04_short.wav",
+      "defect": "6.0 s, outside the 8-12 s window",
+      "expected_rejection_code": "DURATION_OUT_OF_RANGE"
+    },
+    {
+      "clip_id": "F3_05_clipped",
+      "file": "F3_05_clipped.wav",
+      "defect": "hard-clipped, samples at full scale",
+      "expected_rejection_code": "CLIPPED_SAMPLES"
+    }
+  ]
+}

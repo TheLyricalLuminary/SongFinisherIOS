@@ -1,0 +1,244 @@
+{
+  "audio_id_rerun_mismatches": [],
+  "clips": [
+    {
+      "audio_id": "77fdf077f386cbb8ff141aa8f094413fa573f1dbff60bf57224246a7079e4b53",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 10.001995464852607,
+      "file": "F1_01.wav",
+      "n_samples": 441088
+    },
+    {
+      "audio_id": "074d8dc8426175f02ae07081d66145f58aad1b2f5bb3357cdec05c7314e3e930",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 9.003537414965987,
+      "file": "F1_02.wav",
+      "n_samples": 397056
+    },
+    {
+      "audio_id": "a500478a061b192c3d4a5a28f50ee1f8e097f1a458ff22a9fba66ab9a7758b72",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 8.504308390022675,
+      "file": "F1_03.wav",
+      "n_samples": 375040
+    },
+    {
+      "audio_id": "fb3f8cbffdcf7048e8c1473d1112051da782d80452d8d69a61f800d931a430ce",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 10.001995464852607,
+      "file": "F1_04.wav",
+      "n_samples": 441088
+    },
+    {
+      "audio_id": "dea8a6b2253b53a752acfcef555dbcc3da2adfe89c764120fdfd796b33a24232",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 11.00045351473923,
+      "file": "F1_05.wav",
+      "n_samples": 485120
+    },
+    {
+      "audio_id": "ec59e9cf5b278e2ce6e9ca84b451ea6ddd421a218d23e0b4790a454be4bad2c9",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 9.502766439909298,
+      "file": "F1_06.wav",
+      "n_samples": 419072
+    },
+    {
+      "audio_id": "8333daa170fc8f8cbd5c68f001c3923f0c23e1f9a769dba9bd0f6c2faecf4e50",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 10.501224489795918,
+      "file": "F1_07.wav",
+      "n_samples": 463104
+    },
+    {
+      "audio_id": "d23cd953b2c4232c0061abb9671946d4fd152520fd54a1214b2366a538e5dc48",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 8.202448979591837,
+      "file": "F1_08.wav",
+      "n_samples": 361728
+    },
+    {
+      "audio_id": "6d805a2ad0bd8f2cfb2f4a112f24d67d89df9d51496ec33a15540c03d9fe7b70",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 11.801541950113378,
+      "file": "F1_09.wav",
+      "n_samples": 520448
+    },
+    {
+      "audio_id": "a93a788718a8c81542179b078a54d906a87bd8c5e80c803c1d290801dba66bb3",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 9.200907029478458,
+      "file": "F1_10.wav",
+      "n_samples": 405760
+    },
+    {
+      "audio_id": "13414317bf2a85d0a4a5f70ec8f8d5a0d9ea4e6a8596709ab1bb247594cfdcf7",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 10.501224489795918,
+      "file": "S01.wav",
+      "n_samples": 463104
+    },
+    {
+      "audio_id": "10b873b3c5367f9ea0fb244089c5e62d10c956fdab3cc39cfb874ffa96286d40",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 9.804625850340136,
+      "file": "S02.wav",
+      "n_samples": 432384
+    },
+    {
+      "audio_id": "8c4bacff5001848a1053fb8dcb8940d4d261d25de0483a57546a0d24849619ea",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 11.203628117913832,
+      "file": "S03.wav",
+      "n_samples": 494080
+    },
+    {
+      "audio_id": "8098f6409e5609d8e1335011798526321ee82fe2ccec2a59d0ca7b4d6ff21e3e",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 10.001995464852607,
+      "file": "S04.wav",
+      "n_samples": 441088
+    },
+    {
+      "audio_id": "ffb0b3fea0ade74ed23021a2ea882046b2b06af59d6a2e7450e77281def9f120",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 9.200907029478458,
+      "file": "S05.wav",
+      "n_samples": 405760
+    },
+    {
+      "audio_id": "669b5d0cb61ad40d6fe5d0ced38ba5a761b5d830abb8aee201adec0991e3d412",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 10.803083900226758,
+      "file": "S06.wav",
+      "n_samples": 476416
+    },
+    {
+      "audio_id": "2c53d827b8a5e432079c37b4386ad9b379cac822284f94b686d455d382839c38",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 8.602993197278911,
+      "file": "S07.wav",
+      "n_samples": 379392
+    },
+    {
+      "audio_id": "845d1ed4f7c3f876b3abf3d58c6299195596d73104aac70d5968cab73a59b95e",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 11.505487528344672,
+      "file": "S08.wav",
+      "n_samples": 507392
+    },
+    {
+      "audio_id": "12bf9822e2fbf5750e56732a7cef60c29498c002cfd32b0cda13bb18bea50179",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 9.404081632653062,
+      "file": "S09.wav",
+      "n_samples": 414720
+    },
+    {
+      "audio_id": "791aed06057e46093a4cd18c58528888442897d9bed575402c3bdce5e6f323d6",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 10.205170068027211,
+      "file": "S10.wav",
+      "n_samples": 450048
+    },
+    {
+      "audio_id": "2f801af124aa2e7aa0bdcb42d7961c31e5f4201f0901bb95bdc834983aa97ec9",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 8.800362811791382,
+      "file": "S11.wav",
+      "n_samples": 388096
+    },
+    {
+      "audio_id": "a9274694598bf1c5998e0b4a3c5d2d628536ca369c691dd26277bc21b5d7462e",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 11.00045351473923,
+      "file": "S12.wav",
+      "n_samples": 485120
+    },
+    {
+      "audio_id": "cd49b9d3ad101c336c73e037425da032e3865ed31cedb5c6184f72faf075bd8e",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 9.601451247165533,
+      "file": "S13.wav",
+      "n_samples": 423424
+    },
+    {
+      "audio_id": "e2b06a0d5250ff7e04d7dc71dcdba1fa69136e3f0b8a8a8f507c29dd26a13ab4",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 10.402539682539683,
+      "file": "S14.wav",
+      "n_samples": 458752
+    },
+    {
+      "audio_id": "9058c70ef5f46e77741feb965fe00e2f6a5562080d15286acd238886fdcc7623",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 8.40562358276644,
+      "file": "S15.wav",
+      "n_samples": 370688
+    },
+    {
+      "audio_id": "6817052a01733c5406c79aa3322a03a3d8ea4e2d5a57d42a6b7d94ba58e78e57",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 11.801541950113378,
+      "file": "S16.wav",
+      "n_samples": 520448
+    },
+    {
+      "audio_id": "d45ad66f202ab7e16bc44f759064e836eff86e9d3021026f5aaf14898aa96d4b",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 9.003537414965987,
+      "file": "S17.wav",
+      "n_samples": 397056
+    },
+    {
+      "audio_id": "7180e608185eb88a52bccd4834b2bc2fcbdc8985bb4eeba155693508dda01f30",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 10.605714285714285,
+      "file": "S18.wav",
+      "n_samples": 467712
+    },
+    {
+      "audio_id": "4a1192c70c4829796cbfc8eeeab12ab8474159ec7dc55ea0bc1a15305f7ba8c6",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 8.202448979591837,
+      "file": "S19.wav",
+      "n_samples": 361728
+    },
+    {
+      "audio_id": "caecab73154b68a77c0561c7b8f03b754276890b06bfcce8a7e6578712c08854",
+      "audio_id_stable_across_reruns": true,
+      "duration_s": 11.400997732426303,
+      "file": "S20.wav",
+      "n_samples": 502784
+    }
+  ],
+  "engine_version": {
+    "cmudict_hash": "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22",
+    "code_version": "ad73ce6d4f4880afb4aa27f9bd634f13b9d1a3aee2888cd220552b25bd6850aa",
+    "config_hash": "2b4c5f2a91c8b904bfc2231790dfef6a62dc0f4ba8c545961cbc6d79e54ae6fb",
+    "duration_table_hash": "3acd843398c2740559fd6c88d7d270ac2950f6eadc988a4d2e0d89d6cad3616f",
+    "engine_version": "e750f4fadbc6988efcf47c66e4f688ee0a4f3f00c4ec77dddbf523742423d95c",
+    "onset_table_hash": "1ff7320213d7bd7c2f81ff8fc6fef89e4e7c1abbd5a62c17ed7af74e4192ed47",
+    "resampler_version": "polyphase-windowed-sinc-v1",
+    "slot_mask_hash": "17ea845e24cf974892a1d12f94ab92ecdee966c00d2048a55762d3a8356dc430"
+  },
+  "f9_goldens": {
+    "differences": [],
+    "discrete_differences": 0,
+    "numerical_differences": 0,
+    "verified": 30,
+    "written": 0
+  },
+  "fixture_status": {
+    "F4_duration_table": "UNPOPULATED",
+    "F5_onset_table": "UNPOPULATED",
+    "F6_slot_masks": "AUTHORED",
+    "lexicon": "CMUdict 0.7b (pinned)",
+    "uses_synthetic_tables": false
+  },
+  "gate_reruns_identical": true,
+  "n_clips": 30,
+  "step": 1,
+  "title": "Canonical ingest + AudioID + determinism harness (F9 goldens)",
+  "uses_synthetic_fixtures": true
+}

@@ -1,0 +1,600 @@
+{
+  "WARNING": "SYNTHETIC_TEST_ONLY. F4 and F5 are UNPOPULATED; every number here is computed from arbitrary placeholder durations and a deliberately incomplete onset inventory. Nothing here is a result, and none of it is an input to the step-9 reversal-existence gate.",
+  "fixture_status": {
+    "F4_duration_table": "SYNTHETIC_TEST_ONLY",
+    "F5_onset_table": "SYNTHETIC_TEST_ONLY",
+    "F6_slot_masks": "AUTHORED",
+    "lexicon": "CMUdict 0.7b (pinned)",
+    "uses_synthetic_tables": true
+  },
+  "not_f7": "DEMO_PAIRS are demonstration material, not F7 pairs.",
+  "step6": {
+    "blocked": false,
+    "candidates": [
+      {
+        "candidate_id": "k1",
+        "d_nucleus_s": [
+          0.2398405781344618,
+          1.0510782681308763,
+          0.24936959694338937,
+          0.57
+        ],
+        "d_post_s": [
+          0.07629651846785404,
+          0.0,
+          0.057221638011275645,
+          0.0
+        ],
+        "d_pre_s": [
+          0.2106813425956694,
+          0.04768532404240878,
+          0.10186505745480709,
+          0.057221638011275645
+        ],
+        "feasibility_tiers": [
+          "OK",
+          "OK",
+          "OK",
+          "OK"
+        ],
+        "n_variants_evaluated": 3,
+        "pronunciation_variant_index": 0,
+        "rho_per_slot": [
+          0.9095560516118115,
+          2.8823583139642084,
+          0.9095321824148517,
+          1.4249999999999998
+        ],
+        "s_fit": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "score_b": 0.595,
+        "score_c": 0.895,
+        "syllabification": [
+          "S T AA P",
+          "DH AH",
+          "R EY N",
+          "N AW"
+        ],
+        "text": "stop the rain now",
+        "total_nominal_consonant_duration_s": 0.5,
+        "verdict": "ACCEPT"
+      },
+      {
+        "candidate_id": "k2",
+        "d_nucleus_s": [
+          0.2398405781344618,
+          0.9152581915244669,
+          0.36381287296594067,
+          0.4864386452958067
+        ],
+        "d_post_s": [
+          0.06675945365937229,
+          0.10186505745480709,
+          0.0,
+          0.08356135470419326
+        ],
+        "d_pre_s": [
+          0.2772122928890387,
+          0.05722238885089053,
+          0.13582007660640946,
+          0.0
+        ],
+        "feasibility_tiers": [
+          "OK",
+          "OK",
+          "OK",
+          "OK"
+        ],
+        "n_variants_evaluated": 1,
+        "pronunciation_variant_index": 0,
+        "rho_per_slot": [
+          0.9095560516118115,
+          2.8823583139642084,
+          0.9095321824148517,
+          1.4249999999999998
+        ],
+        "s_fit": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "score_b": 0.12,
+        "score_c": 0.42,
+        "syllabification": [
+          "S T R AO NG",
+          "W IH N",
+          "T ER",
+          "IY V",
+          "N IH NG"
+        ],
+        "text": "strong winter evening",
+        "total_nominal_consonant_duration_s": 0.7200000000000002,
+        "verdict": "ACCEPT"
+      },
+      {
+        "candidate_id": "k3",
+        "d_nucleus_s": [],
+        "d_post_s": [],
+        "d_pre_s": [],
+        "feasibility_tiers": [],
+        "n_variants_evaluated": 0,
+        "pronunciation_variant_index": null,
+        "rho_per_slot": [],
+        "s_fit": [],
+        "score_b": 0.0,
+        "score_c": 0.0,
+        "syllabification": [],
+        "text": "zzqqx unknown word",
+        "total_nominal_consonant_duration_s": 0.0,
+        "verdict": "ABSTAIN_OOV"
+      }
+    ],
+    "clip_id": "S01",
+    "slot_mask_id": "M5_short_first_4",
+    "step": 6,
+    "title": "SOUND \u2014 pronunciation, syllabification, partition, tiers, s_fit",
+    "uses_synthetic_fixtures": true,
+    "uses_synthetic_tables": true
+  },
+  "step7": {
+    "blocked": false,
+    "conditions": {
+      "A": {
+        "blocked": false,
+        "envelope_audio_id": "10b873b3c5367f9ea0fb244089c5e62d10c956fdab3cc39cfb874ffa96286d40",
+        "excluded": [],
+        "ranked": [
+          {
+            "candidate_id": "k1",
+            "score": 0.895,
+            "tiebreak_applied": false
+          },
+          {
+            "candidate_id": "k3",
+            "score": 0.5429010295925485,
+            "tiebreak_applied": false
+          },
+          {
+            "candidate_id": "k2",
+            "score": 0.42,
+            "tiebreak_applied": false
+          }
+        ]
+      },
+      "B": {
+        "blocked": false,
+        "envelope_audio_id": "10b873b3c5367f9ea0fb244089c5e62d10c956fdab3cc39cfb874ffa96286d40",
+        "excluded": [],
+        "ranked": [
+          {
+            "candidate_id": "k1",
+            "score": 0.595,
+            "tiebreak_applied": false
+          },
+          {
+            "candidate_id": "k3",
+            "score": 0.27,
+            "tiebreak_applied": false
+          },
+          {
+            "candidate_id": "k2",
+            "score": 0.12,
+            "tiebreak_applied": false
+          }
+        ]
+      },
+      "C": {
+        "blocked": false,
+        "envelope_audio_id": "10b873b3c5367f9ea0fb244089c5e62d10c956fdab3cc39cfb874ffa96286d40",
+        "excluded": [],
+        "ranked": [
+          {
+            "candidate_id": "k1",
+            "score": 0.895,
+            "tiebreak_applied": false
+          },
+          {
+            "candidate_id": "k3",
+            "score": 0.5429010295925485,
+            "tiebreak_applied": false
+          },
+          {
+            "candidate_id": "k2",
+            "score": 0.42,
+            "tiebreak_applied": false
+          }
+        ]
+      },
+      "C_FLAT": {
+        "blocked": false,
+        "envelope_audio_id": "FLAT:M6_long_first_4",
+        "excluded": [],
+        "ranked": [
+          {
+            "candidate_id": "k1",
+            "score": 0.895,
+            "tiebreak_applied": false
+          },
+          {
+            "candidate_id": "k3",
+            "score": 0.5507241376476081,
+            "tiebreak_applied": false
+          },
+          {
+            "candidate_id": "k2",
+            "score": 0.42,
+            "tiebreak_applied": false
+          }
+        ]
+      },
+      "C_ORACLE": {
+        "blocked": false,
+        "envelope_audio_id": "10b873b3c5367f9ea0fb244089c5e62d10c956fdab3cc39cfb874ffa96286d40",
+        "excluded": [],
+        "ranked": [
+          {
+            "candidate_id": "k1",
+            "score": 0.895,
+            "tiebreak_applied": false
+          },
+          {
+            "candidate_id": "k3",
+            "score": 0.5591892922592276,
+            "tiebreak_applied": false
+          },
+          {
+            "candidate_id": "k2",
+            "score": 0.42,
+            "tiebreak_applied": false
+          }
+        ]
+      },
+      "C_SHUFFLED": {
+        "blocked": false,
+        "envelope_audio_id": "SHUFFLED:10b873b3c5367f9ea0fb244089c5e62d10c956fdab3cc39cfb874ffa96286d40<-791aed06057e46093a4cd18c58528888442897d9bed575402c3bdce5e6f323d6",
+        "excluded": [],
+        "ranked": [
+          {
+            "candidate_id": "k1",
+            "score": 0.8806921370816782,
+            "tiebreak_applied": false
+          },
+          {
+            "candidate_id": "k3",
+            "score": 0.495,
+            "tiebreak_applied": false
+          },
+          {
+            "candidate_id": "k2",
+            "score": 0.36488266230957145,
+            "tiebreak_applied": false
+          }
+        ]
+      }
+    },
+    "slot_mask_id": "M6_long_first_4",
+    "step": 7,
+    "target_clip_id": "S02",
+    "title": "RANK + all six conditions",
+    "uses_synthetic_fixtures": true,
+    "uses_synthetic_tables": true
+  },
+  "step8_mechanism_exercise": {
+    "context_1": {
+      "direction": "SHORT_FIRST",
+      "interval_effective_s": [
+        0.2915147186257614,
+        0.8915147186257614,
+        0.29151471862576145,
+        0.594
+      ],
+      "mask": "M5_short_first_4"
+    },
+    "context_2": {
+      "direction": "LONG_FIRST",
+      "interval_effective_s": [
+        0.8915147186257614,
+        0.29151471862576145,
+        0.8915147186257616,
+        0.594
+      ],
+      "mask": "M6_long_first_4"
+    },
+    "failure_counts": [
+      {
+        "check_id": "C1_B_TIED_BOTH_CONTEXTS",
+        "n_failed": 2
+      },
+      {
+        "check_id": "C2_SCORE_C_REVERSAL",
+        "n_failed": 6
+      },
+      {
+        "check_id": "C3_REVERSAL_MARGIN",
+        "n_failed": 4
+      },
+      {
+        "check_id": "C4_NOMINAL_LOAD_MATCHED",
+        "n_failed": 0
+      },
+      {
+        "check_id": "C5_C_FLAT_NO_REVERSAL",
+        "n_failed": 0
+      }
+    ],
+    "interpretation": "Admission counts here measure the CODE, not the hypothesis. They are not F7 yield and are not an input to the step-9 gate.",
+    "n_admitted": 0,
+    "n_demo_pairs": 6,
+    "pairs": [
+      {
+        "admitted": false,
+        "checks": [
+          {
+            "check_id": "C1_B_TIED_BOTH_CONTEXTS",
+            "detail": "|dScore_B| ctx1=0.000e+00 ctx2=0.000e+00 (eps_tie=1.0e-09)",
+            "passed": true
+          },
+          {
+            "check_id": "C2_SCORE_C_REVERSAL",
+            "detail": "Score_C prefers ctx1=None ctx2=Y",
+            "passed": false
+          },
+          {
+            "check_id": "C3_REVERSAL_MARGIN",
+            "detail": "|dScore_C| ctx1=0.0000 ctx2=0.0349 (MARGIN_MIN=0.02)",
+            "passed": false
+          },
+          {
+            "check_id": "C4_NOMINAL_LOAD_MATCHED",
+            "detail": "|d sum d_nominal| = 0.0000 s (LOAD_TOL=0.015)",
+            "passed": true
+          },
+          {
+            "check_id": "C5_C_FLAT_NO_REVERSAL",
+            "detail": "C_FLAT prefers ctx1=Y ctx2=Y",
+            "passed": true
+          }
+        ],
+        "delta_c_context_1": -5.551115123125783e-17,
+        "delta_c_context_2": -0.03492368614213681,
+        "failed_checks": [
+          "C2_SCORE_C_REVERSAL",
+          "C3_REVERSAL_MARGIN"
+        ],
+        "line_x": "hold the standing river",
+        "line_y": "standing hold the river",
+        "nominal_load_delta_s": 0.0,
+        "pair_id": "D1",
+        "preferred_context_1": null,
+        "preferred_context_2": "Y",
+        "score_b_x": 0.27,
+        "score_b_y": 0.27
+      },
+      {
+        "admitted": false,
+        "checks": [
+          {
+            "check_id": "C1_B_TIED_BOTH_CONTEXTS",
+            "detail": "|dScore_B| ctx1=0.000e+00 ctx2=0.000e+00 (eps_tie=1.0e-09)",
+            "passed": true
+          },
+          {
+            "check_id": "C2_SCORE_C_REVERSAL",
+            "detail": "Score_C prefers ctx1=None ctx2=Y",
+            "passed": false
+          },
+          {
+            "check_id": "C3_REVERSAL_MARGIN",
+            "detail": "|dScore_C| ctx1=0.0000 ctx2=0.0617 (MARGIN_MIN=0.02)",
+            "passed": false
+          },
+          {
+            "check_id": "C4_NOMINAL_LOAD_MATCHED",
+            "detail": "|d sum d_nominal| = 0.0000 s (LOAD_TOL=0.015)",
+            "passed": true
+          },
+          {
+            "check_id": "C5_C_FLAT_NO_REVERSAL",
+            "detail": "C_FLAT prefers ctx1=Y ctx2=Y",
+            "passed": true
+          }
+        ],
+        "delta_c_context_1": 0.0,
+        "delta_c_context_2": -0.06172841242172278,
+        "failed_checks": [
+          "C2_SCORE_C_REVERSAL",
+          "C3_REVERSAL_MARGIN"
+        ],
+        "line_x": "bright and steady morning",
+        "line_y": "steady bright and morning",
+        "nominal_load_delta_s": 0.0,
+        "pair_id": "D2",
+        "preferred_context_1": null,
+        "preferred_context_2": "Y",
+        "score_b_x": 0.27,
+        "score_b_y": 0.27
+      },
+      {
+        "admitted": false,
+        "checks": [
+          {
+            "check_id": "C1_B_TIED_BOTH_CONTEXTS",
+            "detail": "|dScore_B| ctx1=0.000e+00 ctx2=0.000e+00 (eps_tie=1.0e-09)",
+            "passed": true
+          },
+          {
+            "check_id": "C2_SCORE_C_REVERSAL",
+            "detail": "Score_C prefers ctx1=None ctx2=X",
+            "passed": false
+          },
+          {
+            "check_id": "C3_REVERSAL_MARGIN",
+            "detail": "|dScore_C| ctx1=0.0000 ctx2=0.0675 (MARGIN_MIN=0.02)",
+            "passed": false
+          },
+          {
+            "check_id": "C4_NOMINAL_LOAD_MATCHED",
+            "detail": "|d sum d_nominal| = 0.0000 s (LOAD_TOL=0.015)",
+            "passed": true
+          },
+          {
+            "check_id": "C5_C_FLAT_NO_REVERSAL",
+            "detail": "C_FLAT prefers ctx1=X ctx2=X",
+            "passed": true
+          }
+        ],
+        "delta_c_context_1": 0.0,
+        "delta_c_context_2": 0.06754902677874564,
+        "failed_checks": [
+          "C2_SCORE_C_REVERSAL",
+          "C3_REVERSAL_MARGIN"
+        ],
+        "line_x": "strong and easy water",
+        "line_y": "easy strong and water",
+        "nominal_load_delta_s": 0.0,
+        "pair_id": "D3",
+        "preferred_context_1": null,
+        "preferred_context_2": "X",
+        "score_b_x": 0.27,
+        "score_b_y": 0.27
+      },
+      {
+        "admitted": false,
+        "checks": [
+          {
+            "check_id": "C1_B_TIED_BOTH_CONTEXTS",
+            "detail": "|dScore_B| ctx1=7.500e-02 ctx2=7.500e-02 (eps_tie=1.0e-09)",
+            "passed": false
+          },
+          {
+            "check_id": "C2_SCORE_C_REVERSAL",
+            "detail": "Score_C prefers ctx1=Y ctx2=Y",
+            "passed": false
+          },
+          {
+            "check_id": "C3_REVERSAL_MARGIN",
+            "detail": "|dScore_C| ctx1=0.1425 ctx2=0.0559 (MARGIN_MIN=0.02)",
+            "passed": true
+          },
+          {
+            "check_id": "C4_NOMINAL_LOAD_MATCHED",
+            "detail": "|d sum d_nominal| = 0.0000 s (LOAD_TOL=0.015)",
+            "passed": true
+          },
+          {
+            "check_id": "C5_C_FLAT_NO_REVERSAL",
+            "detail": "C_FLAT prefers ctx1=Y ctx2=Y",
+            "passed": true
+          }
+        ],
+        "delta_c_context_1": -0.14254902677874565,
+        "delta_c_context_2": -0.05590779806470003,
+        "failed_checks": [
+          "C1_B_TIED_BOTH_CONTEXTS",
+          "C2_SCORE_C_REVERSAL"
+        ],
+        "line_x": "carry the stranded moment",
+        "line_y": "stranded carry the moment",
+        "nominal_load_delta_s": 0.0,
+        "pair_id": "D4",
+        "preferred_context_1": "Y",
+        "preferred_context_2": "Y",
+        "score_b_x": 0.195,
+        "score_b_y": 0.27
+      },
+      {
+        "admitted": false,
+        "checks": [
+          {
+            "check_id": "C1_B_TIED_BOTH_CONTEXTS",
+            "detail": "|dScore_B| ctx1=0.000e+00 ctx2=0.000e+00 (eps_tie=1.0e-09)",
+            "passed": true
+          },
+          {
+            "check_id": "C2_SCORE_C_REVERSAL",
+            "detail": "Score_C prefers ctx1=None ctx2=X",
+            "passed": false
+          },
+          {
+            "check_id": "C3_REVERSAL_MARGIN",
+            "detail": "|dScore_C| ctx1=0.0000 ctx2=0.0750 (MARGIN_MIN=0.02)",
+            "passed": false
+          },
+          {
+            "check_id": "C4_NOMINAL_LOAD_MATCHED",
+            "detail": "|d sum d_nominal| = 0.0000 s (LOAD_TOL=0.015)",
+            "passed": true
+          },
+          {
+            "check_id": "C5_C_FLAT_NO_REVERSAL",
+            "detail": "C_FLAT prefers ctx1=X ctx2=X",
+            "passed": true
+          }
+        ],
+        "delta_c_context_1": 1.1102230246251565e-16,
+        "delta_c_context_2": 0.07500000000000007,
+        "failed_checks": [
+          "C2_SCORE_C_REVERSAL",
+          "C3_REVERSAL_MARGIN"
+        ],
+        "line_x": "stress the golden hour",
+        "line_y": "golden stress the hour",
+        "nominal_load_delta_s": 1.1102230246251565e-16,
+        "pair_id": "D5",
+        "preferred_context_1": null,
+        "preferred_context_2": "X",
+        "score_b_x": 0.27,
+        "score_b_y": 0.27
+      },
+      {
+        "admitted": false,
+        "checks": [
+          {
+            "check_id": "C1_B_TIED_BOTH_CONTEXTS",
+            "detail": "|dScore_B| ctx1=7.500e-02 ctx2=7.500e-02 (eps_tie=1.0e-09)",
+            "passed": false
+          },
+          {
+            "check_id": "C2_SCORE_C_REVERSAL",
+            "detail": "Score_C prefers ctx1=Y ctx2=Y",
+            "passed": false
+          },
+          {
+            "check_id": "C3_REVERSAL_MARGIN",
+            "detail": "|dScore_C| ctx1=0.0575 ctx2=0.0675 (MARGIN_MIN=0.02)",
+            "passed": true
+          },
+          {
+            "check_id": "C4_NOMINAL_LOAD_MATCHED",
+            "detail": "|d sum d_nominal| = 0.0000 s (LOAD_TOL=0.015)",
+            "passed": true
+          },
+          {
+            "check_id": "C5_C_FLAT_NO_REVERSAL",
+            "detail": "C_FLAT prefers ctx1=Y ctx2=Y",
+            "passed": true
+          }
+        ],
+        "delta_c_context_1": -0.057538156928931605,
+        "delta_c_context_2": -0.06754902677874564,
+        "failed_checks": [
+          "C1_B_TIED_BOTH_CONTEXTS",
+          "C2_SCORE_C_REVERSAL"
+        ],
+        "line_x": "wander the frosted meadow",
+        "line_y": "frosted wander the meadow",
+        "nominal_load_delta_s": 0.0,
+        "pair_id": "D6",
+        "preferred_context_1": "Y",
+        "preferred_context_2": "Y",
+        "score_b_x": 0.195,
+        "score_b_y": 0.27
+      }
+    ]
+  }
+}
