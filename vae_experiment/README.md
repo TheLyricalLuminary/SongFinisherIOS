@@ -62,14 +62,51 @@ bytes.
 | ID | Status | Note |
 |---|---|---|
 | F1 | **Present** | 10 synthetic click tracks, known BPM/phase |
-| F2 | **BLOCKED** | Real recorded accompaniment. `fixtures/F2_clips/README.md` |
+| F2 | **BLOCKED** | Real recorded accompaniment. `fixtures/F2_clips/ACCEPTANCE.md` |
 | F3 | **Present** | 5 out-of-spec clips, 5 distinct rejection codes |
-| F4 | **BLOCKED** | Needs Klatt (1976) and Crystal & House (1988) |
-| F5 | **BLOCKED** | Needs a named standard phonotactics reference |
+| F4 | **BLOCKED** | Needs Klatt (1976) and Crystal & House (1988) — see below |
+| F5 | **BLOCKED** | Needs a named standard phonotactics reference — see below |
 | F6 | **Authored** | 8 masks, 4 asymmetric, 2 mirror pairs |
-| F7 | **BLOCKED** | Depends on F4 and F5 |
-| F8 | **Partial** | F1 + F2_SYNTH ground truth by construction; F2 oracle blocked |
+| F7 | **BLOCKED** | Gated on F4, F5, F2 and F8 |
+| F8 | **BLOCKED** | Needs human annotation. `fixtures/F8_oracle/ANNOTATOR_INSTRUCTIONS.md` |
 | F9 | **Present** | Golden snapshots for 30 clips × 8 masks |
+
+Run `python3 tools/readiness.py` for the live status of all five and what each
+one is missing.
+
+## Populating the blocked fixtures
+
+Every path below **refuses** rather than substituting. None of them can be
+satisfied with generated data.
+
+| Fixture | You supply | Then run |
+|---|---|---|
+| F4 | `fixtures/F4_phone_durations/intake_f4.csv`, filled from the named papers | `python3 tools/import_f4.py` |
+| F5 | `fixtures/F5_onset_clusters/intake_f5.csv`, transcribed from a named reference | `python3 tools/import_f5.py` |
+| F2 | WAV files in `fixtures/F2_clips/intake/` + `intake_f2.csv` | `python3 tools/import_f2.py` |
+| F8 | two annotators fill worksheets by ear, third adjudicates | `make_f8_worksheets.py` → `adjudicate_f8.py` |
+
+Behaviour worth knowing:
+
+* **F4** writes `POPULATED` only at full 24-consonant coverage. A partial table
+  is reported as a gap list and left `UNPOPULATED` — a half-filled fixture would
+  turn §22 failure #10 into a surprise at scoring time instead of a refusal at
+  load time. A blank row is a *reported gap*; a half-filled row is an *error*.
+* **F5** requires singleton onsets as well as clusters, since Maximum Onset
+  Principle syllabification consults the table at every boundary. It records the
+  dialect of each entry and reports a mismatch against the General American
+  lexicon rather than absorbing it.
+* **F2** runs the full §2 admission check and **excludes** failing clips with a
+  reason code. Content, meter and language are declarations the pipeline cannot
+  verify and are stamped as such.
+* **F8** worksheets deliberately show no detected onsets, beat grid or pipeline
+  anchors — an annotator shown the answer is not an independent measurement.
+  Disagreements over 20 ms block the clip until a third annotator resolves them;
+  agreement within 20 ms is averaged and the spread is kept as `anchor_sigma_s`
+  so real annotator uncertainty reaches `I_effective`.
+
+Populating F4 or F5 changes `duration_table_hash` / `onset_table_hash` and
+therefore `EngineVersion` on every record. That is the intended behaviour.
 
 `F2_SYNTH_pipeline_exercise/` is **not F2**. It exists to exercise SHAPE, the six
 conditions and RANK. Every runner that reads it stamps `uses_synthetic_fixtures`.

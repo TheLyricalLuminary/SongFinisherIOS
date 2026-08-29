@@ -1,0 +1,8 @@
+# F2 intake. One row per candidate accompaniment clip.
+# Put the WAV files in fixtures/F2_clips/intake/ and list them here, then run:
+#   python3 tools/import_f2.py
+# The importer measures tempo, drift, pulse and asymmetry itself and REJECTS
+# failing clips (Section 2 rejection is mandatory; there is no degradation).
+# The authored_* columns are declarations the pipeline CANNOT verify; they are
+# recorded as declared and are your responsibility.
+file,clip_id,slot_mask_id,authored_meter,authored_content,authored_language,source_attribution

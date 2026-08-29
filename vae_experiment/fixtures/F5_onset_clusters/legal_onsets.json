@@ -1,19 +1,29 @@
 {
   "fixture_id": "F5",
   "title": "Legal English onset-cluster table",
-  "spec_reference": "Section 9 (Deterministic Maximum Onset Principle against fixed legal-onset table); Section 17 F5",
+  "spec_reference": "Section 9 (Maximum Onset Principle against a fixed legal-onset table); Section 17 F5",
   "status": "UNPOPULATED",
   "provenance": null,
+  "blocked_reason": "No named phonotactics reference could be obtained: every document host is blocked by this environment's egress policy. The inventory was NOT written from memory. Populate via tools/import_f5.py once the inventory is transcribed from a chosen reference.",
   "required_source_material": [
-    "A standard English phonotactics reference giving the exhaustive inventory of legal word-initial (syllable-onset) consonant clusters, transcribed so that it can be mapped one-to-one onto the ARPAbet consonant symbols in fixtures/lexicon/cmudict.symbols.",
-    "Section 17 F5 names the requirement as 'a standard phonotactics reference' without naming a specific work; the reference to be used must be chosen and recorded before this fixture is populated, because the onset inventory chosen determines every syllable boundary the experiment produces."
+    "A named standard phonotactics reference giving the exhaustive inventory of legal English syllable-onset consonant clusters, mappable one-to-one onto the ARPAbet consonants in fixtures/lexicon/cmudict.symbols.",
+    "Candidates identified bibliographically: Roach, P., 'English Phonetics and Phonology: A Practical Course', 4th ed. (Cambridge University Press, 2009), ch. 8; Cruttenden, A., 'Gimson's Pronunciation of English' (Hodder), section 5.5. NEITHER was retrieved, so NEITHER has been used."
   ],
-  "population_instructions": [
-    "onsets: a list of ARPAbet consonant sequences that may open a syllable, including all singleton onsets that occur, all two-consonant clusters, and all three-consonant clusters.",
-    "Each entry must carry a 'source' field naming the reference and its table or page.",
-    "The table is consumed by Maximum Onset Principle syllabification: of the consonants between two vowels, the LONGEST suffix that appears in this table becomes the following syllable's onset and the remainder becomes the preceding syllable's coda.",
-    "Do NOT derive this table from CMUdict word-initial frequency counts as a substitute. A frequency-derived inventory is a different object from a phonotactic inventory: it admits accidental gaps as illegal and rare loans as legal, and the resulting syllable boundaries would silently differ from the specified ones.",
-    "A cluster absent from this table is a HARD ERROR at syllabification, never a silent default."
+  "sourcing_findings": {
+    "note": "Established from bibliographic search only. No inventory was transcribed.",
+    "dialect_mismatch_warning": "Roach and Cruttenden describe Standard Southern British English. The lexicon here is CMUdict, which is General American. The two differ in exactly the onsets this table governs: SSBE lists the three-consonant onsets /spj stj skj/ (as in 'stew' /stjuu/), which General American largely lacks through yod-dropping ('stew' = /stuu/). An SSBE inventory would admit onsets CMUdict never produces. Choose a General American description, or record the dialect deviation explicitly -- the onset inventory decides every syllable boundary the experiment produces.",
+    "rejected_substitutes": [
+      "CMUdict word-initial frequency counts: a frequency-derived inventory is a different object from a phonotactic one -- it admits accidental gaps as illegal and rare loans as legal.",
+      "The PyPI 'syllabify' package (0.5.1): inspected, it syllabifies by sonority sequencing and carries no explicit legal-onset inventory. Not a phonotactics reference."
+    ]
+  },
+  "acceptance_requirements": [
+    "Every entry is a sequence of ARPAbet CONSONANT symbols that may open a syllable.",
+    "Singleton onsets must be listed explicitly for every consonant that can begin a syllable -- the Maximum Onset Principle consults this table at every boundary, not only for clusters.",
+    "Two- and three-consonant clusters listed exhaustively for the chosen reference and dialect.",
+    "Every entry carries a non-empty 'source' and 'page_or_table'.",
+    "No cluster may be added to make a test pass. A cluster absent from this table is a hard error at syllabification."
   ],
+  "how_to_populate": "Fill fixtures/F5_onset_clusters/intake_f5.csv, then run: python3 tools/import_f5.py",
   "onsets": []
 }

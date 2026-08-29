@@ -1,0 +1,7 @@
+# F5 intake. One row per legal syllable-onset cluster, ARPAbet, space separated.
+# Include EVERY singleton onset as well as clusters - the Maximum Onset Principle
+# consults this table at every syllable boundary, not only for clusters.
+# 'source' and 'page_or_table' are mandatory. Do not add a cluster to make a test pass.
+# 'dialect' should be the variety the reference describes (e.g. GA or SSBE); the lexicon
+# is CMUdict / General American, and a mismatch must be recorded, not silently absorbed.
+onset,source,page_or_table,dialect,notes

@@ -4,17 +4,50 @@
   "spec_reference": "Section 7 (d(c) = max(d_floor(c), d_nominal(c) * rho^gamma)); Section 17 F4; Section 22 failure #10",
   "status": "UNPOPULATED",
   "provenance": null,
+  "blocked_reason": "The named sources are paywalled journal articles and every document host is blocked by this environment's egress policy. The values were NOT obtained and have NOT been guessed. Populate via tools/import_f4.py once the tables are extracted by hand.",
   "required_source_material": [
-    "Klatt, D. H. (1976). Linguistic uses of segmental duration in English: Acoustic and perceptual evidence. Journal of the Acoustical Society of America 59(5), 1208-1221. Inherent/intrinsic segment durations for English consonants, in ms.",
-    "Crystal, T. H. & House, A. S. (1988). Segmental durations in connected-speech signals: Current results. Journal of the Acoustical Society of America 83(4), 1553-1573. Connected-speech consonant durations by manner and class, in ms.",
-    "For any ARPAbet consonant not covered by the two references above: measurements from a forced-aligned singing corpus, as Section 17 F4 specifies ('Gaps: measure from a forced-aligned singing corpus. Data extraction, not research.')"
+    "Klatt, D. H. (1976). Linguistic uses of segmental duration in English: Acoustic and perceptual evidence. Journal of the Acoustical Society of America 59(5), 1208-1221. DOI 10.1121/1.380986. Measured segmental durations for English -> d_nominal_s.",
+    "Crystal, T. H. & House, A. S. (1988). Segmental durations in connected-speech signals: Current results. Journal of the Acoustical Society of America 83(4), 1553-1573. DOI 10.1121/1.395911. Six talkers, two ~300-word scripts; reports mean durations and standard deviations for sound CLASSES and for INDIVIDUAL sounds -> d_nominal_s, and per-phone coverage.",
+    "For any ARPAbet consonant not covered above: measurements from a forced-aligned singing corpus (Section 17 F4)."
   ],
-  "population_instructions": [
-    "Every ARPAbet consonant symbol in fixtures/lexicon/cmudict.symbols must have an entry. There are 39 ARPAbet phones; the 24 consonants are the ones required here.",
-    "d_nominal_s: the tempo-independent nominal duration, in seconds. Section 11 check 4 matches load on d_nominal, NEVER on the tempo-scaled d(c).",
-    "d_floor_s: the incompressible floor, in seconds. d(c) never falls below it however short the interval.",
-    "Each entry must carry a 'source' field naming which reference the number came from, and a 'page_or_table' field. An entry without a source is not populated data.",
-    "Do NOT interpolate, estimate by manner class, or carry a default. A phone absent from this table is a HARD ERROR at lookup (Section 22 failure #10), never a silent default."
+  "sourcing_findings": {
+    "note": "Established from bibliographic search only. No duration value was obtained; these are findings about WHERE the two columns live, so the extraction task is unambiguous.",
+    "d_floor_may_not_be_in_the_named_sources": "d_floor is an INCOMPRESSIBLE FLOOR. In Klatt's duration model the corresponding quantity is MINDUR, which appears with INHDUR in the rule DUR = MINDUR + (INHDUR - MINDUR) * PRCNT/100. That rule is published in Klatt (1979), 'Synthesis by rule of segmental durations in English sentences', and in Allen, Hunnicutt & Klatt (1987), 'From Text to Speech: The MITalk System' (Cambridge University Press) -- NOT in Klatt (1976), which reports measurements rather than a MINDUR column. The INHDUR/MINDUR pair maps one-to-one onto d_nominal/d_floor, so the MITalk table is the cleanest single source for BOTH columns. Obtaining it is a sourcing decision for the spec owner: Section 17 F4 names only Klatt (1976) and Crystal & House (1988).",
+    "dialect": "The lexicon is CMUdict (US English, Section 9). Duration values must be for American English. Crystal & House (1988) is American English. Confirm the dialect of any substitute source."
+  },
+  "acceptance_requirements": [
+    "All 24 ARPAbet consonants covered: B CH D DH F G HH JH K L M N NG P R S SH T TH V W Y Z ZH. Vowels are NOT required (only consonants are budgeted; the nucleus is the residual).",
+    "d_nominal_s and d_floor_s in SECONDS, both > 0, and d_floor_s <= d_nominal_s for every phone.",
+    "Every entry carries a non-empty 'source' and 'page_or_table'. An entry without a source is not populated data.",
+    "No interpolation, no estimation by manner class, no defaults. A missing phone is a hard error at lookup (Section 22 failure #10).",
+    "Partial coverage is acceptable ONLY as an explicitly reported gap list; it must not be silently filled."
   ],
-  "phones": {}
+  "how_to_populate": "Fill fixtures/F4_phone_durations/intake_f4.csv, then run: python3 tools/import_f4.py",
+  "phones": {},
+  "uncovered_phones": [
+    "B",
+    "CH",
+    "D",
+    "DH",
+    "F",
+    "G",
+    "HH",
+    "JH",
+    "K",
+    "L",
+    "M",
+    "N",
+    "NG",
+    "P",
+    "R",
+    "S",
+    "SH",
+    "T",
+    "TH",
+    "V",
+    "W",
+    "Y",
+    "Z",
+    "ZH"
+  ]
 }

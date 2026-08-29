@@ -1,0 +1,30 @@
+# F4 intake. One row per ARPAbet CONSONANT. Fill from the named sources; do not guess.
+# Durations in MILLISECONDS (converted to seconds on import).
+# d_floor_ms must be <= d_nominal_ms. 'source' and 'page_or_table' are mandatory.
+# Delete no rows: an uncovered phone must be left blank so it is REPORTED as a gap,
+# never silently filled. Blank rows are rejected, not defaulted.
+arpabet,d_nominal_ms,d_floor_ms,source,page_or_table,notes
+B,,,,,
+CH,,,,,
+D,,,,,
+DH,,,,,
+F,,,,,
+G,,,,,
+HH,,,,,
+JH,,,,,
+K,,,,,
+L,,,,,
+M,,,,,
+N,,,,,
+NG,,,,,
+P,,,,,
+R,,,,,
+S,,,,,
+SH,,,,,
+T,,,,,
+TH,,,,,
+V,,,,,
+W,,,,,
+Y,,,,,
+Z,,,,,
+ZH,,,,,
