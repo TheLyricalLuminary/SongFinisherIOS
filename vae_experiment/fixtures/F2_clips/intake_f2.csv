@@ -5,4 +5,7 @@
 # failing clips (Section 2 rejection is mandatory; there is no degradation).
 # The authored_* columns are declarations the pipeline CANNOT verify; they are
 # recorded as declared and are your responsibility.
+# authored_meter must be exactly "4/4"; authored_language must be exactly "English (US)".
+# authored_content and source_attribution must be non-empty. A clip failing any of these is
+# REJECTED and does not count toward the 20.
 file,clip_id,slot_mask_id,authored_meter,authored_content,authored_language,source_attribution

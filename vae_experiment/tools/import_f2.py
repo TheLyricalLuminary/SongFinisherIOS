@@ -16,6 +16,7 @@ the synthetic fixtures carry.
 
 from __future__ import annotations
 
+import argparse
 import csv
 import hashlib
 import json
@@ -31,34 +32,39 @@ from vae.pipeline import build_engine  # noqa: E402
 from vae.shape import realized_asymmetry, realized_asymmetry_direction, shape  # noqa: E402
 from vae import wavio  # noqa: E402
 
-F2_DIR = ROOT / "fixtures" / "F2_clips"
-INTAKE_DIR = F2_DIR / "intake"
-INTAKE_CSV = F2_DIR / "intake_f2.csv"
+DEFAULT_F2_DIR = ROOT / "fixtures" / "F2_clips"
 
 REQUIRED_CLIPS = 20
 REQUIRED_ASYMMETRIC = 12
 
+# Section 2 fixes these two rows exactly.  They stay human DECLARATIONS -- the
+# pipeline cannot hear whether a clip is accompaniment-only or in 4/4 -- but a
+# blank or wrong declaration must not let a clip count toward F2, or the frozen
+# admission criteria would be recorded rather than enforced.
+REQUIRED_METER = "4/4"
+REQUIRED_LANGUAGE = "English (US)"
 
-def _rows() -> list[dict]:
-    if not INTAKE_CSV.exists():
+
+def _rows(intake_csv: Path) -> list[dict]:
+    if not intake_csv.exists():
         return []
     lines = [
-        line for line in INTAKE_CSV.read_text(encoding="utf-8").splitlines()
+        line for line in intake_csv.read_text(encoding="utf-8").splitlines()
         if line.strip() and not line.lstrip().startswith("#")
     ]
     return list(csv.DictReader(lines))
 
 
-def main() -> int:
+def run(f2_dir: Path) -> int:
     engine = build_engine()
-    rows = _rows()
-    present = sorted(p.name for p in INTAKE_DIR.glob("*.wav")) if INTAKE_DIR.exists() else []
+    intake_dir, intake_csv = f2_dir / "intake", f2_dir / "intake_f2.csv"
+    rows = _rows(intake_csv)
+    present = sorted(p.name for p in intake_dir.glob("*.wav")) if intake_dir.exists() else []
 
     if not rows and not present:
         print("F2 remains UNPOPULATED: no clips supplied.")
-        print(f"  Put WAV files in {INTAKE_DIR.relative_to(ROOT)}/ and list them in "
-              f"{INTAKE_CSV.name}.")
-        print(f"  See {(F2_DIR / 'ACCEPTANCE.md').relative_to(ROOT)} for the exact requirements.")
+        print(f"  Put WAV files in {intake_dir}/ and list them in {intake_csv.name}.")
+        print(f"  See {f2_dir / 'ACCEPTANCE.md'} for the exact requirements.")
         print("  Nothing synthetic will be substituted.")
         return 2
 
@@ -72,7 +78,7 @@ def main() -> int:
         filename = (row.get("file") or "").strip()
         clip_id = (row.get("clip_id") or "").strip() or Path(filename).stem
         mask_id = (row.get("slot_mask_id") or "").strip()
-        path = INTAKE_DIR / filename
+        path = intake_dir / filename
 
         if not filename or not path.exists():
             rejected.append((clip_id, "FILE_MISSING", f"{path} not found"))
@@ -82,6 +88,28 @@ def main() -> int:
         except KeyError:
             rejected.append((clip_id, "UNKNOWN_SLOT_MASK",
                              f"{mask_id!r} is not in the F6 inventory"))
+            continue
+
+        meter = (row.get("authored_meter") or "").strip()
+        content = (row.get("authored_content") or "").strip()
+        language = (row.get("authored_language") or "").strip()
+        attribution = (row.get("source_attribution") or "").strip()
+
+        missing = [name for name, value in
+                   (("authored_content", content), ("source_attribution", attribution))
+                   if not value]
+        if missing:
+            rejected.append((clip_id, "DECLARATION_MISSING",
+                             f"empty {', '.join(missing)}; Section 2 requires these to be declared"))
+            continue
+        if meter != REQUIRED_METER:
+            rejected.append((clip_id, "DECLARATION_INVALID",
+                             f"authored_meter is {meter!r}; Section 2 admits {REQUIRED_METER!r} only"))
+            continue
+        if language != REQUIRED_LANGUAGE:
+            rejected.append((clip_id, "DECLARATION_INVALID",
+                             f"authored_language is {language!r}; Section 2 admits "
+                             f"{REQUIRED_LANGUAGE!r} only"))
             continue
 
         try:
@@ -113,10 +141,10 @@ def main() -> int:
             "realized_asymmetry": asymmetry,
             "realized_asymmetry_direction": realized_asymmetry_direction(envelope, engine.config),
             "meets_asymmetry_min": asymmetry >= engine.config.ASYMMETRY_MIN,
-            "authored_meter": (row.get("authored_meter") or "").strip(),
-            "authored_content": (row.get("authored_content") or "").strip(),
-            "authored_language": (row.get("authored_language") or "").strip(),
-            "source_attribution": (row.get("source_attribution") or "").strip(),
+            "authored_meter": meter,
+            "authored_content": content,
+            "authored_language": language,
+            "source_attribution": attribution,
         })
 
     n_asym = sum(1 for c in accepted if c["meets_asymmetry_min"])
@@ -135,14 +163,16 @@ def main() -> int:
         },
         "authored_fields_are_declarations": (
             "authored_meter, authored_content and authored_language cannot be verified by the "
-            "pipeline and are recorded as declared."
+            "pipeline and are recorded as declared. They are nonetheless REQUIRED and are "
+            "checked for presence and exact value: a clip with a missing or wrong declaration "
+            "is rejected and does not count toward F2 completeness."
         ),
         "clips": accepted,
         "rejected": [
             {"clip_id": c, "reason_code": r, "detail": d} for c, r, d in rejected
         ],
     }
-    (F2_DIR / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    (f2_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
     print(f"F2 intake: {len(accepted)} accepted, {len(rejected)} rejected")
     for clip_id, reason, detail in rejected:
@@ -154,6 +184,13 @@ def main() -> int:
     print(f"F2 INCOMPLETE: need {REQUIRED_CLIPS} clips ({REQUIRED_ASYMMETRIC} asymmetric); "
           f"have {len(accepted)} ({n_asym} asymmetric).")
     return 2
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--f2-dir", default=str(DEFAULT_F2_DIR),
+                        help="directory holding intake/, intake_f2.csv and manifest.json")
+    return run(Path(parser.parse_args().f2_dir))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,31 @@
+{
+  "_README": [
+    "F5 completeness attestation. The pipeline cannot know English phonotactics, so it cannot",
+    "decide on its own whether a submitted onset table is complete. What it CAN do is verify that",
+    "the transcription matches what the person who read the reference says the reference contains.",
+    "That is the completeness check: you declare the counts the named source gives, and the",
+    "importer refuses to mark F5 POPULATED unless the submitted table matches them exactly.",
+    "No expected inventory and no expected count is hard-coded anywhere in this repository.",
+    "Until approved_by_spec_owner is true and the declared counts match, F5 stays UNPOPULATED."
+  ],
+  "approved_by_spec_owner": false,
+  "reference": {
+    "author": "",
+    "title": "",
+    "edition": "",
+    "year": null,
+    "section_or_table": "",
+    "isbn_or_doi": ""
+  },
+  "dialect": "",
+  "dialect_note": "Must be General American: the lexicon is CMUdict (Section 9). An SSBE inventory lists /spj stj skj/, which General American largely lacks through yod-dropping, and would admit onsets CMUdict never produces.",
+  "declared_total_onsets": null,
+  "declared_counts_by_length": {
+    "1": null,
+    "2": null,
+    "3": null
+  },
+  "transcriber": "",
+  "transcription_date": "",
+  "notes": ""
+}
