@@ -17,11 +17,20 @@ def test_shipped_f4_is_unpopulated_and_raises_on_lookup():
     assert "Klatt" in str(excinfo.value)
 
 
-def test_shipped_f5_is_unpopulated_and_raises_on_lookup():
+def test_shipped_f5_is_populated_but_still_refuses_unlisted_onsets():
+    """F5 is populated under spec-owner approval; the hard-error guarantee survives.
+
+    Retargeted from an earlier assertion that F5 was UNPOPULATED. The property
+    worth protecting was never "F5 is empty" but "F5 never invents an onset",
+    and that is what is asserted here.
+    """
     table = load_onset_table()
-    assert not table.is_populated
-    with pytest.raises(FixtureUnpopulatedError):
-        table.is_legal_onset(("S", "T"))
+    assert table.is_populated
+    assert table.n_onsets == 64
+    assert table.is_legal_onset(("S", "T"))
+    assert not table.is_legal_onset(("S", "V"))          # attested in CMUdict, not licensed
+    with pytest.raises(MissingOnsetTableError):
+        table.require_legal_onset(("S", "V"))
 
 
 def test_synthetic_tables_are_refused_without_explicit_opt_in():

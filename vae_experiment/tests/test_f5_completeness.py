@@ -43,10 +43,34 @@ def _attestation(**overrides):
     return doc
 
 
-def test_shipped_attestation_is_unapproved_so_f5_cannot_populate():
+def test_shipped_attestation_is_approved_and_matches_the_shipped_inventory():
+    """Retargeted: the source is now approved, so assert internal consistency.
+
+    The safety property -- that an UNAPPROVED attestation cannot populate F5 --
+    is still asserted, by test_unapproved_source_blocks_population below.
+    """
+    from vae.tables import load_onset_table
+
     doc = json.loads(ATTESTATION.read_text())
-    assert doc["approved_by_spec_owner"] is False
-    assert validate_f5_attestation(doc, _rows())
+    assert doc["approved_by_spec_owner"] is True
+    assert doc["declared_total_onsets"] == 64
+    assert doc["declared_counts_by_length"] == {"1": 23, "2": 33, "3": 8}
+    assert "Kivisto-de Souza" in doc["reference"]["author"]
+    assert doc["dialect"] == "General American"
+    # The provenance chain the source table declares must be recorded.
+    assert len(doc["reference"]["summarized_from"]) == 3
+
+    shipped = [{"phones": list(c)} for c in _shipped_onsets()]
+    assert validate_f5_attestation(doc, shipped) == []
+    assert load_onset_table().n_onsets == len(shipped)
+
+
+def _shipped_onsets():
+    import csv as _csv
+    from pathlib import Path as _Path
+    path = _Path(__file__).resolve().parent.parent / "fixtures" / "F5_onset_clusters" / "intake_f5.csv"
+    lines = [l for l in path.read_text().splitlines() if l.strip() and not l.startswith("#")]
+    return [tuple(r["onset"].split()) for r in _csv.DictReader(lines)]
 
 
 def test_a_matching_transcription_is_accepted():

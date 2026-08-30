@@ -25,7 +25,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .constants import STRESS_DIGIT_MAP, STRESS_UNSTRESSED
-from .errors import ContractError
+from .errors import ContractError, MissingOnsetTableError, NoLegalPronunciationError
 from .tables import OnsetTable
 from .version import sha256_file
 
@@ -193,15 +193,43 @@ class LineVariant:
     syllables: tuple[Syllable, ...]
 
 
+@dataclass(frozen=True)
+class RejectedVariant:
+    """A pronunciation F5 does not license.  Logged, never silently dropped."""
+
+    word: str
+    variant_index: int
+    onset: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class LineVariants:
+    """The legal pronunciations of a line, plus the ones F5 ruled out."""
+
+    variants: tuple[LineVariant, ...]
+    rejected: tuple[RejectedVariant, ...]
+
+
 def line_variants(
     line: str, lexicon: Lexicon, onsets: OnsetTable, max_variants: int = 64
-) -> tuple[LineVariant, ...]:
-    """Every pronunciation variant of a line, in a fixed lexicographic order.
+) -> LineVariants:
+    """Every LEGAL pronunciation variant of a line, in a fixed deterministic order.
 
-    Section 9 says "evaluate all variants; report best-scoring; log winner".  The
-    cap exists only so a pathological line cannot blow up combinatorially; it is
-    applied in a deterministic order and the truncation is visible to the caller
-    through the returned count.
+    Section 9 says "evaluate all variants; report best-scoring; log winner".  A
+    variant whose onset F5 does not license is not evaluable, so it is skipped
+    and logged rather than being allowed to invalidate the whole line: CMUdict
+    lists optional secondary pronunciations (``what`` = ``W AH T`` and also
+    ``HH W AH T``) and one illegal secondary must not disqualify a word whose
+    primary pronunciation is perfectly legal.
+
+    Section 22 failure #10 is not weakened by this.  It governs a missing F4
+    duration-table phone, which remains a hard error, and F5 is never extended
+    to rescue a variant.  A word for which *no* variant survives raises
+    ``NoLegalPronunciationError`` and the candidate is excluded deterministically
+    -- it is not OOV, since the word is in the lexicon.
+
+    Filtering happens per word before combinations are formed, so the
+    ``max_variants`` cap is spent on legal pronunciations only.
     """
     words = tokenize(line)
     if not words:
@@ -210,10 +238,27 @@ def line_variants(
     if missing:
         raise KeyError(missing)                    # caller turns this into ABSTAIN_OOV
 
+    legal: dict[str, list[tuple[int, tuple[Syllable, ...]]]] = {}
+    rejected: list[RejectedVariant] = []
+    for word in words:
+        if word in legal:
+            continue
+        surviving: list[tuple[int, tuple[Syllable, ...]]] = []
+        blocked: list[tuple[str, ...]] = []
+        for pron in lexicon.variants(word):        # already ordered by variant_index
+            try:
+                surviving.append((pron.variant_index, syllabify(pron, lexicon, onsets)))
+            except MissingOnsetTableError:
+                onset = _leading_consonants(pron, lexicon)
+                rejected.append(RejectedVariant(word, pron.variant_index, onset))
+                blocked.append(onset)
+        if not surviving:
+            raise NoLegalPronunciationError(word, tuple(blocked))
+        legal[word] = surviving
+
     combos: list[tuple[int, ...]] = [()]
     for word in words:
-        variants = lexicon.variants(word)
-        combos = [c + (v.variant_index,) for c in combos for v in variants]
+        combos = [c + (index,) for c in combos for index, _ in legal[word]]
         combos.sort()
         if len(combos) > max_variants:
             combos = combos[:max_variants]
@@ -222,10 +267,19 @@ def line_variants(
     for n, combo in enumerate(combos):
         syllables: list[Syllable] = []
         for word, variant_index in zip(words, combo):
-            pron = next(
-                p for p in lexicon.variants(word) if p.variant_index == variant_index
+            syllables.extend(
+                next(s for i, s in legal[word] if i == variant_index)
             )
-            syllables.extend(syllabify(pron, lexicon, onsets))
         out.append(LineVariant(variant_index=n, per_word_variant=combo,
                                syllables=tuple(syllables)))
+    return LineVariants(variants=tuple(out), rejected=tuple(rejected))
+
+
+def _leading_consonants(pronunciation: Pronunciation, lexicon: Lexicon) -> tuple[str, ...]:
+    """The word-initial consonant run -- the onset F5 was asked to license."""
+    out: list[str] = []
+    for phone in pronunciation.phones:
+        if lexicon.is_vowel(phone):
+            break
+        out.append(phone)
     return tuple(out)

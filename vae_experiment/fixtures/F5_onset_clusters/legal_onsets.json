@@ -2,9 +2,119 @@
   "fixture_id": "F5",
   "title": "Legal English onset-cluster table",
   "spec_reference": "Section 9 (Maximum Onset Principle against a fixed legal-onset table); Section 17 F5",
-  "status": "UNPOPULATED",
-  "provenance": null,
-  "blocked_reason": "No named phonotactics reference could be obtained: every document host is blocked by this environment's egress policy. The inventory was NOT written from memory. Populate via tools/import_f5.py once the inventory is transcribed from a chosen reference.",
+  "status": "POPULATED",
+  "provenance": {
+    "reference": {
+      "author": "Kivisto-de Souza, Hanna",
+      "title": "Onset consonant clusters of General American English",
+      "edition": "",
+      "year": 2017,
+      "section_or_table": "Table 1",
+      "isbn_or_doi": "",
+      "summarized_from": [
+        "Kivisto-de Souza (2015)",
+        "Cruttenden (2008)",
+        "Yavas (2011), pp. 139-146"
+      ],
+      "summarized_from_note": "Table 1 states it is adapted/summarized from these three sources. Recorded verbatim as the provenance chain; Cruttenden describes SSBE but the table as published is General American, which the yod distribution confirms (no coronal+Y; SPY/SKY present, STY absent)."
+    },
+    "dialect": "General American",
+    "approved_by_spec_owner": true,
+    "transcriber": "spec owner, via [CHATGPT HANDOFF]",
+    "declared_total_onsets": 64,
+    "n_onsets": 64,
+    "intake_file": "intake_f5.csv",
+    "intake_sha256": "ef6ef0153628d15ac1d3f5fa154a08819f0da33935478300caf1e97f48abdc32",
+    "attestation_sha256": "83d2234d7b15c68978cf2f4393ccf1184e21d5a714e25ea1f2a73f91af66377d",
+    "cmudict_word_initial_onsets_not_licensed": [
+      "B L W",
+      "B R W",
+      "B W",
+      "CH L",
+      "CH R",
+      "CH W",
+      "CH Y",
+      "D HH",
+      "D M",
+      "D N",
+      "D R W",
+      "D V",
+      "D Y",
+      "D Z",
+      "DH Y",
+      "F N",
+      "F S",
+      "F TH",
+      "F W",
+      "G D",
+      "G Y",
+      "HH L",
+      "HH M",
+      "HH N",
+      "HH R",
+      "HH W",
+      "JH F",
+      "JH W",
+      "JH Y",
+      "K M",
+      "K N",
+      "K S Y",
+      "K V",
+      "L HH Y",
+      "L K S",
+      "L W",
+      "L Y",
+      "M B",
+      "M HH",
+      "M L",
+      "M N",
+      "M R",
+      "M W",
+      "N D",
+      "N D Y",
+      "N W",
+      "N Y",
+      "P SH",
+      "P W",
+      "R W",
+      "R Y",
+      "S B",
+      "S F",
+      "S HH",
+      "S M R",
+      "S R",
+      "S T Y",
+      "S V",
+      "S Y",
+      "SH L",
+      "SH M",
+      "SH N",
+      "SH T",
+      "SH V",
+      "SH W",
+      "SH Y",
+      "T L",
+      "T S",
+      "T S Y",
+      "T V",
+      "T Y",
+      "TH S",
+      "TH Y",
+      "V L",
+      "V R",
+      "V W",
+      "W N",
+      "Y W",
+      "Z B",
+      "Z D R",
+      "Z L",
+      "Z M",
+      "Z V",
+      "Z W",
+      "Z Y",
+      "ZH W"
+    ]
+  },
   "required_source_material": [
     "A named standard phonotactics reference giving the exhaustive inventory of legal English syllable-onset consonant clusters, mappable one-to-one onto the ARPAbet consonants in fixtures/lexicon/cmudict.symbols.",
     "Candidates identified bibliographically: Roach, P., 'English Phonetics and Phonology: A Practical Course', 4th ed. (Cambridge University Press, 2009), ch. 8; Cruttenden, A., 'Gimson's Pronunciation of English' (Hodder), section 5.5. NEITHER was retrieved, so NEITHER has been used."
@@ -25,5 +135,631 @@
     "No cluster may be added to make a test pass. A cluster absent from this table is a hard error at syllabification."
   ],
   "how_to_populate": "Fill fixtures/F5_onset_clusters/intake_f5.csv, then run: python3 tools/import_f5.py",
-  "onsets": []
+  "onsets": [
+    {
+      "phones": [
+        "B"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "CH"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "D"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "DH"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "F"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "G"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "HH"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "JH"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "K"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "L"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "M"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "N"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "P"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "R"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "SH"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "T"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "TH"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "V"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "W"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "Y"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "Z"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "ZH"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "B",
+        "L"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "B",
+        "R"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "B",
+        "Y"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "D",
+        "R"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "D",
+        "W"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "F",
+        "L"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "F",
+        "R"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "F",
+        "Y"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "G",
+        "L"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "G",
+        "R"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "G",
+        "W"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "HH",
+        "Y"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "K",
+        "L"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "K",
+        "R"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "K",
+        "W"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "K",
+        "Y"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "M",
+        "Y"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "P",
+        "L"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "P",
+        "R"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "P",
+        "Y"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "K"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "L"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "M"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "N"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "P"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "T"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "W"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "SH",
+        "R"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "T",
+        "R"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "T",
+        "W"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "TH",
+        "R"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "TH",
+        "W"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "V",
+        "Y"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "K",
+        "L"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "K",
+        "R"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "K",
+        "W"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "K",
+        "Y"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "P",
+        "L"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "P",
+        "R"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "P",
+        "Y"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    },
+    {
+      "phones": [
+        "S",
+        "T",
+        "R"
+      ],
+      "source": "Kivisto-de Souza (2017)",
+      "page_or_table": "Table 1",
+      "dialect": "Table 1",
+      "notes": "'Onset consonant clusters of General American English'"
+    }
+  ]
 }

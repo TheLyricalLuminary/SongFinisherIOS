@@ -39,6 +39,23 @@ class FixtureUnpopulatedError(VAEError):
         )
 
 
+class NoLegalPronunciationError(VAEError):
+    """Every CMUdict variant of some word uses an onset F5 does not license.
+
+    Distinct from OOV: the word IS in the lexicon, but no pronunciation of it
+    survives the legal-onset table.  The candidate is excluded deterministically
+    rather than abstained, and never rescued by adding an onset to F5.
+    """
+
+    def __init__(self, word: str, offending_onsets: tuple[tuple[str, ...], ...]):
+        self.word = word
+        self.offending_onsets = offending_onsets
+        rendered = ", ".join(" ".join(o) for o in offending_onsets)
+        super().__init__(
+            f"{word!r} has no pronunciation whose onset F5 licenses (tried: {rendered})"
+        )
+
+
 class DeterminismViolation(VAEError):
     """A rerun differed from its golden snapshot beyond the Section 15 contract."""
 

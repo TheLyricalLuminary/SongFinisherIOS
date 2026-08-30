@@ -1,6 +1,6 @@
 {
   "F4_status": "UNPOPULATED",
-  "F5_status": "UNPOPULATED",
+  "F5_status": "POPULATED",
   "F7_status": "UNPOPULATED",
   "blocked": true,
   "blocker": "F7 cannot be authored: it depends on F4 and F5, both UNPOPULATED",

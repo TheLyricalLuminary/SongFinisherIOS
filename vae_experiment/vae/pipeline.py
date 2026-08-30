@@ -174,6 +174,11 @@ def sound_log_record(log) -> dict:
         "per_phone_d_s": [{"phone": p, "d_s": d} for p, d in log.per_phone_d_s],
         "feasibility_tiers": list(log.tiers),
         "duration_table_is_synthetic": log.duration_table_is_synthetic,
+        "f5_rejected_variants": [
+            {"word": r.word, "variant_index": r.variant_index, "onset": " ".join(r.onset)}
+            for r in log.rejected_variants
+        ],
+        "exclusion_reason": log.exclusion_reason,
     }
 
 

@@ -3,23 +3,23 @@
     "blocked": true,
     "n_phones": 0,
     "required_source_material": [
-      "Klatt, D. H. (1976). Linguistic uses of segmental duration in English: Acoustic and perceptual evidence. Journal of the Acoustical Society of America 59(5), 1208-1221. Inherent/intrinsic segment durations for English consonants, in ms.",
-      "Crystal, T. H. & House, A. S. (1988). Segmental durations in connected-speech signals: Current results. Journal of the Acoustical Society of America 83(4), 1553-1573. Connected-speech consonant durations by manner and class, in ms.",
-      "For any ARPAbet consonant not covered by the two references above: measurements from a forced-aligned singing corpus, as Section 17 F4 specifies ('Gaps: measure from a forced-aligned singing corpus. Data extraction, not research.')"
+      "Klatt, D. H. (1976). Linguistic uses of segmental duration in English: Acoustic and perceptual evidence. Journal of the Acoustical Society of America 59(5), 1208-1221. DOI 10.1121/1.380986. Measured segmental durations for English -> d_nominal_s.",
+      "Crystal, T. H. & House, A. S. (1988). Segmental durations in connected-speech signals: Current results. Journal of the Acoustical Society of America 83(4), 1553-1573. DOI 10.1121/1.395911. Six talkers, two ~300-word scripts; reports mean durations and standard deviations for sound CLASSES and for INDIVIDUAL sounds -> d_nominal_s, and per-phone coverage.",
+      "For any ARPAbet consonant not covered above: measurements from a forced-aligned singing corpus (Section 17 F4)."
     ],
-    "sha256": "3acd843398c2740559fd6c88d7d270ac2950f6eadc988a4d2e0d89d6cad3616f",
+    "sha256": "c2bfdb060d11a4f23a58d9113be7707f2edddbf7f85f0501d7c7020421dfb13b",
     "status": "UNPOPULATED"
   },
   "F5": {
-    "blocked": true,
-    "max_onset_length": 0,
-    "n_onsets": 0,
+    "blocked": false,
+    "max_onset_length": 3,
+    "n_onsets": 64,
     "required_source_material": [
-      "A standard English phonotactics reference giving the exhaustive inventory of legal word-initial (syllable-onset) consonant clusters, transcribed so that it can be mapped one-to-one onto the ARPAbet consonant symbols in fixtures/lexicon/cmudict.symbols.",
-      "Section 17 F5 names the requirement as 'a standard phonotactics reference' without naming a specific work; the reference to be used must be chosen and recorded before this fixture is populated, because the onset inventory chosen determines every syllable boundary the experiment produces."
+      "A named standard phonotactics reference giving the exhaustive inventory of legal English syllable-onset consonant clusters, mappable one-to-one onto the ARPAbet consonants in fixtures/lexicon/cmudict.symbols.",
+      "Candidates identified bibliographically: Roach, P., 'English Phonetics and Phonology: A Practical Course', 4th ed. (Cambridge University Press, 2009), ch. 8; Cruttenden, A., 'Gimson's Pronunciation of English' (Hodder), section 5.5. NEITHER was retrieved, so NEITHER has been used."
     ],
-    "sha256": "1ff7320213d7bd7c2f81ff8fc6fef89e4e7c1abbd5a62c17ed7af74e4192ed47",
-    "status": "UNPOPULATED"
+    "sha256": "182ad1dd6cd098ee4f62457e319e9a0d6a4a64462a2554384f32385a4d672478",
+    "status": "POPULATED"
   },
   "F6": {
     "asymmetry_min": 1.5,

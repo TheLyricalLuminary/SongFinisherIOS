@@ -40,6 +40,12 @@ def synthetic_durations():
 
 
 @pytest.fixture(scope="session")
+def real_onsets():
+    """The populated F5 inventory (Kivisto-de Souza 2017, Table 1)."""
+    return load_onset_table()
+
+
+@pytest.fixture(scope="session")
 def synthetic_onsets():
     """SYNTHETIC_TEST_ONLY F5.  Deliberately incomplete; not a phonotactics inventory."""
     return load_onset_table(SYNTHETIC_F5, allow_synthetic=True)

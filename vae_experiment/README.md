@@ -82,7 +82,7 @@ satisfied with generated data.
 | Fixture | You supply | Then run |
 |---|---|---|
 | F4 | `fixtures/F4_phone_durations/intake_f4.csv`, filled from the named papers | `python3 tools/import_f4.py` |
-| F5 | `fixtures/F5_onset_clusters/intake_f5.csv`, transcribed from a named reference | `python3 tools/import_f5.py` |
+| F5 | *(done)* `intake_f5.csv` + an approved `attestation_f5.json` | `python3 tools/import_f5.py` |
 | F2 | WAV files in `fixtures/F2_clips/intake/` + `intake_f2.csv` | `python3 tools/import_f2.py` |
 | F8 | two annotators fill worksheets by ear, third adjudicates | `make_f8_worksheets.py` → `adjudicate_f8.py` |
 
@@ -92,10 +92,24 @@ Behaviour worth knowing:
   is reported as a gap list and left `UNPOPULATED` — a half-filled fixture would
   turn §22 failure #10 into a surprise at scoring time instead of a refusal at
   load time. A blank row is a *reported gap*; a half-filled row is an *error*.
-* **F5** requires singleton onsets as well as clusters, since Maximum Onset
-  Principle syllabification consults the table at every boundary. It records the
-  dialect of each entry and reports a mismatch against the General American
-  lexicon rather than absorbing it.
+* **F5** is populated from Kivistö-de Souza (2017) Table 1, "Onset consonant
+  clusters of General American English" (itself summarised from
+  Kivistö-de Souza 2015, Cruttenden 2008 and Yavaş 2011 pp. 139–146), approved by
+  the spec owner. 23 singletons + 33 CC + 8 CCC = 64. Completeness is mechanical:
+  the importer refuses unless the transcription matches the declared counts
+  exactly, the reference is named, the dialect is General American, and the
+  source is approved. No inventory or count is hard-coded in the package, and a
+  test asserts F5 stays narrower than what CMUdict attests, so it cannot have
+  been derived from the lexicon.
+* **Pronunciation variants and F5** (§9). A CMUdict word may carry optional
+  secondary pronunciations. A variant whose onset F5 does not license is
+  **skipped and logged**, not fatal: `what` = `W AH T` (legal) and `HH W AH T`
+  (unlicensed), and the legal one is used. A word for which *no* variant
+  survives raises `NoLegalPronunciationError` and the candidate is excluded
+  deterministically as `REJECT_HARD` — not `ABSTAIN_OOV`, since the word is in
+  the lexicon, and F5 is never extended to rescue it. §22 failure #10 is
+  unaffected: it governs a missing F4 duration-table phone, which remains a hard
+  error.
 * **F2** runs the full §2 admission check and **excludes** failing clips with a
   reason code. Content, meter and language are declarations the pipeline cannot
   verify and are stamped as such.

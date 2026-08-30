@@ -45,7 +45,8 @@ from .constants import (
     VERDICT_REJECT_HARD,
 )
 from .contracts import CompatibilityReport, EnvelopeSequence, ReportSlot
-from .lexicon import Lexicon, LineVariant, Syllable, line_variants
+from .errors import NoLegalPronunciationError
+from .lexicon import Lexicon, LineVariant, RejectedVariant, Syllable, line_variants
 from .shape import lead_in_effective
 from .tables import DurationTable
 
@@ -161,6 +162,8 @@ class SoundLog:
     per_phone_d_s: tuple[tuple[str, float], ...]
     tiers: tuple[str, ...]
     duration_table_is_synthetic: bool
+    rejected_variants: tuple[RejectedVariant, ...] = ()
+    exclusion_reason: str = ""
 
 
 def _score_variant(
@@ -303,26 +306,40 @@ def sound(
         predicted_preferred=candidate.predicted_preferred,
     )
 
-    try:
-        variants = line_variants(candidate.text, lexicon, onsets)
-    except KeyError:
-        # Section 9: OOV -> ABSTAIN.  Excluded and logged, never guessed.
-        empty_log = SoundLog(
+    def _excluded(verdict: str, reason: str, rejected=()) -> tuple:
+        log = SoundLog(
             candidate_id=candidate.candidate_id, audio_id=envelope.audio_id,
             provenance=envelope.provenance, chosen_variant_index=None,
             n_variants_evaluated=0, per_word_variant=(), syllable_texts=(),
             rho_per_slot=(), d_pre_s=(), d_nucleus_s=(), d_post_s=(),
             per_phone_d_s=(), tiers=(),
             duration_table_is_synthetic=durations.is_synthetic,
+            rejected_variants=tuple(rejected), exclusion_reason=reason,
         )
         return (
             CompatibilityReport(
-                **common, pronunciation_variant_index=None, verdict=VERDICT_ABSTAIN_OOV,
+                **common, pronunciation_variant_index=None, verdict=verdict,
                 score_b=0.0, score_c=0.0, total_consonant_duration_s=0.0,
                 total_nominal_consonant_duration_s=0.0, slots=(),
             ),
-            empty_log,
+            log,
         )
+
+    try:
+        parsed = line_variants(candidate.text, lexicon, onsets)
+    except KeyError as missing:
+        # Section 9: OOV -> ABSTAIN.  Excluded and logged, never guessed.
+        return _excluded(VERDICT_ABSTAIN_OOV, f"OOV: {missing.args[0]}")
+    except NoLegalPronunciationError as exc:
+        # The word IS in the lexicon but no pronunciation survives F5, so this is
+        # NOT abstention.  Excluded deterministically from ranking; F5 is never
+        # extended to rescue it.
+        return _excluded(
+            VERDICT_REJECT_HARD,
+            f"NO_LEGAL_PRONUNCIATION: {exc}",
+            tuple(RejectedVariant(exc.word, -1, o) for o in exc.offending_onsets),
+        )
+    variants = parsed.variants
 
     scored = [
         _score_variant(variant, envelope, durations, config) for variant in variants
@@ -343,6 +360,7 @@ def sound(
 
     log = SoundLog(
         candidate_id=candidate.candidate_id,
+        rejected_variants=parsed.rejected,
         audio_id=log.audio_id,
         provenance=log.provenance,
         chosen_variant_index=variants[best_index].variant_index,

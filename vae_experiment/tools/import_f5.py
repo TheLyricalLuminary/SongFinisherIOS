@@ -98,7 +98,8 @@ def main() -> int:
           f"{attestation['reference'].get('section_or_table', '?')}")
     if unlicensed:
         print(f"  NOTE {len(unlicensed)} word-initial onset(s) attested in CMUdict are not "
-              f"licensed by this table; words using them will hard-error at syllabification.")
+              f"licensed by this table. Pronunciation variants using them are SKIPPED and "
+              f"logged (Section 9); a word is excluded only if NO variant survives.")
         print(f"       Recorded in provenance. First few: "
               f"{', '.join(' '.join(c) for c in unlicensed[:8])}")
     print(f"  fixture sha256: {hashlib.sha256(FIXTURE.read_bytes()).hexdigest()}")
