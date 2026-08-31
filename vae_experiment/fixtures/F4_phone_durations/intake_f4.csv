@@ -1,8 +1,18 @@
-# F4 intake. One row per ARPAbet CONSONANT. Fill from the named sources; do not guess.
-# Durations in MILLISECONDS (converted to seconds on import).
+# F4 intake. One row per ARPAbet CONSONANT. Durations in MILLISECONDS.
+#
+# AUTHORITATIVE SOURCE (spec-owner decision): Klatt, D. H. (1979), 'Synthesis by Rule
+# of Segmental Durations in English Sentences', Table 1.
+#   d_nominal_ms = INHDUR (inherent duration)
+#   d_floor_ms   = MINDUR (minimum stressed duration)
+# Set 'source' to: Klatt (1979)   and 'page_or_table' to: Table 1
+#
+# Festival lib/klatt_durs.scm / Allen, Hunnicutt & Klatt (1987) ch. 9 is DIAGNOSTIC
+# ONLY. Its values differ from Klatt 1979 and must never be imported, averaged or
+# merged into this file.
+#
 # d_floor_ms must be <= d_nominal_ms. 'source' and 'page_or_table' are mandatory.
-# Delete no rows: an uncovered phone must be left blank so it is REPORTED as a gap,
-# never silently filled. Blank rows are rejected, not defaulted.
+# Leave an uncovered phone's row BLANK so it is REPORTED as a gap; a half-filled row
+# is an error. Nothing is ever defaulted.
 arpabet,d_nominal_ms,d_floor_ms,source,page_or_table,notes
 B,,,,,
 CH,,,,,
