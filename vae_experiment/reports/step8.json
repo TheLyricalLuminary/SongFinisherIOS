@@ -3,7 +3,7 @@
   "F5_status": "POPULATED",
   "F7_status": "UNPOPULATED",
   "blocked": true,
-  "blocker": "F7 cannot be authored: it depends on F4 and F5, both UNPOPULATED",
+  "blocker": "F7 cannot be authored: it depends on F4 and F5 -- F4 is UNPOPULATED",
   "checks_implemented": [
     "C1_B_TIED_BOTH_CONTEXTS",
     "C2_SCORE_C_REVERSAL",
@@ -11,6 +11,14 @@
     "C4_NOMINAL_LOAD_MATCHED",
     "C5_C_FLAT_NO_REVERSAL"
   ],
+  "eligibility_guard": {
+    "deferred_phones": [
+      "CH",
+      "JH"
+    ],
+    "rule": "A line is INELIGIBLE for the F7 pool if ANY CMUdict pronunciation variant of any of its words contains a deferred phone. Checked over every variant, not the primary one, because Section 9 has SOUND score all variants; one deferred phone in one secondary variant would still reach the hard duration-table error.",
+    "status": "IMPLEMENTED AND TESTED (vae.pairs.screen_pairs)"
+  },
   "gate_implementation_status": "IMPLEMENTED AND TESTED (vae.pairs.check_pair, run_gate)",
   "n_pairs_admitted": 0,
   "n_pairs_authored": 0,

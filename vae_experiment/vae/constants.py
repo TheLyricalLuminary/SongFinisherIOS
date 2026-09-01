@@ -79,6 +79,26 @@ MAX_ONSETS_PER_EIGHTH = 1.5
 # This is a phone-inventory fact about the CMUdict symbol set, not measured data.
 ARPABET_DIPHTHONGS = ("AW", "AY", "EY", "OW", "OY")
 
+# The 24 ARPAbet consonants.  Also a phone-inventory fact about the symbol set,
+# not measured data.  Only consonants are budgeted (Section 7); the nucleus is
+# the residual, so no vowel needs a duration.
+ARPABET_CONSONANTS = (
+    "B", "CH", "D", "DH", "F", "G", "HH", "JH", "K", "L", "M", "N",
+    "NG", "P", "R", "S", "SH", "T", "TH", "V", "W", "Y", "Z", "ZH",
+)
+
+# The two ARPAbet affricates are DEFERRED from V1 by spec-owner decision
+# ([CHATGPT HANDOFF - F4 source transcription + affricate correction]).  V1
+# therefore budgets 22 scalar consonants, not 24.
+#
+# Deferred is not "missing" and is not "zero".  F4 carries no row for either
+# phone; a lookup of one remains a hard error (Section 22 failure #10), and the
+# F7 eligibility guard (``vae.pairs``) keeps any line that could reach such a
+# lookup out of the pool in the first place.  Undeferring them is a scope
+# change: it needs both durations from the authoritative source and a new
+# EngineVersion, which this constant's presence in ``code_version`` guarantees.
+V1_DEFERRED_CONSONANTS = ("CH", "JH")
+
 STRESS_PRIMARY = "PRIMARY"
 STRESS_SECONDARY = "SECONDARY"
 STRESS_UNSTRESSED = "UNSTRESSED"

@@ -23,6 +23,7 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
+from .constants import ARPABET_CONSONANTS, V1_DEFERRED_CONSONANTS
 from .errors import FixtureUnpopulatedError, MissingOnsetTableError, MissingPhoneError
 from .version import sha256_file
 
@@ -75,6 +76,17 @@ class DurationTable:
         try:
             return self._phones[phone]
         except KeyError:
+            if phone in V1_DEFERRED_CONSONANTS:
+                raise MissingPhoneError(
+                    f"{phone!r} is DEFERRED from V1: F4 budgets "
+                    f"{len(ARPABET_CONSONANTS) - len(V1_DEFERRED_CONSONANTS)} scalar "
+                    f"consonants and carries no row for either affricate "
+                    f"({', '.join(V1_DEFERRED_CONSONANTS)}). This is still a hard error, "
+                    f"never a silent default (Section 22 failure #10). Reaching this "
+                    f"lookup means the F7 eligibility guard (vae.pairs) was not applied: "
+                    f"a candidate line containing a deferred phone must be excluded from "
+                    f"the pool, not scored."
+                ) from None
             raise MissingPhoneError(
                 f"F4 has no entry for ARPAbet phone {phone!r}. Section 22 failure #10: a "
                 f"duration-table gap is a hard error, never a silent default. Populate it "

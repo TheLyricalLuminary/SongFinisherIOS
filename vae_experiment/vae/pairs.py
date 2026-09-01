@@ -18,16 +18,25 @@ The five checks, run offline before any human data:
 
 Any pair failing any check is discarded before the human phase.  No exceptions,
 no post-hoc admission.  This module *discards*; it never admits with a warning.
+
+Ahead of those five checks sits an *eligibility* guard, which is not one of them.
+The checks judge a pair's behaviour once scored; the guard decides whether the
+pair can be scored at all.  V1 budgets 22 scalar consonants — CH and JH are
+deferred and F4 has no row for either — so a line containing an affricate in any
+pronunciation variant would reach a hard duration-table error inside SOUND.  The
+guard keeps such lines out of the pool at authoring time.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
+from typing import Iterable, Optional
 
 from .config import Config
+from .constants import V1_DEFERRED_CONSONANTS
 from .contracts import CompatibilityReport
 from .errors import ContractError
+from .lexicon import Lexicon, tokenize
 
 CHECK_IDS = (
     "C1_B_TIED_BOTH_CONTEXTS",
@@ -56,6 +65,133 @@ class PairSpec:
     heavy_cluster_syllable_y: int
     predicted_preferred_context_1: str    # "X" | "Y", pre-registered per trial
     predicted_preferred_context_2: str
+
+
+# --------------------------------------------------------------------------- #
+# F7 eligibility — applied BEFORE a pair is ever scored
+# --------------------------------------------------------------------------- #
+
+ELIGIBLE = "ELIGIBLE"
+INELIGIBLE_DEFERRED_PHONE = "INELIGIBLE_DEFERRED_PHONE"
+INELIGIBLE_OOV = "INELIGIBLE_OOV"
+
+
+@dataclass(frozen=True)
+class EligibilityVerdict:
+    """Whether a line may enter the F7 pool, and if not, precisely why."""
+
+    subject: str                                  # the line, or a pair_id
+    reason: str                                   # one of the three codes above
+    offending: tuple[tuple[str, int, str], ...] = ()   # (word, variant_index, phone)
+    oov_words: tuple[str, ...] = ()
+
+    @property
+    def eligible(self) -> bool:
+        return self.reason == ELIGIBLE
+
+    def detail(self) -> str:
+        if self.reason == INELIGIBLE_OOV:
+            return f"out of vocabulary: {', '.join(self.oov_words)}"
+        if self.reason == INELIGIBLE_DEFERRED_PHONE:
+            return "; ".join(
+                f"{word}({index}) uses {phone}" for word, index, phone in self.offending
+            )
+        return ""
+
+
+def check_line_eligibility(
+    line: str,
+    lexicon: Lexicon,
+    deferred: Iterable[str] = V1_DEFERRED_CONSONANTS,
+) -> EligibilityVerdict:
+    """Reject a line that any CMUdict variant would cost against a deferred phone.
+
+    V1 budgets 22 scalar consonants; CH and JH are deferred and F4 carries no row
+    for either (``vae.constants.V1_DEFERRED_CONSONANTS``).  A duration lookup for
+    one is a hard error by Section 22 failure #10 — correct, but it would fire
+    deep inside SOUND, mid-experiment, on an authored line.  This guard moves the
+    refusal to authoring time, where it costs a line rather than a run.
+
+    The test is over EVERY variant, not the best or the first.  Section 9 has
+    SOUND score all variants and report the best, so a single deferred phone in a
+    single secondary pronunciation is enough to reach the failing lookup —
+    ``amateur`` is ``AE M AH T ER`` but also ``AE M AH CH ER``.  Restricting the
+    check to the primary variant would admit exactly the lines that later crash.
+
+    A phone is looked for anywhere in the pronunciation, not just the onset: an
+    affricate in a coda is budgeted by Section 7 the same way.
+
+    Out-of-vocabulary words are ineligible rather than eligible.  Their
+    pronunciation is unknown, so their phones are unknown, and Section 11
+    requires F7 members to be free of OOV words in any case.
+
+    ``deferred`` is a parameter so the same guard can be pointed at whatever a
+    later F4 actually covers; the default is the V1 decision.
+    """
+    deferred_set = frozenset(deferred)
+    words = tokenize(line)
+    if not words:
+        raise ContractError("empty candidate line")
+
+    oov = tuple(dict.fromkeys(w for w in words if w not in lexicon))
+    if oov:
+        return EligibilityVerdict(line, INELIGIBLE_OOV, oov_words=oov)
+
+    offending: list[tuple[str, int, str]] = []
+    for word in dict.fromkeys(words):              # deduplicated, order preserved
+        for pron in lexicon.variants(word):
+            for phone in pron.phones:
+                if phone in deferred_set:
+                    offending.append((word, pron.variant_index, phone))
+    if offending:
+        return EligibilityVerdict(
+            line, INELIGIBLE_DEFERRED_PHONE, offending=tuple(offending)
+        )
+    return EligibilityVerdict(line, ELIGIBLE)
+
+
+def check_pair_eligibility(
+    spec: PairSpec,
+    lexicon: Lexicon,
+    deferred: Iterable[str] = V1_DEFERRED_CONSONANTS,
+) -> EligibilityVerdict:
+    """A pair is eligible only if BOTH members are.
+
+    Dropping one member and keeping the other is not an option: Section 11 tests
+    a reversal between X and Y, which needs both.
+    """
+    x = check_line_eligibility(spec.line_x, lexicon, deferred)
+    y = check_line_eligibility(spec.line_y, lexicon, deferred)
+    for verdict in (x, y):
+        if not verdict.eligible:
+            return EligibilityVerdict(
+                spec.pair_id, verdict.reason,
+                offending=x.offending + y.offending,
+                oov_words=x.oov_words + y.oov_words,
+            )
+    return EligibilityVerdict(spec.pair_id, ELIGIBLE)
+
+
+def screen_pairs(
+    specs: Iterable[PairSpec],
+    lexicon: Lexicon,
+    deferred: Iterable[str] = V1_DEFERRED_CONSONANTS,
+) -> tuple[tuple[PairSpec, ...], tuple[EligibilityVerdict, ...]]:
+    """Partition an authored pool into (eligible pairs, rejection verdicts).
+
+    Run this before scoring anything.  Like ``run_gate``, it discards rather than
+    admitting with a warning, and the rejections are returned so the pool's
+    shortfall against the 60-pair target is visible rather than silent.
+    """
+    eligible: list[PairSpec] = []
+    rejected: list[EligibilityVerdict] = []
+    for spec in specs:
+        verdict = check_pair_eligibility(spec, lexicon, deferred)
+        if verdict.eligible:
+            eligible.append(spec)
+        else:
+            rejected.append(verdict)
+    return tuple(eligible), tuple(rejected)
 
 
 @dataclass(frozen=True)

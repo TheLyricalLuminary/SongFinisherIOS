@@ -31,7 +31,8 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from vae.conditions import flat_envelope, shuffled_envelope  # noqa: E402
-from vae.constants import HOP_SECONDS  # noqa: E402
+from vae.constants import HOP_SECONDS, V1_DEFERRED_CONSONANTS  # noqa: E402
+from vae.intake import F4_REQUIRED_CONSONANTS  # noqa: E402
 from vae.contracts import to_jsonable  # noqa: E402
 from vae.determinism import compare  # noqa: E402
 from vae.errors import ClipRejected, FixtureUnpopulatedError  # noqa: E402
@@ -334,6 +335,8 @@ def step3() -> dict:
             "status": f4.status,
             "sha256": f4.sha256,
             "n_phones": len(f4.covered_phones()),
+            "n_required": len(F4_REQUIRED_CONSONANTS),
+            "deferred_from_v1": list(V1_DEFERRED_CONSONANTS),
             "blocked": not f4.is_populated,
             "required_source_material": list(f4.required_source_material),
         },
@@ -548,10 +551,23 @@ def step4_5() -> dict:
 # Steps 6, 7, 8
 # --------------------------------------------------------------------------- #
 
+def _blocking_fixtures(engine) -> list[str]:
+    """Which of F4/F5 is actually blocking, named individually.
+
+    Reported dynamically rather than as a fixed string: F5 is populated and F4 is
+    not, and a blocker line that names both would be false.
+    """
+    return [
+        f"{fixture_id} is {table.status}"
+        for fixture_id, table in (("F4", engine.durations), ("F5", engine.onsets))
+        if not table.is_populated
+    ]
+
+
 def _sound_blocked_report(engine) -> dict:
     return {
         "blocked": True,
-        "blocker": "F4 and F5 are UNPOPULATED",
+        "blocker": "; ".join(_blocking_fixtures(engine)) or "none",
         "F4_status": engine.durations.status,
         "F5_status": engine.onsets.status,
         "F4_required_source_material": list(engine.durations.required_source_material),
@@ -717,7 +733,10 @@ def step8() -> dict:
         "title": "Author F7 pairs; run all five Section 11 checks",
         "blocked": True,
         "F7_status": "UNPOPULATED",
-        "blocker": "F7 cannot be authored: it depends on F4 and F5, both UNPOPULATED",
+        "blocker": (
+            "F7 cannot be authored: it depends on F4 and F5 -- "
+            + ("; ".join(_blocking_fixtures(engine)) or "none")
+        ),
         "why": (
             "Section 11 check 4 matches pair members on sum d_nominal(c) within LOAD_TOL, "
             "and d_nominal comes from F4. Syllable onset/coda boundaries — which decide "
@@ -727,6 +746,17 @@ def step8() -> dict:
             "unknown syllabifier."
         ),
         "gate_implementation_status": "IMPLEMENTED AND TESTED (vae.pairs.check_pair, run_gate)",
+        "eligibility_guard": {
+            "status": "IMPLEMENTED AND TESTED (vae.pairs.screen_pairs)",
+            "deferred_phones": list(V1_DEFERRED_CONSONANTS),
+            "rule": (
+                "A line is INELIGIBLE for the F7 pool if ANY CMUdict pronunciation "
+                "variant of any of its words contains a deferred phone. Checked over "
+                "every variant, not the primary one, because Section 9 has SOUND score "
+                "all variants; one deferred phone in one secondary variant would still "
+                "reach the hard duration-table error."
+            ),
+        },
         "checks_implemented": [
             "C1_B_TIED_BOTH_CONTEXTS", "C2_SCORE_C_REVERSAL", "C3_REVERSAL_MARGIN",
             "C4_NOMINAL_LOAD_MATCHED", "C5_C_FLAT_NO_REVERSAL",

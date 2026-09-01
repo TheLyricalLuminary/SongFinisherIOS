@@ -1,12 +1,17 @@
 {
   "F4": {
     "blocked": true,
+    "deferred_from_v1": [
+      "CH",
+      "JH"
+    ],
     "n_phones": 0,
+    "n_required": 22,
     "required_source_material": [
       "AUTHORITATIVE: Klatt, D. H. (1979). Synthesis by Rule of Segmental Durations in English Sentences. Table 1. INHDUR -> d_nominal_s, MINDUR -> d_floor_s.",
       "DIAGNOSTIC ONLY, never imported: Festival lib/klatt_durs.scm / Allen, Hunnicutt & Klatt (1987) ch. 9."
     ],
-    "sha256": "0796f92c96019a54e39b8a24ec922a1d10cfa690e6de0bf93a1a22599047f82d",
+    "sha256": "f5ace00be0d3d8e5b0b7703c8b1aabb285a5a50b8f790e81a06a01c1cf91a4bc",
     "status": "UNPOPULATED"
   },
   "F5": {

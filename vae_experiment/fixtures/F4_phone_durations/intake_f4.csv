@@ -1,10 +1,17 @@
-# F4 intake. One row per ARPAbet CONSONANT. Durations in MILLISECONDS.
+# F4 intake. One row per REQUIRED ARPAbet consonant. Durations in MILLISECONDS.
 #
 # AUTHORITATIVE SOURCE (spec-owner decision): Klatt, D. H. (1979), 'Synthesis by Rule
 # of Segmental Durations in English Sentences', Table 1.
 #   d_nominal_ms = INHDUR (inherent duration)
 #   d_floor_ms   = MINDUR (minimum stressed duration)
 # Set 'source' to: Klatt (1979)   and 'page_or_table' to: Table 1
+#
+# 22 ROWS, NOT 24. CH and JH are DEFERRED from V1 (spec-owner decision, recorded in
+# phone_durations.json -> v1_deferred_phones). Do not add a row for either: a CH or JH
+# row is an ERROR whether it is filled or left blank. A blank one would read as a gap
+# still to be filled; a filled one would undefer the phone without the scope decision
+# that undeferring requires. Lines that would need those phones are kept out of the F7
+# pool by the eligibility guard in vae/pairs.py, not rescued by a value here.
 #
 # Festival lib/klatt_durs.scm / Allen, Hunnicutt & Klatt (1987) ch. 9 is DIAGNOSTIC
 # ONLY. Its values differ from Klatt 1979 and must never be imported, averaged or
@@ -15,13 +22,11 @@
 # is an error. Nothing is ever defaulted.
 arpabet,d_nominal_ms,d_floor_ms,source,page_or_table,notes
 B,,,,,
-CH,,,,,
 D,,,,,
 DH,,,,,
 F,,,,,
 G,,,,,
 HH,,,,,
-JH,,,,,
 K,,,,,
 L,,,,,
 M,,,,,

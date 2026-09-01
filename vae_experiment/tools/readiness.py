@@ -14,7 +14,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from vae.intake import ARPABET_CONSONANTS, validate_f4  # noqa: E402
+from vae.constants import V1_DEFERRED_CONSONANTS  # noqa: E402
+from vae.intake import F4_REQUIRED_CONSONANTS, validate_f4  # noqa: E402
 from vae.tables import load_duration_table, load_onset_table  # noqa: E402
 
 F2_MANIFEST = ROOT / "fixtures" / "F2_clips" / "manifest.json"
@@ -23,19 +24,25 @@ F8_DIR = ROOT / "fixtures" / "F8_oracle"
 
 
 def _f4() -> tuple[str, list[str]]:
+    deferred = f"deferred from V1: {' '.join(V1_DEFERRED_CONSONANTS)} (no row, hard error on lookup)"
     table = load_duration_table()
     if table.is_populated:
         covered = set(table.covered_phones())
-        gaps = sorted(set(ARPABET_CONSONANTS) - covered)
+        gaps = sorted(set(F4_REQUIRED_CONSONANTS) - covered)
         if gaps:
-            return "INCOMPLETE", [f"uncovered phones: {' '.join(gaps)}"]
-        return "POPULATED", []
+            return "INCOMPLETE", [f"uncovered phones: {' '.join(gaps)}", deferred]
+        return "POPULATED", [deferred]
     intake = validate_f4(ROOT / "fixtures" / "F4_phone_durations" / "intake_f4.csv")
     return "UNPOPULATED", [
-        f"{len(intake.gaps)}/{len(ARPABET_CONSONANTS)} consonants have no sourced value",
-        "needs: Klatt (1976) JASA 59(5) 1208-1221 and Crystal & House (1988) JASA 83(4) 1553-1573",
-        "note: d_floor corresponds to Klatt's MINDUR, published in Klatt (1979) / MITalk, "
-        "not in Klatt (1976)",
+        f"{len(intake.gaps)}/{len(F4_REQUIRED_CONSONANTS)} required consonants "
+        f"have no sourced value",
+        deferred,
+        "needs: the exact numeric transcription of Klatt (1979) Table 1 -- "
+        "INHDUR -> d_nominal, MINDUR -> d_floor",
+        "note: d_floor is a model-derived lower bound (Klatt's MINDUR), not a "
+        "physiological minimum",
+        "note: Festival / Allen, Hunnicutt & Klatt (1987) is diagnostic only and is "
+        "never imported, averaged or substituted",
     ]
 
 
@@ -91,6 +98,8 @@ def main() -> int:
         "authoring is gated on F4, F5, F2 and F8",
         f"blocking: {', '.join(k for k, v in sorted(gates.items()) if v != 'POPULATED') or 'none'}",
         "gate code is implemented and tested (vae.pairs.check_pair / run_gate)",
+        "eligibility guard implemented and tested (vae.pairs.screen_pairs): a line is "
+        "ineligible if ANY CMUdict variant uses a deferred phone",
     ] if not f7_ready else ["all prerequisites met; F7 authoring can begin"])
 
     print("FIXTURE READINESS")
@@ -110,6 +119,7 @@ def main() -> int:
         ("HEAR-vs-oracle reporting (Section 12 / 16 cross-cut)", "ready"),
         ("provenance + hashes on every fixture", "ready"),
         ("Section 11 pair gate", "ready, awaiting F7 data"),
+        ("F7 eligibility guard (deferred CH/JH, any variant)", "ready"),
     ):
         print(f"  {label}: {state}")
     return 0

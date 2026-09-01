@@ -1,11 +1,12 @@
 """Import a hand-extracted F4 duration table into the fixture, with provenance.
 
 Reads fixtures/F4_phone_durations/intake_f4.csv, validates it against the
-acceptance requirements, and writes the fixture only if every one of the 24
-ARPAbet consonants is covered.  A partial table is REPORTED as a gap list and
-never written as POPULATED -- Section 22 failure #10 makes a duration-table gap
-a hard error, and a half-filled fixture would turn that into a surprise at
-scoring time rather than a refusal at load time.
+acceptance requirements, and writes the fixture only if every one of the 22
+REQUIRED ARPAbet consonants is covered -- CH and JH are deferred from V1 and take
+no row.  A partial table is REPORTED as a gap list and never written as
+POPULATED: Section 22 failure #10 makes a duration-table gap a hard error, and a
+half-filled fixture would turn that into a surprise at scoring time rather than a
+refusal at load time.
 """
 
 from __future__ import annotations
@@ -18,7 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from vae.intake import ARPABET_CONSONANTS, validate_f4  # noqa: E402
+from vae.intake import F4_REQUIRED_CONSONANTS, validate_f4  # noqa: E402
 
 FIXTURE = ROOT / "fixtures" / "F4_phone_durations" / "phone_durations.json"
 INTAKE = ROOT / "fixtures" / "F4_phone_durations" / "intake_f4.csv"
@@ -36,7 +37,7 @@ def main() -> int:
 
     if result.gaps:
         print(f"F4 remains UNPOPULATED: {len(result.gaps)} of "
-              f"{len(ARPABET_CONSONANTS)} consonants have no sourced value.")
+              f"{len(F4_REQUIRED_CONSONANTS)} required consonants have no sourced value.")
         print(f"  covered ({len(result.rows)}): "
               f"{' '.join(r['arpabet'] for r in result.rows) or '(none)'}")
         print(f"  UNCOVERED ({len(result.gaps)}): {' '.join(result.gaps)}")
@@ -70,7 +71,7 @@ def main() -> int:
         "n_phones": len(phones),
     }
     FIXTURE.write_text(json.dumps(doc, indent=2) + "\n")
-    print(f"F4 POPULATED: {len(phones)}/{len(ARPABET_CONSONANTS)} consonants")
+    print(f"F4 POPULATED: {len(phones)}/{len(F4_REQUIRED_CONSONANTS)} required consonants")
     for source in sources:
         print(f"  source: {source}")
     print(f"  fixture sha256: {hashlib.sha256(FIXTURE.read_bytes()).hexdigest()}")

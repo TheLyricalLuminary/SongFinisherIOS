@@ -1,6 +1,6 @@
 # F7 — 60 positional-permutation pairs, all five Section 11 checks passed
 
-**Status: UNPOPULATED — BLOCKED ON F4 AND F5.**
+**Status: UNPOPULATED — BLOCKED ON F4.** (F5 is populated; F4 is not.)
 
 Authoring F7 is not a writing task that can be done and checked later. Section 11
 check 4 matches pair members on `Σ d_nominal(c)` within `LOAD_TOL`, and
@@ -18,6 +18,29 @@ Authoring lines now and validating them later would mean authoring against an
 unknown syllabifier. The gate that discards failing pairs
 (`vae.pairs.check_pair` / `run_gate`) is implemented, tested, and runs the
 moment F4 and F5 are populated.
+
+## Eligibility — run before anything is scored
+
+V1 budgets **22** scalar consonants. `CH` and `JH` are deferred by spec-owner
+decision, F4 carries no row for either, and a duration lookup for one is a hard
+error (Section 22 failure #10). A line containing an affricate would therefore
+fail *inside SOUND*, on an authored line, mid-run.
+
+`vae.pairs.screen_pairs` refuses such pairs at authoring time instead:
+
+```python
+eligible, rejected = screen_pairs(authored_specs, lexicon)
+```
+
+The rule is **any variant, not the primary one**. Section 9 has SOUND score every
+CMUdict pronunciation and report the best, so one deferred phone in one secondary
+variant still reaches the failing lookup — `amateur` is `AE M AH T ER` but also
+`AE M AH CH ER`. Both members of a pair must pass; keeping one and dropping the
+other is not an option, since Section 11 tests a reversal between X and Y.
+
+Measured against the pinned CMUdict, this puts **10,230 of 126,052 words (8.1%)**
+out of reach for F7 — 9,979 of them in every variant, 251 in only some. Author
+around it; do not add a duration to rescue a line.
 
 ## Per-pair fields required (see `vae.pairs.PairSpec`)
 

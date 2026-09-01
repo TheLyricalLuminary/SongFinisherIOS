@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 
-from vae.intake import ARPABET_CONSONANTS, validate_f4, validate_f5
+from vae.intake import F4_REQUIRED_CONSONANTS, validate_f4, validate_f5
 
 HEADER_F4 = "arpabet,d_nominal_ms,d_floor_ms,source,page_or_table,notes\n"
 HEADER_F5 = "onset,source,page_or_table,dialect,notes\n"
@@ -22,12 +22,14 @@ def _f5(tmp_path, body, symbols=frozenset({"S", "T", "R", "P", "L", "K"})):
 
 
 def test_shipped_f4_template_is_entirely_gaps():
+    """22 gaps, not 24: the shipped template carries no row for the deferred affricates."""
     from vae.intake import validate_f4 as v
     from pathlib import Path
     root = Path(__file__).resolve().parent.parent
     result = v(root / "fixtures" / "F4_phone_durations" / "intake_f4.csv")
     assert not result.errors
-    assert sorted(result.gaps) == sorted(ARPABET_CONSONANTS)
+    assert sorted(result.gaps) == sorted(F4_REQUIRED_CONSONANTS)
+    assert len(result.gaps) == 22
     assert result.rows == []
 
 
@@ -57,10 +59,10 @@ def test_duplicate_phone_is_rejected(tmp_path):
 
 
 def test_full_coverage_validates_and_converts_to_seconds(tmp_path):
-    body = "".join(f"{p},80,40,SRC,TBL,\n" for p in ARPABET_CONSONANTS)
+    body = "".join(f"{p},80,40,SRC,TBL,\n" for p in F4_REQUIRED_CONSONANTS)
     result = _f4(tmp_path, body)
     assert result.ok
-    assert len(result.rows) == len(ARPABET_CONSONANTS)
+    assert len(result.rows) == len(F4_REQUIRED_CONSONANTS)
     assert result.rows[0]["d_nominal_s"] == 0.080
     assert result.rows[0]["d_floor_s"] == 0.040
 

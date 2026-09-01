@@ -4,7 +4,7 @@
   "spec_reference": "Section 7 (d(c) = max(d_floor(c), d_nominal(c) * rho^gamma)); Section 17 F4; Section 22 failure #10",
   "status": "UNPOPULATED",
   "provenance": null,
-  "blocked_reason": "Awaiting the exact numeric transcription of Klatt (1979) Table 1. The source is decided; only the numbers are missing. Klatt 1979 and Festival are both unreachable from this environment - every document host returns HTTP 403 at CONNECT under organization egress policy - so the values must be supplied. NOTHING has been populated from memory, inference, Festival, or secondary literature.",
+  "blocked_reason": "Awaiting the exact numeric transcription of Klatt (1979) Table 1 for the 22 scalar consonants. The source is decided and the row set is now 22, not 24: CH and JH are DEFERRED from V1 by spec-owner decision. Klatt 1979 is unreachable from this environment - every document host returns HTTP 403 at CONNECT under organization egress policy - so the values must be supplied. NOTHING has been populated from memory, inference, Festival, or secondary literature.",
   "required_source_material": [
     "AUTHORITATIVE: Klatt, D. H. (1979). Synthesis by Rule of Segmental Durations in English Sentences. Table 1. INHDUR -> d_nominal_s, MINDUR -> d_floor_s.",
     "DIAGNOSTIC ONLY, never imported: Festival lib/klatt_durs.scm / Allen, Hunnicutt & Klatt (1987) ch. 9."
@@ -15,9 +15,10 @@
     "dialect": "The lexicon is CMUdict (US English, Section 9). Duration values must be for American English. Crystal & House (1988) is American English. Confirm the dialect of any substitute source."
   },
   "acceptance_requirements": [
-    "All 24 ARPAbet consonants covered: B CH D DH F G HH JH K L M N NG P R S SH T TH V W Y Z ZH.",
+    "All 22 REQUIRED consonants covered: B D DH F G HH K L M N NG P R S SH T TH V W Y Z ZH.",
+    "CH and JH are DEFERRED from V1 and take NO row. A row for either is an error, blank or not.",
     "Every Klatt symbol mapped to ARPAbet, with the mapping recorded per row.",
-    "BOTH INHDUR and MINDUR present for all 24. A row missing either is an error, not a gap.",
+    "BOTH INHDUR and MINDUR present for all 22. A row missing either is an error, not a gap.",
     "MINDUR <= INHDUR for every consonant (d_floor_s <= d_nominal_s).",
     "Every entry carries 'source' and 'page_or_table' naming Klatt (1979) Table 1.",
     "No interpolation, no estimation by manner class, no defaults, no Festival values.",
@@ -27,13 +28,11 @@
   "phones": {},
   "uncovered_phones": [
     "B",
-    "CH",
     "D",
     "DH",
     "F",
     "G",
     "HH",
-    "JH",
     "K",
     "L",
     "M",
@@ -66,5 +65,23 @@
     "d_floor_caveat": "MINDUR is a MODEL-DERIVED LOWER BOUND, not a physiological minimum. Section 7 already forbids describing the compression equation as validated science; d_floor inherits the same caveat and no output may claim otherwise.",
     "festival_allen_1987": "DIAGNOSTIC ONLY. Festival lib/klatt_durs.scm, tied to Allen, Hunnicutt & Klatt (1987) chapter 9, contains values that differ from Klatt 1979 and therefore represents a later source/version. It must NEVER be imported, averaged, merged into, or substituted for F4.",
     "supersedes": "An earlier note in this fixture suggested the MITalk table might be the cleanest single source for both columns. That was a sourcing observation, not a decision, and it is now SUPERSEDED: Klatt 1979 Table 1 is authoritative for both columns."
+  },
+  "v1_deferred_phones": {
+    "phones": [
+      "CH",
+      "JH"
+    ],
+    "decided_by": "spec owner, [CHATGPT HANDOFF - F4 source transcription + affricate correction]",
+    "effect": "V1 requires 22 scalar consonants, not 24. F4 carries no row for CH or JH; the intake CSV rejects one; and a duration lookup for either remains a HARD ERROR (Section 22 failure #10), never a default and never zero.",
+    "f7_eligibility_guard": "vae.pairs.check_line_eligibility / check_pair_eligibility / screen_pairs. A candidate line is INELIGIBLE for the F7 pool if ANY CMUdict pronunciation variant of any of its words contains a deferred phone - not merely the primary variant, because Section 9 has SOUND score every variant and report the best, so one deferred phone in one secondary variant still reaches the failing lookup.",
+    "lexicon_impact_measured": {
+      "note": "Counted mechanically against the pinned CMUdict 0.7b, not estimated.",
+      "total_words": 126052,
+      "words_with_any_deferred_variant": 10230,
+      "words_where_every_variant_is_deferred": 9979,
+      "words_where_only_some_variants_are_deferred": 251,
+      "percent_of_lexicon_excluded_from_F7": 8.12
+    },
+    "undeferring_is_a_scope_change": "Restoring CH and JH needs INHDUR/MINDUR from the authoritative source AND a new EngineVersion. Both are guaranteed: the values would change duration_table_hash, and V1_DEFERRED_CONSONANTS lives in vae/constants.py, which code_version hashes."
   }
 }

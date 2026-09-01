@@ -14,13 +14,16 @@ import csv
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from .constants import ARPABET_CONSONANTS, V1_DEFERRED_CONSONANTS
 from .oracle import ADJUDICATION_THRESHOLD_S
 
-# The 24 ARPAbet consonants.  Vowels are not required: only consonants are
-# budgeted (Section 7), the nucleus being the residual.
-ARPABET_CONSONANTS = (
-    "B", "CH", "D", "DH", "F", "G", "HH", "JH", "K", "L", "M", "N",
-    "NG", "P", "R", "S", "SH", "T", "TH", "V", "W", "Y", "Z", "ZH",
+# What F4 must cover in V1: the 22 scalar consonants.  The two affricates are
+# deferred (see ``V1_DEFERRED_CONSONANTS``), so an absent CH/JH row is neither a
+# gap nor a defect -- but a PRESENT one is an error, because supplying a value
+# for a deferred phone would quietly widen V1's scope past the decision that
+# deferred it.
+F4_REQUIRED_CONSONANTS = tuple(
+    p for p in ARPABET_CONSONANTS if p not in V1_DEFERRED_CONSONANTS
 )
 
 
@@ -45,7 +48,11 @@ def read_csv_rows(path: Path | str) -> list[dict]:
 
 
 def validate_f4(path: Path | str) -> IntakeResult:
-    """Validate an F4 intake CSV against the acceptance requirements."""
+    """Validate an F4 intake CSV against the acceptance requirements.
+
+    Coverage is judged against ``F4_REQUIRED_CONSONANTS`` (22 in V1), not against
+    the full ARPAbet consonant inventory.
+    """
     result = IntakeResult()
     seen: dict[str, dict] = {}
 
@@ -56,6 +63,15 @@ def validate_f4(path: Path | str) -> IntakeResult:
             continue
         if phone not in ARPABET_CONSONANTS:
             result.errors.append(f"row {i}: {phone!r} is not an ARPAbet consonant")
+            continue
+        if phone in V1_DEFERRED_CONSONANTS:
+            # Rejected whether filled or blank: a deferred phone has no row at all.
+            # A blank one would read as a gap still to be filled, and a filled one
+            # would undefer it silently.
+            result.errors.append(
+                f"row {i}: {phone} is DEFERRED from V1 and takes no F4 value. "
+                f"Delete the row. Undeferring it is a scope decision, not an import."
+            )
             continue
         if phone in seen:
             result.errors.append(f"row {i}: duplicate entry for {phone}")
@@ -106,7 +122,9 @@ def validate_f4(path: Path | str) -> IntakeResult:
             "notes": (row.get("notes") or "").strip(),
         }
 
-    result.gaps.extend(p for p in ARPABET_CONSONANTS if p not in seen and p not in result.gaps)
+    result.gaps.extend(
+        p for p in F4_REQUIRED_CONSONANTS if p not in seen and p not in result.gaps
+    )
     result.gaps.sort()
     result.rows = [{"arpabet": p, **seen[p]} for p in sorted(seen)]
     return result
