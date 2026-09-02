@@ -28,8 +28,9 @@ Safest, in order:
 2. **Recordings you have explicit permission to use and retain** for this
    experiment — written permission you could produce later if asked.
 
-Record the basis in the `permission/source note` field for every clip. If a clip
-came from somewhere you cannot describe in one line, it is not ready to submit.
+Record the basis in `permission_note` for every clip — the importer now requires
+it. If a clip came from somewhere you cannot describe in one line, it is not
+ready to submit.
 
 This checklist takes no position on the copyright status of commercial
 recordings; that is a question for the experiment owner and, if needed, a
@@ -50,13 +51,28 @@ authored_content: accompaniment only; no vocal; no vocal-range lead melody
 authored_language: English (US)
 slot_mask_id:
 source_attribution:
-permission/source note:
+permission_note:            <- REQUIRED; a blank one rejects the clip
 ```
 
 `authored_meter`, `authored_content` and `authored_language` are **declarations**.
 The pipeline cannot hear whether a clip has a vocal on it, and it does not
 pretend to. It does require the declarations to be present and exactly right —
 a missing or wrong one rejects the clip.
+
+`permission_note` is **required**. A blank or whitespace-only value rejects the
+clip as `PERMISSION_NOTE_MISSING` — a provenance gate, not an acoustic one, so a
+clip excluded this way failed nothing about the recording itself. It is never
+inferred from `source_attribution`: knowing where a recording came from is not a
+statement that it may be used and retained, and that inference is precisely what
+this gate exists to prevent. The field records **your stated basis** for use and
+retention. Nothing verifies the claim, and nothing here makes a legal
+determination that a source is or is not licensed.
+
+Examples of a usable note:
+
+* `self-authored; recorded by me 2026-02-14`
+* `written permission from <rights holder>, 2026-01-30, retained in <location>`
+* `CC0 / public domain dedication, <url>, retrieved 2026-02-01`
 
 `slot_mask_id` must name one of the 8 masks in the F6 inventory. Use mirror pairs
 for the two contexts of a trial: `M5_short_first_4` ↔ `M6_long_first_4`, or
@@ -85,6 +101,7 @@ Supply the audio; these are measured and enforced, and a failing clip is
 | Distinct recording | not a repeat of another clip | `DUPLICATE_FILE`, `DUPLICATE_AUDIO`, `DUPLICATE_CLIP_ID` |
 | Mask exists | `slot_mask_id` is in the F6 inventory | `UNKNOWN_SLOT_MASK` |
 | Declarations | present and exact | `DECLARATION_MISSING`, `DECLARATION_INVALID` |
+| Permission recorded | `permission_note` non-blank | `PERMISSION_NOTE_MISSING` |
 
 ### Practical notes
 

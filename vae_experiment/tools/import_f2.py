@@ -130,6 +130,17 @@ def run(f2_dir: Path) -> int:
                              f"authored_language is {language!r}; Section 2 admits "
                              f"{REQUIRED_LANGUAGE!r} only"))
             continue
+        # Provenance/compliance gate, NOT an acoustic or scientific criterion, so it
+        # carries its own reason code rather than joining DECLARATION_MISSING: a clip
+        # excluded for missing paperwork failed nothing about the recording.
+        # Deliberately independent of source_attribution -- knowing WHERE a recording
+        # came from is not a statement that it may be used and retained, and inferring
+        # one from the other is exactly the inference this gate exists to prevent.
+        if not permission:
+            rejected.append((clip_id, "PERMISSION_NOTE_MISSING",
+                             "permission_note is blank; record the basis on which this "
+                             "recording may be used and retained (see INTAKE_CHECKLIST.md)"))
+            continue
 
         try:
             check_source_format(wavio.read_wav(path), str(path))
@@ -181,7 +192,6 @@ def run(f2_dir: Path) -> int:
             "permission_note": permission,
         })
 
-    no_permission = [c["clip_id"] for c in accepted if not c["permission_note"]]
     n_asym = sum(1 for c in accepted if c["meets_asymmetry_min"])
     n_distinct = len({c["audio_id"] for c in accepted})
     complete = (
@@ -208,7 +218,13 @@ def run(f2_dir: Path) -> int:
             "checked for presence and exact value: a clip with a missing or wrong declaration "
             "is rejected and does not count toward F2 completeness."
         ),
-        "clips_without_permission_note": no_permission,
+        "permission_note_is_provenance_not_verification": (
+            "permission_note is REQUIRED: a blank or whitespace-only value rejects the clip "
+            "as PERMISSION_NOTE_MISSING. It records the experiment owner's STATED basis for "
+            "using and retaining the recording. It is not a licence check and makes no legal "
+            "determination that a source actually is licensed; nothing here verifies the "
+            "claim, and it is never inferred from source_attribution."
+        ),
         "clips": accepted,
         "rejected": [
             {"clip_id": c, "reason_code": r, "detail": d} for c, r, d in rejected
@@ -217,11 +233,6 @@ def run(f2_dir: Path) -> int:
     (f2_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
     print(f"F2 intake: {len(accepted)} accepted, {len(rejected)} rejected")
-    if no_permission:
-        print(f"  WARNING: {len(no_permission)} accepted clip(s) carry no permission_note: "
-              f"{', '.join(no_permission)}")
-        print("           Record how each recording may be used and retained "
-              "(see INTAKE_CHECKLIST.md).")
     for clip_id, reason, detail in rejected:
         print(f"  REJECTED {clip_id}: {reason} -- {detail}")
     print(f"  asymmetric (>= {engine.config.ASYMMETRY_MIN}): {n_asym}")

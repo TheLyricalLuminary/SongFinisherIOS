@@ -80,6 +80,8 @@ def _f2() -> tuple[str, list[str]]:
     provenance = doc.get("provenance", "")
     distinct = len({c.get("audio_id") for c in clips if c.get("audio_id")})
     asymmetric = sum(1 for c in clips if c.get("meets_asymmetry_min"))
+    unattested = [c.get("clip_id") for c in clips
+                  if not (c.get("permission_note") or "").strip()]
 
     notes = [
         f"{len(clips)}/{F2_REQUIRED_CLIPS} accepted, "
@@ -95,6 +97,15 @@ def _f2() -> tuple[str, list[str]]:
         return "UNPOPULATED", notes
     if distinct != len(clips):
         notes.append("REFUSED: duplicate recordings among the accepted clips")
+        return "INCOMPLETE", notes
+    if unattested:
+        # The importer cannot accept such a clip, so a manifest carrying one was
+        # not written by it. Same rule as the status field: derive, never trust.
+        notes.append(
+            f"REFUSED: {len(unattested)} accepted clip(s) carry no permission_note "
+            f"({', '.join(str(c) for c in unattested[:5])}"
+            f"{', ...' if len(unattested) > 5 else ''})"
+        )
         return "INCOMPLETE", notes
     if len(clips) < F2_REQUIRED_CLIPS or asymmetric < F2_REQUIRED_ASYMMETRIC:
         return "INCOMPLETE", notes

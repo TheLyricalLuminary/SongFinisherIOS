@@ -37,8 +37,8 @@ from vae.errors import ClipRejected  # noqa: E402
 from vae.wavio import write_wav_pcm24  # noqa: E402
 
 HEADER = ("file,clip_id,slot_mask_id,authored_meter,authored_content,"
-          "authored_language,source_attribution\n")
-GOOD = "4/4,accompaniment only no vocal,English (US),own recording"
+          "authored_language,source_attribution,permission_note\n")
+GOOD = "4/4,accompaniment only no vocal,English (US),own recording,self-authored"
 
 
 def _clip(path, bpm=100.0, duration=10.0, phase=0.05):
@@ -189,19 +189,23 @@ def test_an_unknown_slot_mask_is_rejected(tmp_path):
       "clips": [], "rejected": []}, "INCOMPLETE"),
     ("twenty rows, one recording",
      {"status": "POPULATED", "provenance": "REAL_RECORDED_ACCOMPANIMENT",
-      "clips": [{"audio_id": "same", "meets_asymmetry_min": True}] * 20,
+      "clips": [{"audio_id": "same", "meets_asymmetry_min": True,
+                "permission_note": "self-authored"}] * 20,
       "rejected": []}, "INCOMPLETE"),
     ("twenty distinct, too few asymmetric",
      {"status": "POPULATED", "provenance": "REAL_RECORDED_ACCOMPANIMENT",
-      "clips": [{"audio_id": f"a{i}", "meets_asymmetry_min": i < 11} for i in range(20)],
+      "clips": [{"audio_id": f"a{i}", "meets_asymmetry_min": i < 11,
+                "permission_note": "self-authored"} for i in range(20)],
       "rejected": []}, "INCOMPLETE"),
     ("qualifies, but the importer did not say POPULATED",
      {"status": "INCOMPLETE", "provenance": "REAL_RECORDED_ACCOMPANIMENT",
-      "clips": [{"audio_id": f"a{i}", "meets_asymmetry_min": i < 12} for i in range(20)],
+      "clips": [{"audio_id": f"a{i}", "meets_asymmetry_min": i < 12,
+                "permission_note": "self-authored"} for i in range(20)],
       "rejected": []}, "INCOMPLETE"),
     ("twenty distinct, twelve asymmetric, importer agrees",
      {"status": "POPULATED", "provenance": "REAL_RECORDED_ACCOMPANIMENT",
-      "clips": [{"audio_id": f"a{i}", "meets_asymmetry_min": i < 12} for i in range(20)],
+      "clips": [{"audio_id": f"a{i}", "meets_asymmetry_min": i < 12,
+                "permission_note": "self-authored"} for i in range(20)],
       "rejected": []}, "POPULATED"),
 ])
 def test_readiness_derives_f2_status_from_contents(label, doc, expected):
@@ -227,3 +231,106 @@ def test_the_shipped_repository_reports_f2_unpopulated():
     status, notes = readiness._f2()
     assert status == "UNPOPULATED"
     assert any("no clips supplied" in n for n in notes)
+
+
+# --------------------------------------------------------------------------- #
+# 4. permission_note is a required provenance gate (spec-owner decision)
+# --------------------------------------------------------------------------- #
+
+NO_PERMISSION = "4/4,accompaniment only no vocal,English (US),own recording,"
+
+
+def _one_clip(tmp_path, declarations):
+    f2_dir = tmp_path / "F2_clips"
+    (f2_dir / "intake").mkdir(parents=True)
+    _clip(f2_dir / "intake" / "a.wav")
+    (f2_dir / "intake_f2.csv").write_text(
+        HEADER + f"a.wav,F2_01,M5_short_first_4,{declarations}\n"
+    )
+    return _import(f2_dir)
+
+
+@pytest.mark.parametrize("label,declarations", [
+    ("blank", NO_PERMISSION),
+    ("spaces", "4/4,accompaniment only no vocal,English (US),own recording,   "),
+    ("tab", "4/4,accompaniment only no vocal,English (US),own recording,\t"),
+])
+def test_a_blank_permission_note_rejects_the_clip(tmp_path, label, declarations):
+    _, doc = _one_clip(tmp_path, declarations)
+    assert doc["requirements"]["clips_accepted"] == 0, label
+    assert doc["rejected"][0]["reason_code"] == "PERMISSION_NOTE_MISSING", label
+
+
+def test_an_absent_permission_column_rejects_the_clip(tmp_path):
+    """A CSV written to the old seven-column shape must not slip through."""
+    f2_dir = tmp_path / "F2_clips"
+    (f2_dir / "intake").mkdir(parents=True)
+    _clip(f2_dir / "intake" / "a.wav")
+    (f2_dir / "intake_f2.csv").write_text(
+        "file,clip_id,slot_mask_id,authored_meter,authored_content,"
+        "authored_language,source_attribution\n"
+        "a.wav,F2_01,M5_short_first_4,4/4,accompaniment only,English (US),own recording\n"
+    )
+    _, doc = _import(f2_dir)
+    assert doc["requirements"]["clips_accepted"] == 0
+    assert doc["rejected"][0]["reason_code"] == "PERMISSION_NOTE_MISSING"
+
+
+def test_the_code_is_distinct_from_the_section_2_declaration_codes(tmp_path):
+    """A provenance failure is not an acoustic or Section 2 failure."""
+    _, doc = _one_clip(tmp_path, NO_PERMISSION)
+    code = doc["rejected"][0]["reason_code"]
+    assert code == "PERMISSION_NOTE_MISSING"
+    assert code not in ("DECLARATION_MISSING", "DECLARATION_INVALID")
+
+
+def test_permission_is_never_inferred_from_source_attribution(tmp_path):
+    """Knowing where a recording came from is not a statement that it may be used."""
+    detailed = ("4/4,accompaniment only no vocal,English (US),"
+                "recorded at Abbey Road 1998 by the composer himself,")
+    _, doc = _one_clip(tmp_path, detailed)
+    assert doc["requirements"]["clips_accepted"] == 0
+    assert doc["rejected"][0]["reason_code"] == "PERMISSION_NOTE_MISSING"
+
+
+def test_the_same_clip_is_accepted_once_the_note_is_supplied(tmp_path):
+    """The gate is provenance only: the audio checks are untouched by it."""
+    _, without = _one_clip(tmp_path / "a", NO_PERMISSION)
+    _, with_note = _one_clip(tmp_path / "b", GOOD)
+    assert without["requirements"]["clips_accepted"] == 0
+    assert with_note["requirements"]["clips_accepted"] == 1
+    assert with_note["rejected"] == []
+    assert with_note["clips"][0]["permission_note"] == "self-authored"
+
+
+def test_the_manifest_says_the_field_is_not_a_licence_check(tmp_path):
+    _, doc = _one_clip(tmp_path, GOOD)
+    note = doc["permission_note_is_provenance_not_verification"]
+    assert "REQUIRED" in note
+    assert "no legal determination" in note
+    assert "never inferred from source_attribution" in note
+
+
+def test_readiness_refuses_accepted_clips_that_carry_no_permission_note():
+    """Same rule as the status field: derive, never trust what the manifest asserts."""
+    import tools.readiness as readiness
+
+    doc = {
+        "status": "POPULATED", "provenance": "REAL_RECORDED_ACCOMPANIMENT",
+        "clips": [{"clip_id": f"F2_{i:02d}", "audio_id": f"a{i}",
+                   "meets_asymmetry_min": i < 12,
+                   "permission_note": "self-authored" if i else ""}
+                  for i in range(20)],
+        "rejected": [],
+    }
+    original = readiness.F2_MANIFEST
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "manifest.json"
+            path.write_text(json.dumps(doc))
+            readiness.F2_MANIFEST = path
+            status, notes = readiness._f2()
+    finally:
+        readiness.F2_MANIFEST = original
+    assert status == "INCOMPLETE"
+    assert any("no permission_note" in n for n in notes)

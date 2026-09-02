@@ -19,8 +19,8 @@ from tools.synth import SR, click, normalize_peak_dbfs, place  # noqa: E402
 from vae.wavio import write_wav_pcm24  # noqa: E402
 
 HEADER = ("file,clip_id,slot_mask_id,authored_meter,authored_content,"
-          "authored_language,source_attribution\n")
-GOOD = "4/4,accompaniment only no vocal,English (US),own recording"
+          "authored_language,source_attribution,permission_note\n")
+GOOD = "4/4,accompaniment only no vocal,English (US),own recording,self-authored"
 
 
 def _clip(path):
