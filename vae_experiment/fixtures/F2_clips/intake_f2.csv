@@ -1,0 +1,18 @@
+# F2 intake. One row per candidate accompaniment clip.
+# Put the WAV files in fixtures/F2_clips/intake/ and list them here, then run:
+#   python3 tools/import_f2.py
+# The importer measures tempo, drift, pulse and asymmetry itself and REJECTS
+# failing clips (Section 2 rejection is mandatory; there is no degradation).
+# The authored_* columns are declarations the pipeline CANNOT verify; they are
+# recorded as declared and are your responsibility.
+# authored_meter must be exactly "4/4"; authored_language must be exactly "English (US)".
+# authored_content and source_attribution must be non-empty. A clip failing any of these is
+# REJECTED and does not count toward the 20.
+# permission_note is REQUIRED (spec-owner decision). Record the basis on which this
+# recording may be used and retained (e.g. 'self-authored', 'written permission from
+# <holder>, <date>'). Blank or whitespace-only REJECTS the clip as
+# PERMISSION_NOTE_MISSING. It is a provenance gate, not an acoustic one, and it is never
+# inferred from source_attribution: knowing where a recording came from is not a
+# statement that it may be used. Nothing here verifies the claim or makes any legal
+# determination. See INTAKE_CHECKLIST.md.
+file,clip_id,slot_mask_id,authored_meter,authored_content,authored_language,source_attribution,permission_note

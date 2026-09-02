@@ -1,0 +1,43 @@
+{
+  "adjudicated_slots": [],
+  "anchor_sigma_s": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "anchor_times_s": [
+    0.042,
+    0.51075,
+    0.9795,
+    1.44825
+  ],
+  "annotation_source": "GROUND_TRUTH_BY_CONSTRUCTION",
+  "annotator_ids": [],
+  "audio_id": "d23cd953b2c4232c0061abb9671946d4fd152520fd54a1214b2366a538e5dc48",
+  "beat_times_s": [
+    0.042,
+    0.51075,
+    0.9795,
+    1.44825,
+    1.917,
+    2.38575,
+    2.8545,
+    3.32325,
+    3.792,
+    4.26075,
+    4.7295,
+    5.19825,
+    5.667,
+    6.13575,
+    6.6045,
+    7.07325,
+    7.542,
+    8.01075
+  ],
+  "clip_id": "F1_08",
+  "not_a_substitute_for_f2_oracle": true,
+  "slot_mask_id": "M1_quarters_4",
+  "source_fixture": "F1_click_tracks",
+  "tempo_bpm": 128.0
+}

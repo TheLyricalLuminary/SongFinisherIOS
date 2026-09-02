@@ -1,0 +1,258 @@
+{
+  "F4": {
+    "blocked": false,
+    "deferred_from_v1": [
+      "CH",
+      "JH"
+    ],
+    "n_phones": 22,
+    "n_required": 22,
+    "required_source_material": [
+      "AUTHORITATIVE: Klatt, D. H. (1979). Synthesis by Rule of Segmental Durations in English Sentences. Table 1. INHDUR -> d_nominal_s, MINDUR -> d_floor_s.",
+      "DIAGNOSTIC ONLY, never imported: Festival lib/klatt_durs.scm / Allen, Hunnicutt & Klatt (1987) ch. 9."
+    ],
+    "sha256": "149f518c1ed3724f0dd4738e87cecd01beb12bb8bd823fb95373cee1fa7b9ba7",
+    "status": "POPULATED"
+  },
+  "F5": {
+    "blocked": false,
+    "max_onset_length": 3,
+    "n_onsets": 64,
+    "required_source_material": [
+      "A named standard phonotactics reference giving the exhaustive inventory of legal English syllable-onset consonant clusters, mappable one-to-one onto the ARPAbet consonants in fixtures/lexicon/cmudict.symbols.",
+      "Candidates identified bibliographically: Roach, P., 'English Phonetics and Phonology: A Practical Course', 4th ed. (Cambridge University Press, 2009), ch. 8; Cruttenden, A., 'Gimson's Pronunciation of English' (Hodder), section 5.5. NEITHER was retrieved, so NEITHER has been used."
+    ],
+    "sha256": "182ad1dd6cd098ee4f62457e319e9a0d6a4a64462a2554384f32385a4d672478",
+    "status": "POPULATED"
+  },
+  "F6": {
+    "asymmetry_min": 1.5,
+    "masks": [
+      {
+        "asymmetry_direction": "SYMMETRIC",
+        "is_asymmetric": false,
+        "mask_id": "M1_quarters_4",
+        "metrical_strength": [
+          "STRONG",
+          "MEDIUM",
+          "MEDIUM",
+          "MEDIUM"
+        ],
+        "nominal_asymmetry": 1.0,
+        "nominal_gaps_eighths": [
+          2,
+          2,
+          2
+        ],
+        "positions": [
+          0,
+          2,
+          4,
+          6
+        ],
+        "slot_count": 4
+      },
+      {
+        "asymmetry_direction": "SYMMETRIC",
+        "is_asymmetric": false,
+        "mask_id": "M2_quarters_8",
+        "metrical_strength": [
+          "STRONG",
+          "MEDIUM",
+          "MEDIUM",
+          "MEDIUM",
+          "STRONG",
+          "MEDIUM",
+          "MEDIUM",
+          "MEDIUM"
+        ],
+        "nominal_asymmetry": 1.0,
+        "nominal_gaps_eighths": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "positions": [
+          0,
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          14
+        ],
+        "slot_count": 8
+      },
+      {
+        "asymmetry_direction": "SYMMETRIC",
+        "is_asymmetric": false,
+        "mask_id": "M3_eighths_4",
+        "metrical_strength": [
+          "STRONG",
+          "WEAK",
+          "MEDIUM",
+          "WEAK"
+        ],
+        "nominal_asymmetry": 1.0,
+        "nominal_gaps_eighths": [
+          1,
+          1,
+          1
+        ],
+        "positions": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "slot_count": 4
+      },
+      {
+        "asymmetry_direction": "SYMMETRIC",
+        "is_asymmetric": false,
+        "mask_id": "M4_dotted_4",
+        "metrical_strength": [
+          "STRONG",
+          "WEAK",
+          "MEDIUM",
+          "WEAK"
+        ],
+        "nominal_asymmetry": 1.0,
+        "nominal_gaps_eighths": [
+          3,
+          3,
+          3
+        ],
+        "positions": [
+          0,
+          3,
+          6,
+          9
+        ],
+        "slot_count": 4
+      },
+      {
+        "asymmetry_direction": "SHORT_FIRST",
+        "is_asymmetric": true,
+        "mask_id": "M5_short_first_4",
+        "metrical_strength": [
+          "STRONG",
+          "WEAK",
+          "MEDIUM",
+          "WEAK"
+        ],
+        "nominal_asymmetry": 3.0,
+        "nominal_gaps_eighths": [
+          1,
+          3,
+          1
+        ],
+        "positions": [
+          0,
+          1,
+          4,
+          5
+        ],
+        "slot_count": 4
+      },
+      {
+        "asymmetry_direction": "LONG_FIRST",
+        "is_asymmetric": true,
+        "mask_id": "M6_long_first_4",
+        "metrical_strength": [
+          "STRONG",
+          "WEAK",
+          "MEDIUM",
+          "WEAK"
+        ],
+        "nominal_asymmetry": 3.0,
+        "nominal_gaps_eighths": [
+          3,
+          1,
+          3
+        ],
+        "positions": [
+          0,
+          3,
+          4,
+          7
+        ],
+        "slot_count": 4
+      },
+      {
+        "asymmetry_direction": "SHORT_FIRST",
+        "is_asymmetric": true,
+        "mask_id": "M7_short_first_6",
+        "metrical_strength": [
+          "STRONG",
+          "WEAK",
+          "MEDIUM",
+          "WEAK",
+          "STRONG",
+          "WEAK"
+        ],
+        "nominal_asymmetry": 3.0,
+        "nominal_gaps_eighths": [
+          1,
+          3,
+          1,
+          3,
+          1
+        ],
+        "positions": [
+          0,
+          1,
+          4,
+          5,
+          8,
+          9
+        ],
+        "slot_count": 6
+      },
+      {
+        "asymmetry_direction": "LONG_FIRST",
+        "is_asymmetric": true,
+        "mask_id": "M8_long_first_6",
+        "metrical_strength": [
+          "STRONG",
+          "WEAK",
+          "MEDIUM",
+          "WEAK",
+          "STRONG",
+          "WEAK"
+        ],
+        "nominal_asymmetry": 3.0,
+        "nominal_gaps_eighths": [
+          3,
+          1,
+          3,
+          1,
+          3
+        ],
+        "positions": [
+          0,
+          3,
+          4,
+          7,
+          8,
+          11
+        ],
+        "slot_count": 6
+      }
+    ],
+    "n_asymmetric": 4,
+    "n_masks": 8,
+    "requirement": "8 patterns, >=4 asymmetric, with authored metrical strength",
+    "requirement_met": true,
+    "sha256": "17ea845e24cf974892a1d12f94ab92ecdee966c00d2048a55762d3a8356dc430",
+    "status": "AUTHORED"
+  },
+  "blocked": false,
+  "step": 3,
+  "title": "Author F6 slot mask inventory; populate F4, F5"
+}

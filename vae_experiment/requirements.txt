@@ -1,0 +1,5 @@
+# Offline only. Nothing here reaches the network at runtime — see
+# tests/test_offline_and_purity.py, which fails if any module in vae/ imports a
+# network-capable library.
+numpy==2.4.6
+pytest==9.1.1

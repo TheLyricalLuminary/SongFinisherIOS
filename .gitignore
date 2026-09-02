@@ -34,3 +34,14 @@ SongFinisher/Resources/DevSecrets.plist
 
 # Generated
 SongFinisher.xcodeproj/
+
+# VAE experiment: generated audio fixtures.
+# Regenerate with `python3 vae_experiment/tools/bootstrap.py`. They are
+# deterministic functions of their generators, so the committed F9 goldens verify
+# a regenerated set — which also checks that the generators themselves are stable.
+vae_experiment/fixtures/F1_click_tracks/*.wav
+vae_experiment/fixtures/F2_SYNTH_pipeline_exercise/*.wav
+vae_experiment/fixtures/F3_out_of_spec/*.wav
+__pycache__/
+*.pyc
+.pytest_cache/
