@@ -57,17 +57,53 @@ def _f5() -> tuple[str, list[str]]:
     ]
 
 
+F2_REQUIRED_CLIPS = 20
+F2_REQUIRED_ASYMMETRIC = 12
+F2_REAL_PROVENANCE = "REAL_RECORDED_ACCOMPANIMENT"
+
+
 def _f2() -> tuple[str, list[str]]:
+    """Derive F2's status from what the manifest CONTAINS, never from what it claims.
+
+    Reading ``doc["status"]`` made the readiness gate a self-report: a manifest
+    saying POPULATED over zero clips and synthetic provenance turned the screen
+    green -- verified, not hypothetical. The counts and the provenance marker are
+    recomputed here from the clip list, so nothing can declare itself complete.
+    """
     if not F2_MANIFEST.exists():
-        return "UNPOPULATED", ["no clips supplied; see fixtures/F2_clips/ACCEPTANCE.md",
-                               "needs: 20 real accompaniment clips, >=12 with interval asymmetry"]
+        return "UNPOPULATED", [
+            "no clips supplied; see fixtures/F2_clips/INTAKE_CHECKLIST.md",
+            "needs: 20 DISTINCT real accompaniment recordings, >=12 with interval asymmetry",
+        ]
     doc = json.loads(F2_MANIFEST.read_text())
-    req = doc.get("requirements", {})
-    return doc.get("status", "UNKNOWN"), [
-        f"{req.get('clips_accepted', 0)}/{req.get('clips_required', 20)} accepted, "
-        f"{req.get('asymmetric_accepted', 0)}/{req.get('asymmetric_required', 12)} asymmetric",
+    clips = doc.get("clips", [])
+    provenance = doc.get("provenance", "")
+    distinct = len({c.get("audio_id") for c in clips if c.get("audio_id")})
+    asymmetric = sum(1 for c in clips if c.get("meets_asymmetry_min"))
+
+    notes = [
+        f"{len(clips)}/{F2_REQUIRED_CLIPS} accepted, "
+        f"{asymmetric}/{F2_REQUIRED_ASYMMETRIC} asymmetric, {distinct} distinct AudioIDs",
         f"{len(doc.get('rejected', []))} rejected by Section 2",
+        f"provenance: {provenance or '(none declared)'}",
     ]
+    if provenance != F2_REAL_PROVENANCE:
+        notes.append(
+            f"REFUSED: provenance is not {F2_REAL_PROVENANCE!r}; only real recorded "
+            f"accompaniment counts as F2"
+        )
+        return "UNPOPULATED", notes
+    if distinct != len(clips):
+        notes.append("REFUSED: duplicate recordings among the accepted clips")
+        return "INCOMPLETE", notes
+    if len(clips) < F2_REQUIRED_CLIPS or asymmetric < F2_REQUIRED_ASYMMETRIC:
+        return "INCOMPLETE", notes
+    if doc.get("status") != "POPULATED":
+        # The contents qualify but the importer did not say so: the manifest was
+        # not written by this importer, or was edited after it was.
+        notes.append(f"REFUSED: manifest status is {doc.get('status')!r}, not 'POPULATED'")
+        return "INCOMPLETE", notes
+    return "POPULATED", notes
 
 
 def _f8() -> tuple[str, list[str]]:

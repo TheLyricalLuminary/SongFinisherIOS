@@ -73,6 +73,14 @@ def run(f2_dir: Path) -> int:
         print(f"WARNING: {len(unlisted)} file(s) in intake/ are not listed in the CSV "
               f"and will be ignored: {unlisted}")
 
+    # F2 is 20 DISTINCT recordings.  Without these three, one real clip listed
+    # twenty times under twenty clip_ids drives the gate to POPULATED with 20
+    # accepted and 20 asymmetric -- verified, not hypothetical.  First occurrence
+    # in CSV order wins so the outcome does not depend on iteration order.
+    seen_clip_ids: dict[str, str] = {}
+    seen_files: dict[str, str] = {}
+    seen_audio_ids: dict[str, str] = {}
+
     accepted, rejected = [], []
     for row in rows:
         filename = (row.get("file") or "").strip()
@@ -80,6 +88,16 @@ def run(f2_dir: Path) -> int:
         mask_id = (row.get("slot_mask_id") or "").strip()
         path = intake_dir / filename
 
+        if clip_id in seen_clip_ids:
+            rejected.append((clip_id, "DUPLICATE_CLIP_ID",
+                             f"clip_id {clip_id!r} already used by file "
+                             f"{seen_clip_ids[clip_id]!r}"))
+            continue
+        if filename and filename in seen_files:
+            rejected.append((clip_id, "DUPLICATE_FILE",
+                             f"{filename!r} is already listed as {seen_files[filename]!r}; "
+                             f"F2 requires {REQUIRED_CLIPS} distinct recordings"))
+            continue
         if not filename or not path.exists():
             rejected.append((clip_id, "FILE_MISSING", f"{path} not found"))
             continue
@@ -94,6 +112,7 @@ def run(f2_dir: Path) -> int:
         content = (row.get("authored_content") or "").strip()
         language = (row.get("authored_language") or "").strip()
         attribution = (row.get("source_attribution") or "").strip()
+        permission = (row.get("permission_note") or "").strip()
 
         missing = [name for name, value in
                    (("authored_content", content), ("source_attribution", attribution))
@@ -120,6 +139,20 @@ def run(f2_dir: Path) -> int:
             rejected.append((clip_id, exc.reason_code, exc.detail))
             continue
 
+        # AudioID, not the file sha256: canonicalisation peak-normalises, so two
+        # copies of one recording at different levels are byte-different files
+        # with identical canonical PCM.  The file hash would miss that; this does
+        # not.
+        if audio.audio_id in seen_audio_ids:
+            rejected.append((clip_id, "DUPLICATE_AUDIO",
+                             f"canonical audio is identical to {seen_audio_ids[audio.audio_id]!r} "
+                             f"(AudioID {audio.audio_id[:12]}...); F2 requires distinct recordings"))
+            continue
+
+        seen_clip_ids[clip_id] = filename
+        seen_files[filename] = clip_id
+        seen_audio_ids[audio.audio_id] = clip_id
+
         envelope = shape(evidence, engine.config, mask)
         asymmetry = realized_asymmetry(envelope)
         duration_s = audio.n_samples / audio.sample_rate
@@ -145,10 +178,17 @@ def run(f2_dir: Path) -> int:
             "authored_content": content,
             "authored_language": language,
             "source_attribution": attribution,
+            "permission_note": permission,
         })
 
+    no_permission = [c["clip_id"] for c in accepted if not c["permission_note"]]
     n_asym = sum(1 for c in accepted if c["meets_asymmetry_min"])
-    complete = len(accepted) >= REQUIRED_CLIPS and n_asym >= REQUIRED_ASYMMETRIC
+    n_distinct = len({c["audio_id"] for c in accepted})
+    complete = (
+        len(accepted) >= REQUIRED_CLIPS
+        and n_distinct == len(accepted)          # belt and braces: no duplicate slipped through
+        and n_asym >= REQUIRED_ASYMMETRIC
+    )
 
     manifest = {
         "fixture_id": "F2",
@@ -159,6 +199,7 @@ def run(f2_dir: Path) -> int:
             "clips_required": REQUIRED_CLIPS,
             "asymmetric_required": REQUIRED_ASYMMETRIC,
             "clips_accepted": len(accepted),
+            "distinct_audio_ids": n_distinct,
             "asymmetric_accepted": n_asym,
         },
         "authored_fields_are_declarations": (
@@ -167,6 +208,7 @@ def run(f2_dir: Path) -> int:
             "checked for presence and exact value: a clip with a missing or wrong declaration "
             "is rejected and does not count toward F2 completeness."
         ),
+        "clips_without_permission_note": no_permission,
         "clips": accepted,
         "rejected": [
             {"clip_id": c, "reason_code": r, "detail": d} for c, r, d in rejected
@@ -175,6 +217,11 @@ def run(f2_dir: Path) -> int:
     (f2_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
     print(f"F2 intake: {len(accepted)} accepted, {len(rejected)} rejected")
+    if no_permission:
+        print(f"  WARNING: {len(no_permission)} accepted clip(s) carry no permission_note: "
+              f"{', '.join(no_permission)}")
+        print("           Record how each recording may be used and retained "
+              "(see INTAKE_CHECKLIST.md).")
     for clip_id, reason, detail in rejected:
         print(f"  REJECTED {clip_id}: {reason} -- {detail}")
     print(f"  asymmetric (>= {engine.config.ASYMMETRY_MIN}): {n_asym}")

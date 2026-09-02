@@ -1,5 +1,9 @@
 # F2 — acceptance requirements for the accompaniment clips
 
+> Supplying the audio? Use **[INTAKE_CHECKLIST.md](INTAKE_CHECKLIST.md)** — the
+> per-clip form and the full reason-code table. This file states the requirements;
+> that one is the working checklist.
+
 **You supply the recordings.** Nothing synthetic is substituted, and the importer
 has no path that accepts generated audio as F2.
 
@@ -15,7 +19,7 @@ fails is excluded, never repaired.
 
 ## How many
 
-**20 clips, of which at least 12 must show interval asymmetry** (`max(I)/min(I) ≥
+**20 distinct recordings, of which at least 12 must show interval asymmetry** (`max(I)/min(I) ≥
 ASYMMETRY_MIN`, currently 1.5, measured on the realised envelope). Fewer than
 that and the manifest is written `INCOMPLETE`.
 

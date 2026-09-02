@@ -1,6 +1,8 @@
-# F2 — 20 accompaniment clips meeting Section 2, ≥12 with interval asymmetry
+# F2 — 20 distinct accompaniment clips meeting Section 2, ≥12 with interval asymmetry
 
 **Status: UNPOPULATED — BLOCKED ON SOURCE MATERIAL.**
+
+To supply it, see **[INTAKE_CHECKLIST.md](INTAKE_CHECKLIST.md)**.
 
 F2 is real recorded accompaniment. It cannot be produced offline from anything
 in this environment, and it must not be simulated: the hypothesis under test is

@@ -47,6 +47,15 @@ def audio_id_of(pcm: np.ndarray) -> str:
 
 def check_source_format(source: wavio.SourceAudio, path: str) -> None:
     """Section 2 checks that need only the decoded source file."""
+    if source.format_tag != wavio.WAVE_FORMAT_PCM:
+        # Section 2 says "WAV PCM".  ``wavio`` can also decode IEEE float WAVs, so
+        # without this the format row would be recorded rather than enforced: a
+        # float32 file reports bit_depth 32 and sails past the >=16-bit check.
+        raise ClipRejected(
+            "NOT_PCM",
+            f"{path}: WAV format tag {source.format_tag} is not PCM "
+            f"({wavio.WAVE_FORMAT_PCM}); Section 2 admits WAV PCM only",
+        )
     if source.sample_rate < MIN_SOURCE_SAMPLE_RATE_HZ:
         raise ClipRejected("SAMPLE_RATE_TOO_LOW", f"{path}: {source.sample_rate} Hz < 44100 Hz")
     if source.bit_depth < MIN_SOURCE_BIT_DEPTH:

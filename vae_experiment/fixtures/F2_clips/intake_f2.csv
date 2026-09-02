@@ -8,4 +8,9 @@
 # authored_meter must be exactly "4/4"; authored_language must be exactly "English (US)".
 # authored_content and source_attribution must be non-empty. A clip failing any of these is
 # REJECTED and does not count toward the 20.
-file,clip_id,slot_mask_id,authored_meter,authored_content,authored_language,source_attribution
+# permission_note records the basis on which this recording may be used and retained
+# (e.g. 'self-authored', 'written permission from <holder>, <date>'). It is RECORDED and
+# WARNED about when blank, but is not currently a rejection: the frozen Section 2 metadata
+# list has seven fields and adding an eighth rejection is a spec-owner decision.
+# See INTAKE_CHECKLIST.md.
+file,clip_id,slot_mask_id,authored_meter,authored_content,authored_language,source_attribution,permission_note
