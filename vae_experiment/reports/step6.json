@@ -1,17 +1,10 @@
 {
-  "F4_required_source_material": [
-    "AUTHORITATIVE: Klatt, D. H. (1979). Synthesis by Rule of Segmental Durations in English Sentences. Table 1. INHDUR -> d_nominal_s, MINDUR -> d_floor_s.",
-    "DIAGNOSTIC ONLY, never imported: Festival lib/klatt_durs.scm / Allen, Hunnicutt & Klatt (1987) ch. 9."
-  ],
-  "F4_status": "UNPOPULATED",
-  "F5_required_source_material": [
-    "A named standard phonotactics reference giving the exhaustive inventory of legal English syllable-onset consonant clusters, mappable one-to-one onto the ARPAbet consonants in fixtures/lexicon/cmudict.symbols.",
-    "Candidates identified bibliographically: Roach, P., 'English Phonetics and Phonology: A Practical Course', 4th ed. (Cambridge University Press, 2009), ch. 8; Cruttenden, A., 'Gimson's Pronunciation of English' (Hodder), section 5.5. NEITHER was retrieved, so NEITHER has been used."
-  ],
+  "F4_status": "POPULATED",
   "F5_status": "POPULATED",
+  "F7_status": "UNPOPULATED",
   "blocked": true,
-  "blocker": "F4 is UNPOPULATED",
+  "blocker": "no candidates: F7 is UNPOPULATED",
   "step": 6,
-  "title": "SOUND",
-  "why": "SOUND cannot run without d_nominal/d_floor (Section 7 partition) or the legal-onset table (Section 9 syllabification). Section 22 failure #10 makes a duration-table gap a hard error, never a silent default, so no substitute is available."
+  "title": "SOUND \u2014 pronunciation, syllabification, partition, tiers, s_fit",
+  "why": "SOUND and RANK are no longer table-blocked -- F4 and F5 are populated -- but the candidate pool comes from F7, which is not authored. Scoring an empty pool would report a vacuous pass; ranking one is a hard error."
 }

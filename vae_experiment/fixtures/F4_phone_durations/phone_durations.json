@@ -2,9 +2,15 @@
   "fixture_id": "F4",
   "title": "Per-phoneme d_nominal / d_floor, ARPAbet",
   "spec_reference": "Section 7 (d(c) = max(d_floor(c), d_nominal(c) * rho^gamma)); Section 17 F4; Section 22 failure #10",
-  "status": "UNPOPULATED",
-  "provenance": null,
-  "blocked_reason": "Awaiting the exact numeric transcription of Klatt (1979) Table 1 for the 22 scalar consonants. The source is decided and the row set is now 22, not 24: CH and JH are DEFERRED from V1 by spec-owner decision. Klatt 1979 is unreachable from this environment - every document host returns HTTP 403 at CONNECT under organization egress policy - so the values must be supplied. NOTHING has been populated from memory, inference, Festival, or secondary literature.",
+  "status": "POPULATED",
+  "provenance": {
+    "sources": [
+      "Klatt (1979)"
+    ],
+    "intake_file": "intake_f4.csv",
+    "intake_sha256": "b918a972136dff5b3bb2a0d440797b2cf6b91494e8b5b8a0439ab5c8312f03f0",
+    "n_phones": 22
+  },
   "required_source_material": [
     "AUTHORITATIVE: Klatt, D. H. (1979). Synthesis by Rule of Segmental Durations in English Sentences. Table 1. INHDUR -> d_nominal_s, MINDUR -> d_floor_s.",
     "DIAGNOSTIC ONLY, never imported: Festival lib/klatt_durs.scm / Allen, Hunnicutt & Klatt (1987) ch. 9."
@@ -25,31 +31,140 @@
     "Partial coverage leaves F4 UNPOPULATED and is reported as an explicit gap list."
   ],
   "how_to_populate": "Fill fixtures/F4_phone_durations/intake_f4.csv, then run: python3 tools/import_f4.py",
-  "phones": {},
-  "uncovered_phones": [
-    "B",
-    "D",
-    "DH",
-    "F",
-    "G",
-    "HH",
-    "K",
-    "L",
-    "M",
-    "N",
-    "NG",
-    "P",
-    "R",
-    "S",
-    "SH",
-    "T",
-    "TH",
-    "V",
-    "W",
-    "Y",
-    "Z",
-    "ZH"
-  ],
+  "phones": {
+    "B": {
+      "d_nominal_s": 0.08,
+      "d_floor_s": 0.05,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "D": {
+      "d_nominal_s": 0.065,
+      "d_floor_s": 0.04,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "DH": {
+      "d_nominal_s": 0.05,
+      "d_floor_s": 0.03,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "F": {
+      "d_nominal_s": 0.12,
+      "d_floor_s": 0.06,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "G": {
+      "d_nominal_s": 0.065,
+      "d_floor_s": 0.05,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "HH": {
+      "d_nominal_s": 0.08,
+      "d_floor_s": 0.02,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "K": {
+      "d_nominal_s": 0.065,
+      "d_floor_s": 0.05,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "L": {
+      "d_nominal_s": 0.08,
+      "d_floor_s": 0.04,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "M": {
+      "d_nominal_s": 0.07,
+      "d_floor_s": 0.06,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "N": {
+      "d_nominal_s": 0.065,
+      "d_floor_s": 0.035,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "NG": {
+      "d_nominal_s": 0.08,
+      "d_floor_s": 0.05,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "P": {
+      "d_nominal_s": 0.085,
+      "d_floor_s": 0.05,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "R": {
+      "d_nominal_s": 0.08,
+      "d_floor_s": 0.03,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "S": {
+      "d_nominal_s": 0.125,
+      "d_floor_s": 0.05,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "SH": {
+      "d_nominal_s": 0.125,
+      "d_floor_s": 0.05,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "T": {
+      "d_nominal_s": 0.065,
+      "d_floor_s": 0.04,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "TH": {
+      "d_nominal_s": 0.11,
+      "d_floor_s": 0.08,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "V": {
+      "d_nominal_s": 0.06,
+      "d_floor_s": 0.04,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "W": {
+      "d_nominal_s": 0.08,
+      "d_floor_s": 0.06,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "Y": {
+      "d_nominal_s": 0.08,
+      "d_floor_s": 0.04,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "Z": {
+      "d_nominal_s": 0.075,
+      "d_floor_s": 0.04,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    },
+    "ZH": {
+      "d_nominal_s": 0.07,
+      "d_floor_s": 0.04,
+      "source": "Klatt (1979)",
+      "page_or_table": "Table 1"
+    }
+  },
   "source_authority_decision": {
     "decided_by": "spec owner, [CHATGPT HANDOFF - F4 source authority decision]",
     "authoritative_source": "Klatt, D. H. (1979). Synthesis by Rule of Segmental Durations in English Sentences. Table 1.",
@@ -71,7 +186,7 @@
       "CH",
       "JH"
     ],
-    "decided_by": "spec owner, [CHATGPT HANDOFF - F4 source transcription + affricate correction]",
+    "decided_by": "spec owner, [CHATGPT HANDOFF - F4 source transcription + affricate correction]; reason restated in [CHATGPT HANDOFF - COMPLETE F4 POPULATION]",
     "effect": "V1 requires 22 scalar consonants, not 24. F4 carries no row for CH or JH; the intake CSV rejects one; and a duration lookup for either remains a HARD ERROR (Section 22 failure #10), never a default and never zero.",
     "f7_eligibility_guard": "vae.pairs.check_line_eligibility / check_pair_eligibility / screen_pairs. A candidate line is INELIGIBLE for the F7 pool if ANY CMUdict pronunciation variant of any of its words contains a deferred phone - not merely the primary variant, because Section 9 has SOUND score every variant and report the best, so one deferred phone in one secondary variant still reaches the failing lookup.",
     "lexicon_impact_measured": {
@@ -82,6 +197,7 @@
       "words_where_only_some_variants_are_deferred": 251,
       "percent_of_lexicon_excluded_from_F7": 8.12
     },
-    "undeferring_is_a_scope_change": "Restoring CH and JH needs INHDUR/MINDUR from the authoritative source AND a new EngineVersion. Both are guaranteed: the values would change duration_table_hash, and V1_DEFERRED_CONSONANTS lives in vae/constants.py, which code_version hashes."
+    "undeferring_is_a_scope_change": "Restoring CH and JH needs INHDUR/MINDUR from the authoritative source AND a new EngineVersion. Both are guaranteed: the values would change duration_table_hash, and V1_DEFERRED_CONSONANTS lives in vae/constants.py, which code_version hashes.",
+    "reason": "Klatt (1979) represents the affricates with closure/frication structure rather than the ordinary scalar INHDUR/MINDUR treatment the other 22 consonants receive. There is no single scalar pair to transcribe, so V1 defers them rather than deriving one. Nothing may be invented, aggregated, summed, averaged, or substituted to restore CH or JH."
   }
 }

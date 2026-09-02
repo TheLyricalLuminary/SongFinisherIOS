@@ -564,6 +564,30 @@ def _blocking_fixtures(engine) -> list[str]:
     ]
 
 
+def _no_candidates_report(engine) -> dict:
+    """SOUND and RANK are unblocked, but there is nothing to run them on.
+
+    F4 and F5 gate the *tables*; F7 supplies the *candidates*.  Before F4 was
+    populated the table gate short-circuited first and this path was unreachable,
+    which hid the fact that step 7 would otherwise hand ``rank`` an empty list and
+    take a ContractError.  ``rank`` is right to refuse an empty list (Section 20);
+    the runner is what must not call it with one.  Reported as a blocker rather
+    than as a clean pass, because an empty ranking is not a result.
+    """
+    return {
+        "blocked": True,
+        "blocker": "no candidates: F7 is UNPOPULATED",
+        "F4_status": engine.durations.status,
+        "F5_status": engine.onsets.status,
+        "F7_status": "UNPOPULATED",
+        "why": (
+            "SOUND and RANK are no longer table-blocked -- F4 and F5 are populated -- "
+            "but the candidate pool comes from F7, which is not authored. Scoring an "
+            "empty pool would report a vacuous pass; ranking one is a hard error."
+        ),
+    }
+
+
 def _sound_blocked_report(engine) -> dict:
     return {
         "blocked": True,
@@ -594,6 +618,14 @@ def step6(candidates: Optional[list[Candidate]] = None,
     if not (engine.durations.is_populated or engine.durations.is_synthetic):
         return {"step": 6, "title": "SOUND", **_sound_blocked_report(engine)}
 
+    candidates = candidates or []
+    if not candidates:
+        return {
+            "step": 6,
+            "title": "SOUND — pronunciation, syllabification, partition, tiers, s_fit",
+            **_no_candidates_report(engine),
+        }
+
     clips, f2_dir, synthetic = _f2_clips()
     clip = clips[0]
     mask = engine.masks.by_id(clip["slot_mask_id"])
@@ -601,7 +633,6 @@ def step6(candidates: Optional[list[Candidate]] = None,
     evidence, _ = engine.hear_with_log(audio, mask)
     envelope = shape(evidence, engine.config, mask)
 
-    candidates = candidates or []
     rows = []
     for candidate in candidates:
         report, log = sound(
@@ -649,8 +680,12 @@ def step7(candidates: Optional[list[Candidate]] = None,
     if not (engine.durations.is_populated or engine.durations.is_synthetic):
         return {"step": 7, "title": "RANK + all six conditions", **_sound_blocked_report(engine)}
 
-    clips, f2_dir, synthetic = _f2_clips()
     candidates = candidates or []
+    if not candidates:
+        return {"step": 7, "title": "RANK + all six conditions",
+                **_no_candidates_report(engine)}
+
+    clips, f2_dir, synthetic = _f2_clips()
 
     # Build the HEAR envelope for every clip so C_SHUFFLED has a slot-count-matched pool.
     envelopes: dict[str, dict] = {}
@@ -721,6 +756,21 @@ def step7(candidates: Optional[list[Candidate]] = None,
     }
 
 
+def _f7_blocker(engine) -> str:
+    """What actually stands between here and an authored F7, stated truthfully.
+
+    F4 and F5 are populated, so naming them would be false; what remains is that
+    nobody has authored the pairs, and that their two contexts need real F2 clips.
+    """
+    tables = _blocking_fixtures(engine)
+    if tables:
+        return "F7 cannot be authored: " + "; ".join(tables)
+    outstanding = ["F7 pairs are not authored"]
+    if not (ROOT / "fixtures" / "F2_clips" / "manifest.json").exists():
+        outstanding.append("F2 supplies no real clips, so neither context exists")
+    return "F7 is UNPOPULATED: " + "; ".join(outstanding)
+
+
 def step8() -> dict:
     """Author F7 pairs; run all five Section 11 checks."""
     engine = build_engine()
@@ -733,17 +783,16 @@ def step8() -> dict:
         "title": "Author F7 pairs; run all five Section 11 checks",
         "blocked": True,
         "F7_status": "UNPOPULATED",
-        "blocker": (
-            "F7 cannot be authored: it depends on F4 and F5 -- "
-            + ("; ".join(_blocking_fixtures(engine)) or "none")
-        ),
+        "blocker": _f7_blocker(engine),
+        "table_prerequisites_met": not _blocking_fixtures(engine),
         "why": (
             "Section 11 check 4 matches pair members on sum d_nominal(c) within LOAD_TOL, "
             "and d_nominal comes from F4. Syllable onset/coda boundaries — which decide "
             "where the heavy cluster sits, the independent variable itself — come from "
-            "Maximum Onset Principle syllabification against F5. Without both, checks 2, "
-            "3, 4 and 5 cannot be evaluated and lines would be authored against an "
-            "unknown syllabifier."
+            "Maximum Onset Principle syllabification against F5. Both tables are now "
+            "populated, so the pairs can finally be checked once authored — but they are "
+            "not authored, and the two contexts each pair is presented under come from "
+            "real F2 clips with opposite interval asymmetry."
         ),
         "gate_implementation_status": "IMPLEMENTED AND TESTED (vae.pairs.check_pair, run_gate)",
         "eligibility_guard": {

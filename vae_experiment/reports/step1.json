@@ -216,8 +216,8 @@
     "cmudict_hash": "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22",
     "code_version": "89fae60147cd31df606430b719a043116b3b0d52f300c59e23273411aff50003",
     "config_hash": "2b4c5f2a91c8b904bfc2231790dfef6a62dc0f4ba8c545961cbc6d79e54ae6fb",
-    "duration_table_hash": "f5ace00be0d3d8e5b0b7703c8b1aabb285a5a50b8f790e81a06a01c1cf91a4bc",
-    "engine_version": "d66ec2a1f82a7d3d4cd59e9092d7ae4b35abe1918cead82acda9e7f1b92f7fe7",
+    "duration_table_hash": "149f518c1ed3724f0dd4738e87cecd01beb12bb8bd823fb95373cee1fa7b9ba7",
+    "engine_version": "e7aecc0a150191f93b345129fc867d318632448c3b47bad2e1624e94db9a84ae",
     "onset_table_hash": "182ad1dd6cd098ee4f62457e319e9a0d6a4a64462a2554384f32385a4d672478",
     "resampler_version": "polyphase-windowed-sinc-v1",
     "slot_mask_hash": "17ea845e24cf974892a1d12f94ab92ecdee966c00d2048a55762d3a8356dc430"
@@ -230,7 +230,7 @@
     "written": 0
   },
   "fixture_status": {
-    "F4_duration_table": "UNPOPULATED",
+    "F4_duration_table": "POPULATED",
     "F5_onset_table": "POPULATED",
     "F6_slot_masks": "AUTHORED",
     "lexicon": "CMUdict 0.7b (pinned)",

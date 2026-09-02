@@ -73,12 +73,19 @@ def test_shipped_intake_csv_has_no_row_for_a_deferred_phone():
     assert not (set(rows) & set(V1_DEFERRED_CONSONANTS))
 
 
-def test_fixture_records_the_deferral_and_still_lists_22_uncovered():
+def test_the_deferral_record_survives_population():
+    """Retargeted from an assertion that F4 was UNPOPULATED.
+
+    The property worth protecting was never "F4 is empty" but "populating F4 does
+    not quietly restore the affricates".  Populating a table is exactly when a
+    deferral is easiest to lose.
+    """
     doc = json.loads(F4_FIXTURE.read_text())
-    assert doc["status"] == "UNPOPULATED"
+    assert doc["status"] == "POPULATED"
+    assert len(doc["phones"]) == 22
+    assert not (set(doc["phones"]) & set(V1_DEFERRED_CONSONANTS))
     assert doc["v1_deferred_phones"]["phones"] == list(V1_DEFERRED_CONSONANTS)
-    assert len(doc["uncovered_phones"]) == 22
-    assert not (set(doc["uncovered_phones"]) & set(V1_DEFERRED_CONSONANTS))
+    assert "closure/frication" in doc["v1_deferred_phones"]["reason"]
 
 
 # --------------------------------------------------------------------------- #

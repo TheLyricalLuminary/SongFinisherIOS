@@ -1,9 +1,9 @@
 {
-  "F4_status": "UNPOPULATED",
+  "F4_status": "POPULATED",
   "F5_status": "POPULATED",
   "F7_status": "UNPOPULATED",
   "blocked": true,
-  "blocker": "F7 cannot be authored: it depends on F4 and F5 -- F4 is UNPOPULATED",
+  "blocker": "F7 is UNPOPULATED: F7 pairs are not authored; F2 supplies no real clips, so neither context exists",
   "checks_implemented": [
     "C1_B_TIED_BOTH_CONTEXTS",
     "C2_SCORE_C_REVERSAL",
@@ -23,7 +23,8 @@
   "n_pairs_admitted": 0,
   "n_pairs_authored": 0,
   "step": 8,
+  "table_prerequisites_met": true,
   "target_pairs": 60,
   "title": "Author F7 pairs; run all five Section 11 checks",
-  "why": "Section 11 check 4 matches pair members on sum d_nominal(c) within LOAD_TOL, and d_nominal comes from F4. Syllable onset/coda boundaries \u2014 which decide where the heavy cluster sits, the independent variable itself \u2014 come from Maximum Onset Principle syllabification against F5. Without both, checks 2, 3, 4 and 5 cannot be evaluated and lines would be authored against an unknown syllabifier."
+  "why": "Section 11 check 4 matches pair members on sum d_nominal(c) within LOAD_TOL, and d_nominal comes from F4. Syllable onset/coda boundaries \u2014 which decide where the heavy cluster sits, the independent variable itself \u2014 come from Maximum Onset Principle syllabification against F5. Both tables are now populated, so the pairs can finally be checked once authored \u2014 but they are not authored, and the two contexts each pair is presented under come from real F2 clips with opposite interval asymmetry."
 }

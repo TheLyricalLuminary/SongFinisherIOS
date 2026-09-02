@@ -1,18 +1,18 @@
 {
   "F4": {
-    "blocked": true,
+    "blocked": false,
     "deferred_from_v1": [
       "CH",
       "JH"
     ],
-    "n_phones": 0,
+    "n_phones": 22,
     "n_required": 22,
     "required_source_material": [
       "AUTHORITATIVE: Klatt, D. H. (1979). Synthesis by Rule of Segmental Durations in English Sentences. Table 1. INHDUR -> d_nominal_s, MINDUR -> d_floor_s.",
       "DIAGNOSTIC ONLY, never imported: Festival lib/klatt_durs.scm / Allen, Hunnicutt & Klatt (1987) ch. 9."
     ],
-    "sha256": "f5ace00be0d3d8e5b0b7703c8b1aabb285a5a50b8f790e81a06a01c1cf91a4bc",
-    "status": "UNPOPULATED"
+    "sha256": "149f518c1ed3724f0dd4738e87cecd01beb12bb8bd823fb95373cee1fa7b9ba7",
+    "status": "POPULATED"
   },
   "F5": {
     "blocked": false,
@@ -252,7 +252,7 @@
     "sha256": "17ea845e24cf974892a1d12f94ab92ecdee966c00d2048a55762d3a8356dc430",
     "status": "AUTHORED"
   },
-  "blocked": true,
+  "blocked": false,
   "step": 3,
   "title": "Author F6 slot mask inventory; populate F4, F5"
 }
