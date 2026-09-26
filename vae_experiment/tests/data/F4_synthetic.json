@@ -1,0 +1,33 @@
+{
+  "fixture_id": "F4",
+  "status": "SYNTHETIC_TEST_ONLY",
+  "WARNING": "ARBITRARY PLACEHOLDER VALUES. NOT MEASURED, NOT EXTRACTED FROM ANY SOURCE, NOT DATA. These numbers exist solely so unit tests can exercise the partition, tier and scoring code paths. They must never be used to produce a reported number. The real F4 must be extracted from Klatt (1976) and Crystal & House (1988) per fixtures/F4_phone_durations/phone_durations.json.",
+  "provenance": "SYNTHETIC_TEST_ONLY",
+  "required_source_material": ["see fixtures/F4_phone_durations/phone_durations.json"],
+  "phones": {
+    "B":  {"d_nominal_s": 0.070, "d_floor_s": 0.030, "source": "SYNTHETIC_TEST_ONLY"},
+    "CH": {"d_nominal_s": 0.110, "d_floor_s": 0.050, "source": "SYNTHETIC_TEST_ONLY"},
+    "D":  {"d_nominal_s": 0.060, "d_floor_s": 0.025, "source": "SYNTHETIC_TEST_ONLY"},
+    "DH": {"d_nominal_s": 0.050, "d_floor_s": 0.020, "source": "SYNTHETIC_TEST_ONLY"},
+    "F":  {"d_nominal_s": 0.100, "d_floor_s": 0.045, "source": "SYNTHETIC_TEST_ONLY"},
+    "G":  {"d_nominal_s": 0.070, "d_floor_s": 0.030, "source": "SYNTHETIC_TEST_ONLY"},
+    "HH": {"d_nominal_s": 0.060, "d_floor_s": 0.025, "source": "SYNTHETIC_TEST_ONLY"},
+    "JH": {"d_nominal_s": 0.100, "d_floor_s": 0.045, "source": "SYNTHETIC_TEST_ONLY"},
+    "K":  {"d_nominal_s": 0.080, "d_floor_s": 0.035, "source": "SYNTHETIC_TEST_ONLY"},
+    "L":  {"d_nominal_s": 0.060, "d_floor_s": 0.025, "source": "SYNTHETIC_TEST_ONLY"},
+    "M":  {"d_nominal_s": 0.070, "d_floor_s": 0.030, "source": "SYNTHETIC_TEST_ONLY"},
+    "N":  {"d_nominal_s": 0.060, "d_floor_s": 0.025, "source": "SYNTHETIC_TEST_ONLY"},
+    "NG": {"d_nominal_s": 0.070, "d_floor_s": 0.030, "source": "SYNTHETIC_TEST_ONLY"},
+    "P":  {"d_nominal_s": 0.080, "d_floor_s": 0.035, "source": "SYNTHETIC_TEST_ONLY"},
+    "R":  {"d_nominal_s": 0.060, "d_floor_s": 0.025, "source": "SYNTHETIC_TEST_ONLY"},
+    "S":  {"d_nominal_s": 0.110, "d_floor_s": 0.050, "source": "SYNTHETIC_TEST_ONLY"},
+    "SH": {"d_nominal_s": 0.110, "d_floor_s": 0.050, "source": "SYNTHETIC_TEST_ONLY"},
+    "T":  {"d_nominal_s": 0.080, "d_floor_s": 0.035, "source": "SYNTHETIC_TEST_ONLY"},
+    "TH": {"d_nominal_s": 0.100, "d_floor_s": 0.045, "source": "SYNTHETIC_TEST_ONLY"},
+    "V":  {"d_nominal_s": 0.070, "d_floor_s": 0.030, "source": "SYNTHETIC_TEST_ONLY"},
+    "W":  {"d_nominal_s": 0.060, "d_floor_s": 0.025, "source": "SYNTHETIC_TEST_ONLY"},
+    "Y":  {"d_nominal_s": 0.060, "d_floor_s": 0.025, "source": "SYNTHETIC_TEST_ONLY"},
+    "Z":  {"d_nominal_s": 0.090, "d_floor_s": 0.040, "source": "SYNTHETIC_TEST_ONLY"},
+    "ZH": {"d_nominal_s": 0.090, "d_floor_s": 0.040, "source": "SYNTHETIC_TEST_ONLY"}
+  }
+}

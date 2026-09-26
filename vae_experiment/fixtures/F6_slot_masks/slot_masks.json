@@ -1,0 +1,67 @@
+{
+  "fixture_id": "F6",
+  "title": "Slot mask inventory (frozen)",
+  "spec_reference": "Section 5; Section 17 F6",
+  "status": "AUTHORED",
+  "lattice": {
+    "meter": "4/4",
+    "bars": 2,
+    "subdivision": "eighth",
+    "position_count": 16,
+    "note": "Position index k is the k-th eighth note of a two-bar span. Position 0 is beat_grid[0]; it is NOT claimed to be a bar downbeat (Section 4 removes downbeat identification). See residual risk R1."
+  },
+  "metrical_strength_convention": {
+    "note": "Authored with the mask, never derived from a detected downbeat (Section 5). The convention used across this inventory: lattice positions 0 and 8 STRONG, 4 and 12 MEDIUM, other on-beat positions (2, 6, 10, 14) MEDIUM, off-beat eighths WEAK.",
+    "design_property": "The two mirror pairs (M5/M6 and M7/M8) were authored so that their metrical-strength SEQUENCES are identical while their interval sequences are opposite. Score_B therefore cannot vary between the two contexts of a trial, which is what makes 'the only thing that changes between contexts is the accompaniment' (Section 1) true of the scorer and not merely of the audio."
+  },
+  "masks": [
+    {
+      "mask_id": "M1_quarters_4",
+      "positions": [0, 2, 4, 6],
+      "metrical_strength": ["STRONG", "MEDIUM", "MEDIUM", "MEDIUM"],
+      "description": "Four quarter notes, bar 1. Symmetric; manipulation-check use only."
+    },
+    {
+      "mask_id": "M2_quarters_8",
+      "positions": [0, 2, 4, 6, 8, 10, 12, 14],
+      "metrical_strength": ["STRONG", "MEDIUM", "MEDIUM", "MEDIUM", "STRONG", "MEDIUM", "MEDIUM", "MEDIUM"],
+      "description": "Eight quarter notes across two bars. Symmetric."
+    },
+    {
+      "mask_id": "M3_eighths_4",
+      "positions": [0, 1, 2, 3],
+      "metrical_strength": ["STRONG", "WEAK", "MEDIUM", "WEAK"],
+      "description": "Four consecutive eighths. Symmetric, tightest spacing in the inventory."
+    },
+    {
+      "mask_id": "M4_dotted_4",
+      "positions": [0, 3, 6, 9],
+      "metrical_strength": ["STRONG", "WEAK", "MEDIUM", "WEAK"],
+      "description": "Dotted-quarter lattice. Symmetric, widest even spacing."
+    },
+    {
+      "mask_id": "M5_short_first_4",
+      "positions": [0, 1, 4, 5],
+      "metrical_strength": ["STRONG", "WEAK", "MEDIUM", "WEAK"],
+      "description": "ASYMMETRIC, SHORT_FIRST. Gaps 1-3-1 eighths. Mirror partner of M6."
+    },
+    {
+      "mask_id": "M6_long_first_4",
+      "positions": [0, 3, 4, 7],
+      "metrical_strength": ["STRONG", "WEAK", "MEDIUM", "WEAK"],
+      "description": "ASYMMETRIC, LONG_FIRST. Gaps 3-1-3 eighths. Mirror partner of M5; identical metrical-strength sequence."
+    },
+    {
+      "mask_id": "M7_short_first_6",
+      "positions": [0, 1, 4, 5, 8, 9],
+      "metrical_strength": ["STRONG", "WEAK", "MEDIUM", "WEAK", "STRONG", "WEAK"],
+      "description": "ASYMMETRIC, SHORT_FIRST across two bars. Gaps 1-3-1-3-1. Mirror partner of M8."
+    },
+    {
+      "mask_id": "M8_long_first_6",
+      "positions": [0, 3, 4, 7, 8, 11],
+      "metrical_strength": ["STRONG", "WEAK", "MEDIUM", "WEAK", "STRONG", "WEAK"],
+      "description": "ASYMMETRIC, LONG_FIRST across two bars. Gaps 3-1-3-1-3. Mirror partner of M7; identical metrical-strength sequence."
+    }
+  ]
+}

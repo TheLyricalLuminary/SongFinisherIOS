@@ -1,0 +1,57 @@
+{
+  "config_id": "vae-config-v1",
+  "spec_version": "VocalArticulationEnvelope Experimental Specification v1.1",
+  "frozen": false,
+  "freeze_note": "Section 18: frozen before human data collection (step 11), never touched after. Steps 1-8 are offline and the config is still open.",
+  "parameters": {
+    "W_match": 0.070,
+    "SIGMA_FLOOR_BASE": 0.008,
+    "SIGMA_ATTACK_COEF": 0.25,
+    "SIGMA_GRID_ONLY": 0.030,
+    "SIGMA_COEF": 1.0,
+    "I_MIN": 0.060,
+    "I_reference": 0.400,
+    "gamma": 0.5,
+    "F_MIN_BASE": 0.090,
+    "DIPHTHONG_FACTOR": 1.6,
+    "BORDERLINE_FACTOR": 1.25,
+    "NUCLEUS_COMFORT": 0.200,
+    "PRE_CAP_FRAC": 0.40,
+    "POST_CAP_FRAC": 0.40,
+    "LEAD_IN": 0.500,
+    "PHRASE_TAIL": 0.600,
+    "ASYMMETRY_MIN": 1.5,
+    "MARGIN_MIN": 0.020,
+    "LOAD_TOL": 0.015,
+    "epsilon_tie": 1e-9,
+    "epsilon_num": 1e-6,
+    "W_stress": 0.30,
+    "W_count": 0.25,
+    "W_anchor": 0.15,
+    "W_fit": 0.30
+  },
+  "units": {
+    "W_match": "s", "SIGMA_FLOOR_BASE": "s", "SIGMA_ATTACK_COEF": "dimensionless (multiplies mean rise time in s)",
+    "SIGMA_GRID_ONLY": "s", "SIGMA_COEF": "dimensionless", "I_MIN": "s", "I_reference": "s",
+    "gamma": "dimensionless", "F_MIN_BASE": "s", "DIPHTHONG_FACTOR": "dimensionless",
+    "BORDERLINE_FACTOR": "dimensionless", "NUCLEUS_COMFORT": "s", "PRE_CAP_FRAC": "dimensionless",
+    "POST_CAP_FRAC": "dimensionless", "LEAD_IN": "s", "PHRASE_TAIL": "s",
+    "ASYMMETRY_MIN": "ratio", "MARGIN_MIN": "score units", "LOAD_TOL": "s",
+    "epsilon_tie": "score units", "epsilon_num": "relative",
+    "W_stress": "score weight", "W_count": "score weight", "W_anchor": "score weight", "W_fit": "score weight"
+  },
+  "unvalidated": {
+    "note": "Section 26. These have no validated empirical values. The corpus figures purporting to supply them are misattributed. They are parameterized, swept, and any reported conclusion must be stable across the sweep.",
+    "parameters": ["SIGMA_FLOOR_BASE", "SIGMA_ATTACK_COEF", "SIGMA_GRID_ONLY", "SIGMA_COEF", "F_MIN_BASE", "gamma"]
+  },
+  "sweep": {
+    "note": "Section 18: the sweep is REPORTED, never used to select a favourable configuration. SIGMA_COEF = 0 is an explicit sweep point (Section 6) so the sweep answers whether uncertainty modelling matters.",
+    "points": {
+      "SIGMA_COEF": [0.0, 1.0, 2.0],
+      "F_MIN_BASE": [0.060, 0.090, 0.120],
+      "gamma": [0.3, 0.5, 0.7],
+      "W_match": [0.050, 0.070, 0.090],
+      "I_reference": [0.300, 0.400, 0.500]
+    }
+  }
+}

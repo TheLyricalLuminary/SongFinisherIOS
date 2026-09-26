@@ -1,0 +1,34 @@
+{
+  "_README": [
+    "F5 completeness attestation. The pipeline cannot know English phonotactics, so it verifies",
+    "that the transcription matches what the person who read the reference says it contains.",
+    "No expected inventory or count is hard-coded anywhere in this repository."
+  ],
+  "approved_by_spec_owner": true,
+  "approval_note": "Approved by the spec owner in the [CHATGPT HANDOFF - F5 implementation correction and source approval]. Claude did not set this flag on its own initiative.",
+  "reference": {
+    "author": "Kivisto-de Souza, Hanna",
+    "title": "Onset consonant clusters of General American English",
+    "edition": "",
+    "year": 2017,
+    "section_or_table": "Table 1",
+    "isbn_or_doi": "",
+    "summarized_from": [
+      "Kivisto-de Souza (2015)",
+      "Cruttenden (2008)",
+      "Yavas (2011), pp. 139-146"
+    ],
+    "summarized_from_note": "Table 1 states it is adapted/summarized from these three sources. Recorded verbatim as the provenance chain; Cruttenden describes SSBE but the table as published is General American, which the yod distribution confirms (no coronal+Y; SPY/SKY present, STY absent)."
+  },
+  "dialect": "General American",
+  "dialect_note": "Matches the CMUdict lexicon (Section 9). Verified mechanically: no coronal+Y onset appears, while labial and velar yod survives - GA yod-dropping after coronals.",
+  "declared_total_onsets": 64,
+  "declared_counts_by_length": {
+    "1": 23,
+    "2": 33,
+    "3": 8
+  },
+  "transcriber": "spec owner, via [CHATGPT HANDOFF]",
+  "transcription_date": "2026-08-30",
+  "notes": "Concatenated forms in the handoff were expanded to space-separated ARPAbet by longest-match parse; every expansion was verified unambiguous."
+}

@@ -1,0 +1,10 @@
+{
+  "F4_status": "POPULATED",
+  "F5_status": "POPULATED",
+  "F7_status": "UNPOPULATED",
+  "blocked": true,
+  "blocker": "no candidates: F7 is UNPOPULATED",
+  "step": 7,
+  "title": "RANK + all six conditions",
+  "why": "SOUND and RANK are no longer table-blocked -- F4 and F5 are populated -- but the candidate pool comes from F7, which is not authored. Scoring an empty pool would report a vacuous pass; ranking one is a hard error."
+}

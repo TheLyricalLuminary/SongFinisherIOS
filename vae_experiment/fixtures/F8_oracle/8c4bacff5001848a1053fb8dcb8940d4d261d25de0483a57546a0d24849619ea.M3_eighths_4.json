@@ -1,0 +1,42 @@
+{
+  "adjudicated_slots": [],
+  "anchor_sigma_s": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "anchor_times_s": [
+    0.075,
+    0.4159090909090909,
+    0.7568181818181817,
+    1.0977272727272727
+  ],
+  "annotation_source": "GROUND_TRUTH_BY_CONSTRUCTION",
+  "annotator_ids": [],
+  "audio_id": "8c4bacff5001848a1053fb8dcb8940d4d261d25de0483a57546a0d24849619ea",
+  "beat_times_s": [
+    0.075,
+    0.756818181818,
+    1.438636363636,
+    2.120454545455,
+    2.802272727273,
+    3.484090909091,
+    4.165909090909,
+    4.847727272727,
+    5.529545454545,
+    6.211363636364,
+    6.893181818182,
+    7.575,
+    8.256818181818,
+    8.938636363636,
+    9.620454545455,
+    10.302272727273,
+    10.984090909091
+  ],
+  "clip_id": "S03",
+  "not_a_substitute_for_f2_oracle": true,
+  "slot_mask_id": "M3_eighths_4",
+  "source_fixture": "F2_SYNTH_pipeline_exercise",
+  "tempo_bpm": 88.0
+}
