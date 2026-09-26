@@ -1,0 +1,143 @@
+{
+  "fixture_id": "F2",
+  "title": "Accompaniment clips meeting Section 2",
+  "status": "INCOMPLETE",
+  "provenance": "REAL_RECORDED_ACCOMPANIMENT",
+  "requirements": {
+    "clips_required": 20,
+    "asymmetric_required": 12,
+    "clips_accepted": 0,
+    "distinct_audio_ids": 0,
+    "asymmetric_accepted": 0
+  },
+  "authored_fields_are_declarations": "authored_meter, authored_content and authored_language cannot be verified by the pipeline and are recorded as declared. They are nonetheless REQUIRED and are checked for presence and exact value: a clip with a missing or wrong declaration is rejected and does not count toward F2 completeness.",
+  "permission_note_is_provenance_not_verification": "permission_note is REQUIRED: a blank or whitespace-only value rejects the clip as PERMISSION_NOTE_MISSING. It records the experiment owner's STATED basis for using and retaining the recording. It is not a licence check and makes no legal determination that a source actually is licensed; nothing here verifies the claim, and it is never inferred from source_attribution.",
+  "clips": [],
+  "rejected": [
+    {
+      "clip_id": "F2_001",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_002",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_003",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_004",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_005",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_006",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_007",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_008",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_009",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_010",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_011",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_012",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_013",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_014",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_015",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_016",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_017",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_018",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_019",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_020",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_021",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_022",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_023",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_024",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    },
+    {
+      "clip_id": "F2_025",
+      "reason_code": "UNKNOWN_SLOT_MASK",
+      "detail": "'' is not in the F6 inventory"
+    }
+  ]
+}

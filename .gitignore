@@ -42,6 +42,14 @@ SongFinisher.xcodeproj/
 vae_experiment/fixtures/F1_click_tracks/*.wav
 vae_experiment/fixtures/F2_SYNTH_pipeline_exercise/*.wav
 vae_experiment/fixtures/F3_out_of_spec/*.wav
+
+# VAE experiment: SUPPLIED F2 candidate audio (a different case from the
+# generated fixtures above -- these cannot be regenerated). Deliberately NOT
+# tracked: source recordings enter the repository only once their permission
+# basis is recorded, and git history is the wrong place to make that decision
+# reversible. The intake CSV and manifest ARE tracked, so the record of what was
+# submitted and what happened to it survives without the audio itself.
+vae_experiment/fixtures/F2_clips/intake/*.wav
 __pycache__/
 *.pyc
 .pytest_cache/
